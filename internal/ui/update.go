@@ -2,9 +2,9 @@ package ui
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/google/go-github/v60/github"
 	"github.com/pkg/browser"
@@ -14,25 +14,25 @@ import (
 type (
 	// ErrorMsg represents an error message
 	ErrorMsg struct{ err error }
-	
+
 	// LoadingMsg indicates loading state
 	LoadingMsg struct{ loading bool }
-	
+
 	// FilterMsg updates the filter string
 	FilterMsg struct{ filter string }
-	
+
 	// ViewModeMsg changes the view mode
 	ViewModeMsg struct{ mode ViewMode }
-	
+
 	// ColorSchemeMsg changes the color scheme
 	ColorSchemeMsg struct{ scheme ColorScheme }
-	
+
 	// MarkAsReadMsg marks a notification as read
 	MarkAsReadMsg struct{ id string }
-	
+
 	// MarkAllAsReadMsg marks all notifications as read
 	MarkAllAsReadMsg struct{}
-	
+
 	// RefreshMsg refreshes the notifications
 	RefreshMsg struct{}
 )
@@ -50,22 +50,22 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch {
 		case key.Matches(msg, m.keyMap.Quit):
 			return m, tea.Quit
-			
+
 		case key.Matches(msg, m.keyMap.Help):
 			m.showHelp = !m.showHelp
-			
+
 		case key.Matches(msg, m.keyMap.Up):
 			if m.selected > 0 {
 				m.selected--
 				m.viewport.SetYOffset(m.selected * 2) // Adjust based on item height
 			}
-			
+
 		case key.Matches(msg, m.keyMap.Down):
 			if m.selected < len(m.filteredItems)-1 {
 				m.selected++
 				m.viewport.SetYOffset(m.selected * 2) // Adjust based on item height
 			}
-			
+
 		case key.Matches(msg, m.keyMap.Select):
 			if n := m.getSelectedNotification(); n != nil {
 				// Open the notification in the browser
@@ -74,17 +74,17 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					cmds = append(cmds, openBrowserCmd(url))
 				}
 			}
-			
+
 		case key.Matches(msg, m.keyMap.MarkAsRead):
 			if n := m.getSelectedNotification(); n != nil {
 				// Mark the notification as read
 				cmds = append(cmds, markAsReadCmd(n.GetID()))
 			}
-			
+
 		case key.Matches(msg, m.keyMap.MarkAllAsRead):
 			// Mark all notifications as read
 			cmds = append(cmds, markAllAsReadCmd())
-			
+
 		case key.Matches(msg, m.keyMap.Filter):
 			// Enter filter mode
 			// This would typically activate a text input component
@@ -95,15 +95,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.filterString = ""
 			}
 			m.filterNotifications()
-			
+
 		case key.Matches(msg, m.keyMap.ViewMode):
 			// Cycle through view modes
 			m.viewMode = (m.viewMode + 1) % 4
-			
+
 		case key.Matches(msg, m.keyMap.ColorScheme):
 			// Cycle through color schemes
 			m.colorScheme = (m.colorScheme + 1) % 3
-			
+
 		case key.Matches(msg, m.keyMap.OpenInBrowser):
 			if n := m.getSelectedNotification(); n != nil {
 				// Open the notification in the browser
@@ -112,19 +112,19 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					cmds = append(cmds, openBrowserCmd(url))
 				}
 			}
-			
+
 		case key.Matches(msg, m.keyMap.Refresh):
 			// Refresh notifications
 			m.loading = true
 			cmds = append(cmds, refreshNotificationsCmd())
 		}
-		
+
 	case tea.WindowSizeMsg:
 		// Handle window resize
 		m.width = msg.Width
 		m.height = msg.Height
 		m.ready = true
-		
+
 		// Update viewport dimensions
 		headerHeight := 2
 		footerHeight := 2
@@ -132,14 +132,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.showHelp {
 			helpHeight = 6
 		}
-		
+
 		m.viewport.Width = msg.Width
 		m.viewport.Height = msg.Height - headerHeight - footerHeight - helpHeight
-		
+
 		// Update status bar text
-		m.statusBar.text = fmt.Sprintf("%d notifications (%d filtered)", 
+		m.statusBar.text = fmt.Sprintf("%d notifications (%d filtered)",
 			len(m.notifications), len(m.filteredItems))
-		
+
 	case spinner.TickMsg:
 		// Update spinner
 		var spinnerCmd tea.Cmd
@@ -147,32 +147,32 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.loading {
 			cmds = append(cmds, spinnerCmd)
 		}
-		
+
 	case ErrorMsg:
 		// Handle error
 		m.error = msg.err
 		m.loading = false
-		
+
 	case LoadingMsg:
 		// Update loading state
 		m.loading = msg.loading
 		if m.loading {
 			cmds = append(cmds, m.spinner.Tick)
 		}
-		
+
 	case FilterMsg:
 		// Update filter
 		m.filterString = msg.filter
 		m.filterNotifications()
-		
+
 	case ViewModeMsg:
 		// Update view mode
 		m.viewMode = msg.mode
-		
+
 	case ColorSchemeMsg:
 		// Update color scheme
 		m.colorScheme = msg.scheme
-		
+
 	case MarkAsReadMsg:
 		// Handle notification marked as read
 		for i, n := range m.notifications {
@@ -183,14 +183,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		}
 		m.filterNotifications()
-		
+
 	case MarkAllAsReadMsg:
 		// Handle all notifications marked as read
 		for i := range m.notifications {
 			m.notifications[i].Unread = github.Bool(false)
 		}
 		m.filterNotifications()
-		
+
 	case RefreshMsg:
 		// Handle refreshed notifications
 		// This would typically update the notifications list

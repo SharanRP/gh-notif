@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/google/go-github/v60/github"
 )
 
 // View renders the UI
@@ -48,7 +47,7 @@ func (m Model) View() string {
 	// Render header
 	header := styles.Header.Render("GitHub Notifications")
 	if m.loading {
-		header = lipgloss.JoinHorizontal(lipgloss.Center, 
+		header = lipgloss.JoinHorizontal(lipgloss.Center,
 			m.spinner.View(), " ", header)
 	}
 
@@ -56,7 +55,7 @@ func (m Model) View() string {
 	if m.filterString != "" {
 		filterInfo := styles.FilterPrompt.Render(
 			fmt.Sprintf("Filter: %s", m.filterString))
-		header = lipgloss.JoinHorizontal(lipgloss.Center, 
+		header = lipgloss.JoinHorizontal(lipgloss.Center,
 			header, "  ", filterInfo)
 	}
 
@@ -131,7 +130,7 @@ func (m Model) renderCompactView(styles Styles, symbols Symbols) string {
 
 		// Render repository name
 		repo := n.GetRepository().GetFullName()
-		
+
 		// Render title with smart truncation
 		title := n.GetSubject().GetTitle()
 		maxTitleLen := m.width - len(repo) - 10
@@ -140,7 +139,7 @@ func (m Model) renderCompactView(styles Styles, symbols Symbols) string {
 		}
 
 		// Render time
-		timeStr := formatTime(n.GetUpdatedAt())
+		timeStr := formatTimeForView(n.GetUpdatedAt().Time)
 
 		// Join all parts
 		line := fmt.Sprintf("%s %s %s: %s (%s)",
@@ -190,7 +189,7 @@ func (m Model) renderDetailedView(styles Styles, symbols Symbols) string {
 	sb.WriteString(status + "\n\n")
 
 	// Render updated time
-	updated := fmt.Sprintf("Updated: %s", n.GetUpdatedAt().Format(time.RFC1123))
+	updated := fmt.Sprintf("Updated: %s", n.GetUpdatedAt().Time.Format(time.RFC1123))
 	sb.WriteString(updated + "\n\n")
 
 	// Render URL
@@ -386,7 +385,7 @@ func (m Model) renderTableView(styles Styles, symbols Symbols) string {
 		titleCell := rowStyle.Copy().Width(titleWidth).Render(title)
 
 		// Render time
-		timeStr := formatTime(n.GetUpdatedAt())
+		timeStr := formatTimeForView(n.GetUpdatedAt().Time)
 		timeCell := rowStyle.Copy().Width(timeWidth).Render(timeStr)
 
 		// Join cells into a row
@@ -407,8 +406,8 @@ func (m Model) renderTableView(styles Styles, symbols Symbols) string {
 		Render(table)
 }
 
-// formatTime formats a time.Time into a human-readable string
-func formatTime(t time.Time) string {
+// formatTimeForView formats a time.Time into a human-readable string for the view
+func formatTimeForView(t time.Time) string {
 	if t.IsZero() {
 		return "N/A"
 	}
