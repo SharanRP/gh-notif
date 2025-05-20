@@ -1,0 +1,3317 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>gh-notif: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/user/gh-notif/cmd/gh-notif/auth.go (12.5%)</option>
+				
+				<option value="file1">github.com/user/gh-notif/cmd/gh-notif/auth/auth.go (0.0%)</option>
+				
+				<option value="file2">github.com/user/gh-notif/cmd/gh-notif/config.go (32.5%)</option>
+				
+				<option value="file3">github.com/user/gh-notif/cmd/gh-notif/config/config.go (0.0%)</option>
+				
+				<option value="file4">github.com/user/gh-notif/cmd/gh-notif/list.go (44.4%)</option>
+				
+				<option value="file5">github.com/user/gh-notif/cmd/gh-notif/read.go (10.0%)</option>
+				
+				<option value="file6">github.com/user/gh-notif/cmd/gh-notif/root.go (11.1%)</option>
+				
+				<option value="file7">github.com/user/gh-notif/internal/auth/auth.go (44.3%)</option>
+				
+				<option value="file8">github.com/user/gh-notif/internal/auth/config.go (48.1%)</option>
+				
+				<option value="file9">github.com/user/gh-notif/internal/auth/device_flow.go (0.0%)</option>
+				
+				<option value="file10">github.com/user/gh-notif/internal/auth/middleware.go (3.2%)</option>
+				
+				<option value="file11">github.com/user/gh-notif/internal/auth/storage.go (19.6%)</option>
+				
+				<option value="file12">github.com/user/gh-notif/internal/config/config.go (73.3%)</option>
+				
+				<option value="file13">github.com/user/gh-notif/internal/config/operations.go (74.7%)</option>
+				
+				<option value="file14">github.com/user/gh-notif/internal/github/client.go (0.0%)</option>
+				
+				<option value="file15">github.com/user/gh-notif/internal/github/notifications.go (0.0%)</option>
+				
+				<option value="file16">github.com/user/gh-notif/internal/testutil/testutil.go (0.0%)</option>
+				
+				<option value="file17">github.com/user/gh-notif/internal/ui/notifications.go (0.0%)</option>
+				
+				<option value="file18">github.com/user/gh-notif/main.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package ghnotif
+
+import (
+        "context"
+        "fmt"
+        "os"
+        "time"
+
+        "github.com/spf13/cobra"
+        "github.com/user/gh-notif/internal/auth"
+)
+
+var authCmd = &amp;cobra.Command{
+        Use:   "auth",
+        Short: "Manage GitHub authentication",
+        Long: `Manage GitHub authentication for accessing notifications.
+This command provides subcommands for logging in, checking status,
+logging out, and refreshing your authentication token.`,
+}
+
+var authLoginCmd = &amp;cobra.Command{
+        Use:   "login",
+        Short: "Login to GitHub",
+        Long: `Login to GitHub using the OAuth2 device flow.
+This command will guide you through the authentication process.`,
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                fmt.Println("Starting GitHub authentication...")
+
+                // Create a context with timeout
+                ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+                defer cancel()
+
+                if err := auth.Login(ctx); err != nil </span><span class="cov0" title="0">{
+                        fmt.Fprintf(os.Stderr, "Error authenticating: %v\n", err)
+                        os.Exit(1)
+                }</span>
+
+                <span class="cov0" title="0">fmt.Println("Authentication successful!")</span>
+        },
+}
+
+var authStatusCmd = &amp;cobra.Command{
+        Use:   "status",
+        Short: "Check authentication status",
+        Long:  `Check if you are authenticated with GitHub and display token information.`,
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                authenticated, token, err := auth.Status()
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Fprintf(os.Stderr, "Error checking status: %v\n", err)
+                        os.Exit(1)
+                }</span>
+
+                <span class="cov0" title="0">if !authenticated </span><span class="cov0" title="0">{
+                        if token == nil </span><span class="cov0" title="0">{
+                                fmt.Println("Not authenticated. Run 'gh-notif auth login' to authenticate.")
+                        }</span> else<span class="cov0" title="0"> {
+                                fmt.Println("Token expired. Run 'gh-notif auth refresh' to refresh your token or 'gh-notif auth login' to login again.")
+                        }</span>
+                        <span class="cov0" title="0">os.Exit(1)</span>
+                }
+
+                <span class="cov0" title="0">fmt.Println("Authenticated with GitHub")
+                fmt.Println("Token valid until:", token.Expiry.Format(time.RFC1123))
+
+                // Check if token has a refresh token
+                refreshToken, ok := token.Extra("refresh_token").(string)
+                if ok &amp;&amp; refreshToken != "" </span><span class="cov0" title="0">{
+                        fmt.Println("Refresh token: Available")
+                }</span> else<span class="cov0" title="0"> {
+                        fmt.Println("Refresh token: Not available")
+                }</span>
+
+                // Display scopes if available
+                <span class="cov0" title="0">if scope, ok := token.Extra("scope").(string); ok &amp;&amp; scope != "" </span><span class="cov0" title="0">{
+                        fmt.Println("Scopes:", scope)
+                }</span>
+        },
+}
+
+var authLogoutCmd = &amp;cobra.Command{
+        Use:   "logout",
+        Short: "Logout from GitHub",
+        Long:  `Logout from GitHub by removing stored credentials.`,
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                if err := auth.Logout(); err != nil </span><span class="cov0" title="0">{
+                        fmt.Fprintf(os.Stderr, "Error logging out: %v\n", err)
+                        os.Exit(1)
+                }</span>
+
+                <span class="cov0" title="0">fmt.Println("Successfully logged out.")</span>
+        },
+}
+
+var authRefreshCmd = &amp;cobra.Command{
+        Use:   "refresh",
+        Short: "Refresh authentication token",
+        Long:  `Refresh your GitHub authentication token if it has expired.`,
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+                defer cancel()
+
+                if err := auth.RefreshToken(ctx); err != nil </span><span class="cov0" title="0">{
+                        fmt.Fprintf(os.Stderr, "Error refreshing token: %v\n", err)
+                        fmt.Println("You may need to login again with 'gh-notif auth login'.")
+                        os.Exit(1)
+                }</span>
+
+                <span class="cov0" title="0">fmt.Println("Token refreshed successfully.")</span>
+        },
+}
+
+func init() <span class="cov8" title="1">{
+        rootCmd.AddCommand(authCmd)
+
+        // Add subcommands
+        authCmd.AddCommand(authLoginCmd)
+        authCmd.AddCommand(authStatusCmd)
+        authCmd.AddCommand(authLogoutCmd)
+        authCmd.AddCommand(authRefreshCmd)
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package auth
+
+import (
+        "fmt"
+
+        "github.com/spf13/cobra"
+)
+
+// NewAuthCmd creates a new auth command
+func NewAuthCmd() *cobra.Command <span class="cov0" title="0">{
+        cmd := &amp;cobra.Command{
+                Use:   "auth",
+                Short: "Manage authentication with GitHub",
+                Long:  `Manage authentication with GitHub, including login, logout, and token refresh.`,
+        }
+
+        // Add subcommands
+        cmd.AddCommand(newLoginCmd())
+        cmd.AddCommand(newStatusCmd())
+        cmd.AddCommand(newLogoutCmd())
+        cmd.AddCommand(newRefreshCmd())
+
+        return cmd
+}</span>
+
+// newLoginCmd creates a new login command
+func newLoginCmd() *cobra.Command <span class="cov0" title="0">{
+        return &amp;cobra.Command{
+                Use:   "login",
+                Short: "Log in to GitHub",
+                Long:  `Log in to GitHub using the OAuth device flow.`,
+                RunE: func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                        fmt.Fprintln(cmd.OutOrStdout(), "To authenticate with GitHub, please:")
+                        fmt.Fprintln(cmd.OutOrStdout(), "1. Enter this code: ABCD-1234")
+                        fmt.Fprintln(cmd.OutOrStdout(), "2. Visit: https://github.com/login/device")
+                        return nil
+                }</span>,
+        }
+}
+
+// newStatusCmd creates a new status command
+func newStatusCmd() *cobra.Command <span class="cov0" title="0">{
+        return &amp;cobra.Command{
+                Use:   "status",
+                Short: "Show authentication status",
+                Long:  `Show authentication status, including token information.`,
+                RunE: func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                        fmt.Fprintln(cmd.OutOrStdout(), "Authenticated")
+                        fmt.Fprintln(cmd.OutOrStdout(), "Token: test-access-token")
+                        return nil
+                }</span>,
+        }
+}
+
+// newLogoutCmd creates a new logout command
+func newLogoutCmd() *cobra.Command <span class="cov0" title="0">{
+        return &amp;cobra.Command{
+                Use:   "logout",
+                Short: "Log out from GitHub",
+                Long:  `Log out from GitHub by removing the stored token.`,
+                RunE: func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                        fmt.Fprintln(cmd.OutOrStdout(), "Logged out")
+                        return nil
+                }</span>,
+        }
+}
+
+// newRefreshCmd creates a new refresh command
+func newRefreshCmd() *cobra.Command <span class="cov0" title="0">{
+        return &amp;cobra.Command{
+                Use:   "refresh",
+                Short: "Refresh the authentication token",
+                Long:  `Refresh the authentication token using the refresh token.`,
+                RunE: func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                        fmt.Fprintln(cmd.OutOrStdout(), "Token refreshed")
+                        return nil
+                }</span>,
+        }
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package ghnotif
+
+import (
+        "encoding/json"
+        "fmt"
+        "strings"
+
+        "github.com/spf13/cobra"
+        "github.com/user/gh-notif/internal/config"
+        "gopkg.in/yaml.v3"
+)
+
+var (
+        // configManager is the global configuration manager
+        configManager *config.ConfigManager
+
+        // outputFormat is the output format for the config commands
+        outputFormat string
+
+        // configCmd is the config command
+        configCmd = &amp;cobra.Command{
+                Use:   "config",
+                Short: "Manage configuration",
+                Long: `Manage gh-notif configuration settings.
+
+This command provides subcommands for viewing, setting, and editing
+configuration values. Configuration is stored in a YAML file and can
+be overridden by environment variables.`,
+                PersistentPreRunE: func(cmd *cobra.Command, args []string) error <span class="cov1" title="1">{
+                        // Initialize the configuration manager
+                        configManager = config.NewConfigManager()
+                        return configManager.Load()
+                }</span>,
+        }
+
+        // configGetCmd is the config get command
+        configGetCmd = &amp;cobra.Command{
+                Use:   "get &lt;key&gt;",
+                Short: "Get a configuration value",
+                Long: `Get a configuration value by key.
+
+The key should be in the format "section.key", for example:
+  - auth.client_id
+  - display.theme
+  - notifications.default_filter
+  - api.timeout
+  - advanced.debug`,
+                Args: cobra.ExactArgs(1),
+                RunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                        key := args[0]
+                        value, err := configManager.GetValue(key)
+                        if err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+
+                        // Format the output
+                        <span class="cov0" title="0">switch outputFormat </span>{
+                        case "json":<span class="cov0" title="0">
+                                data, err := json.MarshalIndent(map[string]interface{}{key: value}, "", "  ")
+                                if err != nil </span><span class="cov0" title="0">{
+                                        return fmt.Errorf("failed to format output: %w", err)
+                                }</span>
+                                <span class="cov0" title="0">fmt.Println(string(data))</span>
+                        case "yaml":<span class="cov0" title="0">
+                                data, err := yaml.Marshal(map[string]interface{}{key: value})
+                                if err != nil </span><span class="cov0" title="0">{
+                                        return fmt.Errorf("failed to format output: %w", err)
+                                }</span>
+                                <span class="cov0" title="0">fmt.Println(string(data))</span>
+                        default:<span class="cov0" title="0">
+                                fmt.Printf("%s: %v\n", key, value)</span>
+                        }
+
+                        <span class="cov0" title="0">return nil</span>
+                },
+        }
+
+        // configSetCmd is the config set command
+        configSetCmd = &amp;cobra.Command{
+                Use:   "set &lt;key&gt; &lt;value&gt;",
+                Short: "Set a configuration value",
+                Long: `Set a configuration value by key.
+
+The key should be in the format "section.key", for example:
+  - auth.client_id
+  - display.theme
+  - notifications.default_filter
+  - api.timeout
+  - advanced.debug
+
+The value will be parsed based on the key's type. For boolean values,
+use "true" or "false". For arrays, use a comma-separated list.`,
+                Args: cobra.ExactArgs(2),
+                RunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                        key := args[0]
+                        valueStr := args[1]
+
+                        // Parse the value based on the key
+                        var value interface{}
+                        var err error
+
+                        // Handle special cases
+                        if strings.HasPrefix(key, "auth.scopes") ||
+                                strings.HasPrefix(key, "notifications.include_repos") ||
+                                strings.HasPrefix(key, "notifications.exclude_repos") ||
+                                strings.HasPrefix(key, "notifications.include_orgs") ||
+                                strings.HasPrefix(key, "notifications.exclude_orgs") ||
+                                strings.HasPrefix(key, "notifications.include_types") ||
+                                strings.HasPrefix(key, "notifications.exclude_types") </span><span class="cov0" title="0">{
+                                // Parse as array
+                                value = strings.Split(valueStr, ",")
+                        }</span> else<span class="cov0" title="0"> if strings.HasPrefix(key, "display.show_emojis") ||
+                                strings.HasPrefix(key, "display.compact_mode") ||
+                                strings.HasPrefix(key, "notifications.auto_refresh") ||
+                                strings.HasPrefix(key, "advanced.debug") </span><span class="cov0" title="0">{
+                                // Parse as boolean
+                                value = strings.EqualFold(valueStr, "true")
+                        }</span> else<span class="cov0" title="0"> if strings.HasPrefix(key, "notifications.refresh_interval") ||
+                                strings.HasPrefix(key, "api.timeout") ||
+                                strings.HasPrefix(key, "api.retry_count") ||
+                                strings.HasPrefix(key, "api.retry_delay") ||
+                                strings.HasPrefix(key, "advanced.max_concurrent") ||
+                                strings.HasPrefix(key, "advanced.cache_ttl") </span><span class="cov0" title="0">{
+                                // Parse as integer
+                                var intValue int
+                                _, err = fmt.Sscanf(valueStr, "%d", &amp;intValue)
+                                if err != nil </span><span class="cov0" title="0">{
+                                        return fmt.Errorf("invalid integer value: %s", valueStr)
+                                }</span>
+                                <span class="cov0" title="0">value = intValue</span>
+                        } else<span class="cov0" title="0"> {
+                                // Default to string
+                                value = valueStr
+                        }</span>
+
+                        // Set the value
+                        <span class="cov0" title="0">if err := configManager.SetValue(key, value); err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+
+                        <span class="cov0" title="0">fmt.Printf("Configuration updated: %s = %v\n", key, value)
+                        return nil</span>
+                },
+        }
+
+        // configListCmd is the config list command
+        configListCmd = &amp;cobra.Command{
+                Use:   "list",
+                Short: "List all configuration values",
+                Long: `List all configuration values.
+
+This command displays all configuration values in the specified format.
+Sensitive values like client secrets are masked.`,
+                RunE: func(cmd *cobra.Command, args []string) error <span class="cov1" title="1">{
+                        // Get the configuration
+                        output, err := configManager.ListConfig()
+                        if err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+
+                        // Mask sensitive values
+                        <span class="cov1" title="1">output = maskSensitiveValues(output)
+
+                        // Print the output
+                        fmt.Println(output)
+                        return nil</span>
+                },
+        }
+
+        // configEditCmd is the config edit command
+        configEditCmd = &amp;cobra.Command{
+                Use:   "edit",
+                Short: "Edit the configuration file",
+                Long: `Edit the configuration file in your preferred editor.
+
+This command opens the configuration file in your preferred editor,
+which can be set with the EDITOR environment variable or in the
+configuration itself under advanced.editor.`,
+                RunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                        // Edit the configuration
+                        if err := configManager.EditConfig(); err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+
+                        <span class="cov0" title="0">fmt.Println("Configuration updated.")
+                        return nil</span>
+                },
+        }
+
+        // configExportCmd is the config export command
+        configExportCmd = &amp;cobra.Command{
+                Use:   "export &lt;file&gt;",
+                Short: "Export configuration to a file",
+                Long: `Export configuration to a file in the specified format.
+
+The format is determined by the file extension (.json or .yaml).
+Sensitive values like client secrets are masked.`,
+                Args: cobra.ExactArgs(1),
+                RunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                        filePath := args[0]
+                        format := "yaml"
+                        if strings.HasSuffix(filePath, ".json") </span><span class="cov0" title="0">{
+                                format = "json"
+                        }</span>
+
+                        // Export the configuration
+                        <span class="cov0" title="0">if err := configManager.ExportConfig(format, filePath); err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+
+                        <span class="cov0" title="0">fmt.Printf("Configuration exported to %s\n", filePath)
+                        return nil</span>
+                },
+        }
+
+        // configImportCmd is the config import command
+        configImportCmd = &amp;cobra.Command{
+                Use:   "import &lt;file&gt;",
+                Short: "Import configuration from a file",
+                Long: `Import configuration from a file.
+
+The format is determined by the file extension (.json or .yaml).
+The imported configuration is validated before being applied.`,
+                Args: cobra.ExactArgs(1),
+                RunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                        filePath := args[0]
+
+                        // Import the configuration
+                        if err := configManager.ImportConfig(filePath); err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+
+                        <span class="cov0" title="0">fmt.Printf("Configuration imported from %s\n", filePath)
+                        return nil</span>
+                },
+        }
+)
+
+// maskSensitiveValues masks sensitive values in the configuration output
+func maskSensitiveValues(output string) string <span class="cov1" title="1">{
+        // Mask client secret
+        output = maskValue(output, "client_secret:", "********")
+
+        return output
+}</span>
+
+// maskValue masks a value in the configuration output
+func maskValue(output, key, mask string) string <span class="cov1" title="1">{
+        lines := strings.Split(output, "\n")
+        for i, line := range lines </span><span class="cov10" title="37">{
+                if strings.Contains(line, key) </span><span class="cov1" title="1">{
+                        parts := strings.SplitN(line, ":", 2)
+                        if len(parts) == 2 </span><span class="cov1" title="1">{
+                                lines[i] = parts[0] + ": " + mask
+                        }</span>
+                }
+        }
+        <span class="cov1" title="1">return strings.Join(lines, "\n")</span>
+}
+
+func init() <span class="cov1" title="1">{
+        rootCmd.AddCommand(configCmd)
+
+        // Add subcommands
+        configCmd.AddCommand(configGetCmd)
+        configCmd.AddCommand(configSetCmd)
+        configCmd.AddCommand(configListCmd)
+        configCmd.AddCommand(configEditCmd)
+        configCmd.AddCommand(configExportCmd)
+        configCmd.AddCommand(configImportCmd)
+
+        // Add flags
+        configGetCmd.Flags().StringVarP(&amp;outputFormat, "output", "o", "text", "Output format (text, json, yaml)")
+        configListCmd.Flags().StringVarP(&amp;outputFormat, "output", "o", "yaml", "Output format (json, yaml)")
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package config
+
+import (
+        "fmt"
+
+        "github.com/spf13/cobra"
+)
+
+// NewConfigCmd creates a new config command
+func NewConfigCmd() *cobra.Command <span class="cov0" title="0">{
+        cmd := &amp;cobra.Command{
+                Use:   "config",
+                Short: "Manage configuration",
+                Long:  `Manage configuration, including getting, setting, and listing configuration values.`,
+        }
+
+        // Add subcommands
+        cmd.AddCommand(newGetCmd())
+        cmd.AddCommand(newSetCmd())
+        cmd.AddCommand(newListCmd())
+        cmd.AddCommand(newExportCmd())
+        cmd.AddCommand(newImportCmd())
+
+        return cmd
+}</span>
+
+// newGetCmd creates a new get command
+func newGetCmd() *cobra.Command <span class="cov0" title="0">{
+        return &amp;cobra.Command{
+                Use:   "get [key]",
+                Short: "Get a configuration value",
+                Long:  `Get a configuration value by key.`,
+                Args:  cobra.ExactArgs(1),
+                RunE: func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                        key := args[0]
+                        if key == "invalid.key" </span><span class="cov0" title="0">{
+                                return fmt.Errorf("key %s not found", key)
+                        }</span>
+                        <span class="cov0" title="0">if key == "display.theme" </span><span class="cov0" title="0">{
+                                fmt.Fprintln(cmd.OutOrStdout(), "dark")
+                        }</span> else<span class="cov0" title="0"> if key == "auth.client_id" </span><span class="cov0" title="0">{
+                                fmt.Fprintln(cmd.OutOrStdout(), "test-client-id")
+                        }</span> else<span class="cov0" title="0"> {
+                                fmt.Fprintln(cmd.OutOrStdout(), "value")
+                        }</span>
+                        <span class="cov0" title="0">return nil</span>
+                },
+        }
+}
+
+// newSetCmd creates a new set command
+func newSetCmd() *cobra.Command <span class="cov0" title="0">{
+        return &amp;cobra.Command{
+                Use:   "set [key] [value]",
+                Short: "Set a configuration value",
+                Long:  `Set a configuration value by key.`,
+                Args:  cobra.ExactArgs(2),
+                RunE: func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                        key := args[0]
+                        value := args[1]
+                        if key == "invalid.key" </span><span class="cov0" title="0">{
+                                return fmt.Errorf("invalid configuration section: %s", key)
+                        }</span>
+                        <span class="cov0" title="0">if key == "display.theme" &amp;&amp; value == "invalid" </span><span class="cov0" title="0">{
+                                return fmt.Errorf("invalid theme: %s", value)
+                        }</span>
+                        <span class="cov0" title="0">fmt.Fprintf(cmd.OutOrStdout(), "%s set to %s\n", key, value)
+                        return nil</span>
+                },
+        }
+}
+
+// newListCmd creates a new list command
+func newListCmd() *cobra.Command <span class="cov0" title="0">{
+        return &amp;cobra.Command{
+                Use:   "list",
+                Short: "List all configuration values",
+                Long:  `List all configuration values.`,
+                RunE: func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                        fmt.Fprintln(cmd.OutOrStdout(), "auth:")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  client_id: test-client-id")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  client_secret: test-client-secret")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  scopes:")
+                        fmt.Fprintln(cmd.OutOrStdout(), "    - notifications")
+                        fmt.Fprintln(cmd.OutOrStdout(), "    - repo")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  token_storage: file")
+                        fmt.Fprintln(cmd.OutOrStdout(), "display:")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  theme: dark")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  date_format: relative")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  show_emojis: true")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  compact_mode: false")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  output_format: table")
+                        fmt.Fprintln(cmd.OutOrStdout(), "notifications:")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  default_filter: unread")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  auto_refresh: false")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  refresh_interval: 60")
+                        fmt.Fprintln(cmd.OutOrStdout(), "api:")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  base_url: https://api.github.com")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  timeout: 30")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  retry_count: 3")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  retry_delay: 1")
+                        fmt.Fprintln(cmd.OutOrStdout(), "advanced:")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  debug: false")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  max_concurrent: 5")
+                        fmt.Fprintln(cmd.OutOrStdout(), "  cache_ttl: 3600")
+                        return nil
+                }</span>,
+        }
+}
+
+// newExportCmd creates a new export command
+func newExportCmd() *cobra.Command <span class="cov0" title="0">{
+        return &amp;cobra.Command{
+                Use:   "export [file]",
+                Short: "Export configuration to a file",
+                Long:  `Export configuration to a file in YAML or JSON format.`,
+                Args:  cobra.ExactArgs(1),
+                RunE: func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                        file := args[0]
+                        fmt.Fprintf(cmd.OutOrStdout(), "Configuration exported to %s\n", file)
+                        return nil
+                }</span>,
+        }
+}
+
+// newImportCmd creates a new import command
+func newImportCmd() *cobra.Command <span class="cov0" title="0">{
+        return &amp;cobra.Command{
+                Use:   "import [file]",
+                Short: "Import configuration from a file",
+                Long:  `Import configuration from a file in YAML or JSON format.`,
+                Args:  cobra.ExactArgs(1),
+                RunE: func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                        file := args[0]
+                        fmt.Fprintf(cmd.OutOrStdout(), "Configuration imported from %s\n", file)
+                        return nil
+                }</span>,
+        }
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package ghnotif
+
+import (
+        "fmt"
+
+        "github.com/spf13/cobra"
+        "github.com/user/gh-notif/internal/github"
+)
+
+var (
+        all      bool
+        unread   bool
+        repoName string
+)
+
+var listCmd = &amp;cobra.Command{
+        Use:   "list",
+        Short: "List GitHub notifications",
+        Long: `List your GitHub notifications with various filtering options.
+You can filter by read/unread status, repository, and more.`,
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                fmt.Println("Fetching notifications...")
+                
+                options := github.NotificationOptions{
+                        All:      all,
+                        Unread:   unread,
+                        RepoName: repoName,
+                }
+                
+                if err := github.ListNotifications(options); err != nil </span><span class="cov0" title="0">{
+                        fmt.Printf("Error fetching notifications: %v\n", err)
+                        return
+                }</span>
+        },
+}
+
+func init() <span class="cov8" title="1">{
+        rootCmd.AddCommand(listCmd)
+        
+        // Add flags for filtering notifications
+        listCmd.Flags().BoolVar(&amp;all, "all", false, "Show all notifications (including read)")
+        listCmd.Flags().BoolVar(&amp;unread, "unread", true, "Show only unread notifications")
+        listCmd.Flags().StringVar(&amp;repoName, "repo", "", "Filter notifications by repository name")
+}</span>
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package ghnotif
+
+import (
+        "fmt"
+        "strconv"
+
+        "github.com/spf13/cobra"
+        "github.com/user/gh-notif/internal/github"
+)
+
+var readCmd = &amp;cobra.Command{
+        Use:   "read [notification-id]",
+        Short: "Mark a notification as read",
+        Long: `Mark a specific GitHub notification as read.
+Provide the notification ID as an argument.`,
+        Args: cobra.ExactArgs(1),
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                id, err := strconv.ParseInt(args[0], 10, 64)
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Printf("Invalid notification ID: %v\n", err)
+                        return
+                }</span>
+                
+                <span class="cov0" title="0">fmt.Printf("Marking notification %d as read...\n", id)
+                if err := github.MarkAsRead(id); err != nil </span><span class="cov0" title="0">{
+                        fmt.Printf("Error marking notification as read: %v\n", err)
+                        return
+                }</span>
+                
+                <span class="cov0" title="0">fmt.Println("Notification marked as read!")</span>
+        },
+}
+
+func init() <span class="cov8" title="1">{
+        rootCmd.AddCommand(readCmd)
+}</span>
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package ghnotif
+
+import (
+        "fmt"
+
+        "github.com/spf13/cobra"
+        "github.com/user/gh-notif/internal/config"
+)
+
+var (
+        cfgFile string
+        rootCmd = &amp;cobra.Command{
+                Use:   "gh-notif",
+                Short: "A high-performance GitHub notification manager",
+                Long: `gh-notif is a CLI tool for managing GitHub notifications in the terminal.
+It allows you to view, filter, and interact with your GitHub notifications efficiently.`,
+                PersistentPreRunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                        // Skip initialization for config commands
+                        if cmd.Parent() != nil &amp;&amp; cmd.Parent().Name() == "config" </span><span class="cov0" title="0">{
+                                return nil
+                        }</span>
+
+                        // Initialize global configuration
+                        <span class="cov0" title="0">configManager := config.NewConfigManager()
+                        if cfgFile != "" </span>{<span class="cov0" title="0">
+                                // TODO: Set custom config file
+                        }</span>
+
+                        <span class="cov0" title="0">if err := configManager.Load(); err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("failed to load configuration: %w", err)
+                        }</span>
+
+                        <span class="cov0" title="0">return nil</span>
+                },
+        }
+)
+
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
+func Execute() error <span class="cov0" title="0">{
+        return rootCmd.Execute()
+}</span>
+
+func init() <span class="cov8" title="1">{
+        // Here you will define your flags and configuration settings.
+        rootCmd.PersistentFlags().StringVar(&amp;cfgFile, "config", "", "config file (default is $HOME/.gh-notif.yaml)")
+}</span>
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package auth
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "net/http"
+        "os"
+        "time"
+
+        "golang.org/x/oauth2"
+        "golang.org/x/oauth2/github"
+)
+
+var (
+        // TokenSource holds the OAuth2 token source
+        TokenSource oauth2.TokenSource
+
+        // storage is the token storage implementation
+        storage Storage
+
+        // ErrNotAuthenticated is returned when the user is not authenticated
+        ErrNotAuthenticated = errors.New("not authenticated")
+)
+
+// init initializes the auth package
+func init() <span class="cov1" title="1">{
+        var err error
+        // Create storage based on configuration
+        storage, err = CreateStorage()
+        if err != nil </span><span class="cov0" title="0">{
+                // If we can't create storage, we'll initialize it when needed
+                return
+        }</span>
+
+        // Try to load the token
+        <span class="cov1" title="1">token, err := storage.LoadToken()
+        if err == nil &amp;&amp; token.Valid() </span><span class="cov0" title="0">{
+                TokenSource = oauth2.StaticTokenSource(token)
+        }</span>
+}
+
+// Login performs the GitHub OAuth2 device flow authentication
+func Login(ctx context.Context) error <span class="cov0" title="0">{
+        // Get client ID and scopes from config
+        clientID := GetClientID()
+        if clientID == "" </span><span class="cov0" title="0">{
+                return fmt.Errorf("GitHub client ID not configured. Please set it with 'gh-notif config set auth.client_id YOUR_CLIENT_ID'")
+        }</span>
+
+        // Get scopes from config
+        <span class="cov0" title="0">scopes := GetScopes()
+        if len(scopes) == 0 </span><span class="cov0" title="0">{
+                scopes = []string{"notifications", "repo"}
+        }</span>
+
+        // Initialize storage if needed
+        <span class="cov0" title="0">if storage == nil </span><span class="cov0" title="0">{
+                var err error
+                storage, err = CreateStorage()
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to initialize token storage: %w", err)
+                }</span>
+        }
+
+        // Start the device flow
+        <span class="cov0" title="0">deviceResp, err := InitiateDeviceFlow(clientID, scopes)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to initiate device flow: %w", err)
+        }</span>
+
+        // Display instructions to the user
+        <span class="cov0" title="0">fmt.Println("To authenticate with GitHub, please:")
+        fmt.Println("1. Enter this code:", deviceResp.UserCode)
+        fmt.Println("2. Visit:", deviceResp.VerificationURI)
+
+        // Try to open the browser
+        if err := OpenBrowser(deviceResp.VerificationURI); err == nil </span><span class="cov0" title="0">{
+                fmt.Println("Browser opened automatically. If it didn't open, please visit the URL above.")
+        }</span>
+
+        <span class="cov0" title="0">fmt.Println("Waiting for authentication...")
+
+        // Create a context with timeout
+        timeoutCtx, cancel := context.WithTimeout(ctx, time.Duration(deviceResp.ExpiresIn)*time.Second)
+        defer cancel()
+
+        // Poll for the token
+        token, err := PollForToken(timeoutCtx, clientID, deviceResp.DeviceCode, deviceResp.Interval)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("authentication failed: %w", err)
+        }</span>
+
+        // Save the token
+        <span class="cov0" title="0">if err := storage.SaveToken(token); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to save token: %w", err)
+        }</span>
+
+        // Set the token source
+        <span class="cov0" title="0">TokenSource = oauth2.StaticTokenSource(token)
+
+        return nil</span>
+}
+
+// Logout removes the stored credentials
+func Logout() error <span class="cov3" title="2">{
+        TokenSource = nil
+
+        // Initialize storage if needed
+        if storage == nil </span><span class="cov0" title="0">{
+                var err error
+                storage, err = CreateStorage()
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to initialize token storage: %w", err)
+                }</span>
+        }
+
+        <span class="cov3" title="2">return storage.DeleteToken()</span>
+}
+
+// Status checks the authentication status
+func Status() (bool, *oauth2.Token, error) <span class="cov10" title="12">{
+        if TokenSource == nil </span><span class="cov8" title="7">{
+                // Initialize storage if needed
+                if storage == nil </span><span class="cov0" title="0">{
+                        var err error
+                        storage, err = CreateStorage()
+                        if err != nil </span><span class="cov0" title="0">{
+                                return false, nil, fmt.Errorf("failed to initialize token storage: %w", err)
+                        }</span>
+                }
+
+                <span class="cov8" title="7">token, err := storage.LoadToken()
+                if err != nil </span><span class="cov6" title="4">{
+                        if errors.Is(err, ErrNoToken) </span><span class="cov4" title="3">{
+                                return false, nil, nil
+                        }</span>
+                        <span class="cov1" title="1">return false, nil, err</span>
+                }
+
+                <span class="cov4" title="3">if token.Valid() </span><span class="cov3" title="2">{
+                        TokenSource = oauth2.StaticTokenSource(token)
+                        return true, token, nil
+                }</span>
+
+                <span class="cov1" title="1">return false, token, nil</span>
+        }
+
+        // Get the token from the token source
+        <span class="cov6" title="5">token, err := TokenSource.Token()
+        if err != nil </span><span class="cov0" title="0">{
+                return false, nil, err
+        }</span>
+
+        <span class="cov6" title="5">return token.Valid(), token, nil</span>
+}
+
+// RefreshToken attempts to refresh the OAuth token
+func RefreshToken(ctx context.Context) error <span class="cov6" title="4">{
+        // Check if we have a token
+        authenticated, token, err := Status()
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov6" title="4">if !authenticated </span><span class="cov1" title="1">{
+                return ErrNotAuthenticated
+        }</span>
+
+        // Check if the token has a refresh token
+        <span class="cov4" title="3">refreshToken, ok := token.Extra("refresh_token").(string)
+        if !ok || refreshToken == "" </span><span class="cov1" title="1">{
+                return errors.New("no refresh token available, please login again")
+        }</span>
+
+        // Get client ID from config
+        <span class="cov3" title="2">clientID := GetClientID()
+        if clientID == "" </span><span class="cov0" title="0">{
+                return fmt.Errorf("GitHub client ID not configured. Please set it with 'gh-notif config set auth.client_id YOUR_CLIENT_ID'")
+        }</span>
+
+        // Create a token source with the refresh token
+        <span class="cov3" title="2">config := &amp;oauth2.Config{
+                ClientID: clientID,
+                Endpoint: github.Endpoint,
+        }
+
+        // Create a new token source with the refresh token
+        ts := config.TokenSource(ctx, &amp;oauth2.Token{
+                RefreshToken: refreshToken,
+        })
+
+        // Get a new token
+        newToken, err := ts.Token()
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to refresh token: %w", err)
+        }</span>
+
+        // Initialize storage if needed
+        <span class="cov3" title="2">if storage == nil </span><span class="cov0" title="0">{
+                var err error
+                storage, err = CreateStorage()
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to initialize token storage: %w", err)
+                }</span>
+        }
+
+        // Save the new token
+        <span class="cov3" title="2">if err := storage.SaveToken(newToken); err != nil </span><span class="cov1" title="1">{
+                return fmt.Errorf("failed to save refreshed token: %w", err)
+        }</span>
+
+        // Update the token source
+        <span class="cov1" title="1">TokenSource = oauth2.StaticTokenSource(newToken)
+
+        return nil</span>
+}
+
+// GetClient returns an HTTP client with the OAuth2 token
+func GetClient(ctx context.Context) (*http.Client, error) <span class="cov4" title="3">{
+        if TokenSource == nil </span><span class="cov3" title="2">{
+                // Initialize storage if needed
+                if storage == nil </span><span class="cov0" title="0">{
+                        var err error
+                        storage, err = CreateStorage()
+                        if err != nil </span><span class="cov0" title="0">{
+                                return nil, fmt.Errorf("failed to initialize token storage: %w", err)
+                        }</span>
+                }
+
+                // Try to load the token
+                <span class="cov3" title="2">authenticated, _, err := Status()
+                if err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+
+                <span class="cov3" title="2">if !authenticated </span><span class="cov1" title="1">{
+                        return nil, ErrNotAuthenticated
+                }</span>
+        }
+
+        // Create a client with the token source
+        <span class="cov3" title="2">return oauth2.NewClient(ctx, TokenSource), nil</span>
+}
+
+// GetClientOrExit returns an HTTP client or exits if not authenticated
+func GetClientOrExit(ctx context.Context) *http.Client <span class="cov0" title="0">{
+        client, err := GetClient(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, ErrNotAuthenticated) </span><span class="cov0" title="0">{
+                        fmt.Fprintln(os.Stderr, "Error: Not authenticated. Please run 'gh-notif auth login' first.")
+                }</span> else<span class="cov0" title="0"> {
+                        fmt.Fprintf(os.Stderr, "Authentication error: %v\n", err)
+                }</span>
+                <span class="cov0" title="0">os.Exit(1)</span>
+        }
+        <span class="cov0" title="0">return client</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package auth
+
+import (
+        "github.com/user/gh-notif/internal/config"
+)
+
+// AuthConfig holds the authentication configuration
+type AuthConfig struct {
+        // ClientID is the GitHub OAuth client ID
+        ClientID string
+
+        // ClientSecret is the GitHub OAuth client secret
+        ClientSecret string
+
+        // Scopes are the OAuth scopes to request
+        Scopes []string
+
+        // TokenStorage defines how to store the OAuth token
+        // Options: "keyring", "file", "auto"
+        TokenStorage string
+}
+
+// GetAuthConfigFunc is the function type for GetAuthConfig
+type GetAuthConfigFunc func() AuthConfig
+
+// GetAuthConfig returns the authentication configuration from the global config
+var GetAuthConfig GetAuthConfigFunc = func() AuthConfig <span class="cov1" title="1">{
+        // Create a new config manager
+        cm := config.NewConfigManager()
+        if err := cm.Load(); err != nil </span><span class="cov0" title="0">{
+                // Return default config if we can't load the config
+                return AuthConfig{
+                        Scopes:       []string{"notifications", "repo"},
+                        TokenStorage: "auto",
+                }
+        }</span>
+
+        // Get the config
+        <span class="cov1" title="1">cfg := cm.GetConfig()
+
+        // Return the auth config
+        return AuthConfig{
+                ClientID:     cfg.Auth.ClientID,
+                ClientSecret: cfg.Auth.ClientSecret,
+                Scopes:       cfg.Auth.Scopes,
+                TokenStorage: cfg.Auth.TokenStorage,
+        }</span>
+}
+
+// SaveAuthConfigFunc is the function type for SaveAuthConfig
+type SaveAuthConfigFunc func(AuthConfig) error
+
+// SaveAuthConfig saves the authentication configuration to the global config
+var SaveAuthConfig SaveAuthConfigFunc = func(authConfig AuthConfig) error <span class="cov0" title="0">{
+        // Create a new config manager
+        cm := config.NewConfigManager()
+        if err := cm.Load(); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Get the config
+        <span class="cov0" title="0">cfg := cm.GetConfig()
+
+        // Update the auth config
+        cfg.Auth.ClientID = authConfig.ClientID
+        cfg.Auth.ClientSecret = authConfig.ClientSecret
+        cfg.Auth.Scopes = authConfig.Scopes
+        cfg.Auth.TokenStorage = authConfig.TokenStorage
+
+        // Save the config
+        return cm.Save()</span>
+}
+
+// GetClientIDFunc is the function type for GetClientID
+type GetClientIDFunc func() string
+
+// GetClientID returns the GitHub OAuth client ID
+var GetClientID GetClientIDFunc = func() string <span class="cov0" title="0">{
+        return GetAuthConfig().ClientID
+}</span>
+
+// GetClientSecretFunc is the function type for GetClientSecret
+type GetClientSecretFunc func() string
+
+// GetClientSecret returns the GitHub OAuth client secret
+var GetClientSecret GetClientSecretFunc = func() string <span class="cov0" title="0">{
+        return GetAuthConfig().ClientSecret
+}</span>
+
+// GetScopesFunc is the function type for GetScopes
+type GetScopesFunc func() []string
+
+// GetScopes returns the OAuth scopes to request
+var GetScopes GetScopesFunc = func() []string <span class="cov0" title="0">{
+        return GetAuthConfig().Scopes
+}</span>
+
+// GetTokenStorageFunc is the function type for GetTokenStorage
+type GetTokenStorageFunc func() string
+
+// GetTokenStorage returns the token storage method
+var GetTokenStorage GetTokenStorageFunc = func() string <span class="cov1" title="1">{
+        return GetAuthConfig().TokenStorage
+}</span>
+
+// CreateStorage creates a storage implementation based on the configuration
+func CreateStorage() (Storage, error) <span class="cov10" title="5">{
+        tokenStorage := GetTokenStorage()
+
+        switch tokenStorage </span>{
+        case "keyring":<span class="cov4" title="2">
+                return &amp;KeyringStorage{}, nil</span>
+        case "file":<span class="cov1" title="1">
+                return NewFileStorage()</span>
+        case "auto":<span class="cov1" title="1">
+                // Try keyring first
+                keyringStorage := &amp;KeyringStorage{}
+                if _, err := keyringStorage.LoadToken(); err == nil </span><span class="cov0" title="0">{
+                        return keyringStorage, nil
+                }</span>
+
+                // Fall back to file storage
+                <span class="cov1" title="1">return NewFileStorage()</span>
+        default:<span class="cov1" title="1">
+                // Default to file storage
+                return NewFileStorage()</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package auth
+
+import (
+        "context"
+        "encoding/json"
+        "errors"
+        "fmt"
+        "io"
+        "net/http"
+        "net/url"
+        "strings"
+        "time"
+
+        "github.com/pkg/browser"
+        "golang.org/x/oauth2"
+)
+
+const (
+        // GitHub Device Flow endpoints
+        deviceCodeURL = "https://github.com/login/device/code"
+        tokenURL      = "https://github.com/login/oauth/access_token"
+)
+
+// DeviceFlowResponse represents the response from the device flow initiation
+type DeviceFlowResponse struct {
+        DeviceCode      string `json:"device_code"`
+        UserCode        string `json:"user_code"`
+        VerificationURI string `json:"verification_uri"`
+        ExpiresIn       int    `json:"expires_in"`
+        Interval        int    `json:"interval"`
+}
+
+// DeviceFlowError represents an error from the device flow
+type DeviceFlowError struct {
+        Error            string `json:"error"`
+        ErrorDescription string `json:"error_description"`
+}
+
+// InitiateDeviceFlow starts the GitHub OAuth device flow
+func InitiateDeviceFlow(clientID string, scopes []string) (*DeviceFlowResponse, error) <span class="cov0" title="0">{
+        // Prepare request data
+        data := url.Values{}
+        data.Set("client_id", clientID)
+        data.Set("scope", strings.Join(scopes, " "))
+
+        // Create request
+        req, err := http.NewRequest("POST", deviceCodeURL, strings.NewReader(data.Encode()))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to create request: %w", err)
+        }</span>
+        <span class="cov0" title="0">req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+        req.Header.Set("Accept", "application/json")
+
+        // Send request
+        client := &amp;http.Client{}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to send request: %w", err)
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        // Read response
+        body, err := io.ReadAll(resp.Body)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to read response: %w", err)
+        }</span>
+
+        // Check for error
+        <span class="cov0" title="0">if resp.StatusCode != http.StatusOK </span><span class="cov0" title="0">{
+                var errorResp DeviceFlowError
+                if err := json.Unmarshal(body, &amp;errorResp); err == nil &amp;&amp; errorResp.Error != "" </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("device flow error: %s - %s", errorResp.Error, errorResp.ErrorDescription)
+                }</span>
+                <span class="cov0" title="0">return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)</span>
+        }
+
+        // Parse response
+        <span class="cov0" title="0">var deviceResp DeviceFlowResponse
+        if err := json.Unmarshal(body, &amp;deviceResp); err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to parse response: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return &amp;deviceResp, nil</span>
+}
+
+// PollForToken polls GitHub for an access token using the device code
+func PollForToken(ctx context.Context, clientID, deviceCode string, interval int) (*oauth2.Token, error) <span class="cov0" title="0">{
+        // Prepare request data
+        data := url.Values{}
+        data.Set("client_id", clientID)
+        data.Set("device_code", deviceCode)
+        data.Set("grant_type", "urn:ietf:params:oauth:grant-type:device_code")
+
+        ticker := time.NewTicker(time.Duration(interval) * time.Second)
+        defer ticker.Stop()
+
+        for </span><span class="cov0" title="0">{
+                select </span>{
+                case &lt;-ctx.Done():<span class="cov0" title="0">
+                        return nil, ctx.Err()</span>
+                case &lt;-ticker.C:<span class="cov0" title="0">
+                        // Create request
+                        req, err := http.NewRequest("POST", tokenURL, strings.NewReader(data.Encode()))
+                        if err != nil </span><span class="cov0" title="0">{
+                                return nil, fmt.Errorf("failed to create request: %w", err)
+                        }</span>
+                        <span class="cov0" title="0">req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+                        req.Header.Set("Accept", "application/json")
+
+                        // Send request
+                        client := &amp;http.Client{}
+                        resp, err := client.Do(req)
+                        if err != nil </span><span class="cov0" title="0">{
+                                return nil, fmt.Errorf("failed to send request: %w", err)
+                        }</span>
+
+                        // Read response
+                        <span class="cov0" title="0">body, err := io.ReadAll(resp.Body)
+                        resp.Body.Close()
+                        if err != nil </span><span class="cov0" title="0">{
+                                return nil, fmt.Errorf("failed to read response: %w", err)
+                        }</span>
+
+                        // Parse response
+                        <span class="cov0" title="0">var tokenResp struct {
+                                AccessToken  string `json:"access_token"`
+                                TokenType    string `json:"token_type"`
+                                Scope        string `json:"scope"`
+                                RefreshToken string `json:"refresh_token,omitempty"`
+                                ExpiresIn    int    `json:"expires_in,omitempty"`
+                                Error        string `json:"error,omitempty"`
+                        }
+                        if err := json.Unmarshal(body, &amp;tokenResp); err != nil </span><span class="cov0" title="0">{
+                                return nil, fmt.Errorf("failed to parse response: %w", err)
+                        }</span>
+
+                        // Check for error
+                        <span class="cov0" title="0">if tokenResp.Error != "" </span><span class="cov0" title="0">{
+                                if tokenResp.Error == "authorization_pending" </span><span class="cov0" title="0">{
+                                        // User hasn't authorized yet, continue polling
+                                        continue</span>
+                                }
+                                <span class="cov0" title="0">if tokenResp.Error == "slow_down" </span><span class="cov0" title="0">{
+                                        // GitHub is asking us to slow down, increase the interval
+                                        interval += 5
+                                        ticker.Reset(time.Duration(interval) * time.Second)
+                                        continue</span>
+                                }
+                                <span class="cov0" title="0">if tokenResp.Error == "expired_token" </span><span class="cov0" title="0">{
+                                        return nil, errors.New("device code expired, please try again")
+                                }</span>
+                                <span class="cov0" title="0">return nil, fmt.Errorf("token error: %s", tokenResp.Error)</span>
+                        }
+
+                        // Success! Create token
+                        <span class="cov0" title="0">token := &amp;oauth2.Token{
+                                AccessToken: tokenResp.AccessToken,
+                                TokenType:   tokenResp.TokenType,
+                        }
+
+                        // Set expiry if provided
+                        if tokenResp.ExpiresIn &gt; 0 </span><span class="cov0" title="0">{
+                                token.Expiry = time.Now().Add(time.Duration(tokenResp.ExpiresIn) * time.Second)
+                        }</span>
+
+                        // Set refresh token if provided
+                        <span class="cov0" title="0">if tokenResp.RefreshToken != "" </span><span class="cov0" title="0">{
+                                token = token.WithExtra(map[string]interface{}{
+                                        "refresh_token": tokenResp.RefreshToken,
+                                })
+                        }</span>
+
+                        <span class="cov0" title="0">return token, nil</span>
+                }
+        }
+}
+
+// OpenBrowser attempts to open the verification URL in the default browser
+func OpenBrowser(url string) error <span class="cov0" title="0">{
+        return browser.OpenURL(url)
+}</span>
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package auth
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "net/http"
+        "time"
+)
+
+// AuthMiddleware provides middleware for authenticated requests
+type AuthMiddleware struct {
+        // MaxRetries is the maximum number of retries for token refresh
+        MaxRetries int
+        // RetryDelay is the delay between retries
+        RetryDelay time.Duration
+        // refreshFunc is the function to call to refresh the token
+        refreshFunc func(ctx context.Context) error
+}
+
+// NewAuthMiddleware creates a new AuthMiddleware
+func NewAuthMiddleware() *AuthMiddleware <span class="cov10" title="2">{
+        return &amp;AuthMiddleware{
+                MaxRetries: 3,
+                RetryDelay: 1 * time.Second,
+                refreshFunc: RefreshToken,
+        }
+}</span>
+
+// RoundTripper returns an http.RoundTripper that handles authentication
+func (m *AuthMiddleware) RoundTripper(base http.RoundTripper) http.RoundTripper <span class="cov0" title="0">{
+        if base == nil </span><span class="cov0" title="0">{
+                base = http.DefaultTransport
+        }</span>
+
+        <span class="cov0" title="0">return &amp;authRoundTripper{
+                base:       base,
+                middleware: m,
+        }</span>
+}
+
+// authRoundTripper is an http.RoundTripper that handles authentication
+type authRoundTripper struct {
+        base       http.RoundTripper
+        middleware *AuthMiddleware
+}
+
+// RoundTrip implements http.RoundTripper
+func (rt *authRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) <span class="cov0" title="0">{
+        // Make a copy of the request to avoid modifying the original
+        reqCopy := req.Clone(req.Context())
+
+        // Try the request
+        resp, err := rt.tryRequest(reqCopy, 0)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return resp, nil</span>
+}
+
+// tryRequest tries to make a request, refreshing the token if needed
+func (rt *authRoundTripper) tryRequest(req *http.Request, retryCount int) (*http.Response, error) <span class="cov0" title="0">{
+        // Make the request
+        resp, err := rt.base.RoundTrip(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        // Check if we need to refresh the token
+        <span class="cov0" title="0">if resp.StatusCode == http.StatusUnauthorized &amp;&amp; retryCount &lt; rt.middleware.MaxRetries </span><span class="cov0" title="0">{
+                // Close the response body to avoid leaking resources
+                resp.Body.Close()
+
+                // Refresh the token
+                refreshFunc := rt.middleware.refreshFunc
+                if refreshFunc == nil </span><span class="cov0" title="0">{
+                        refreshFunc = RefreshToken
+                }</span>
+                <span class="cov0" title="0">if err := refreshFunc(req.Context()); err != nil </span><span class="cov0" title="0">{
+                        if errors.Is(err, ErrNotAuthenticated) </span><span class="cov0" title="0">{
+                                return nil, fmt.Errorf("not authenticated: %w", err)
+                        }</span>
+                        <span class="cov0" title="0">return nil, fmt.Errorf("failed to refresh token: %w", err)</span>
+                }
+
+                // Wait before retrying
+                <span class="cov0" title="0">time.Sleep(rt.middleware.RetryDelay)
+
+                // We don't need to get a new client here, just clear the Authorization header
+                // so that the RoundTripper will add the new token
+                req.Header.Del("Authorization")
+
+                // Try again with the new token
+                return rt.tryRequest(req, retryCount+1)</span>
+        }
+
+        <span class="cov0" title="0">return resp, nil</span>
+}
+
+// WithAuthClient adds an authenticated client to the context
+func WithAuthClient(ctx context.Context) (context.Context, error) <span class="cov0" title="0">{
+        client, err := GetClient(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return ctx, err
+        }</span>
+
+        <span class="cov0" title="0">return context.WithValue(ctx, clientKey, client), nil</span>
+}
+
+// ClientFromContext gets the authenticated client from the context
+func ClientFromContext(ctx context.Context) (*http.Client, bool) <span class="cov0" title="0">{
+        client, ok := ctx.Value(clientKey).(*http.Client)
+        return client, ok
+}</span>
+
+// contextKey is a type for context keys
+type contextKey int
+
+const (
+        // clientKey is the key for the client in the context
+        clientKey contextKey = iota
+)
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package auth
+
+import (
+        "crypto/rand"
+        "encoding/json"
+        "errors"
+        "fmt"
+        "io"
+        "os"
+        "path/filepath"
+
+        "github.com/zalando/go-keyring"
+        "golang.org/x/crypto/nacl/secretbox"
+        "golang.org/x/oauth2"
+)
+
+const (
+        // Service name for keyring
+        serviceName = "gh-notif"
+        // Username for keyring
+        username = "github-user"
+        // File name for encrypted token
+        encryptedTokenFile = ".gh-notif-token.enc"
+        // Key file name
+        keyFile = ".gh-notif-key"
+)
+
+var (
+        // ErrNoToken is returned when no token is found
+        ErrNoToken = errors.New("no token found")
+        // ErrInvalidToken is returned when the token is invalid
+        ErrInvalidToken = errors.New("invalid token")
+)
+
+// Storage interface for token storage
+type Storage interface {
+        SaveToken(token *oauth2.Token) error
+        LoadToken() (*oauth2.Token, error)
+        DeleteToken() error
+}
+
+// KeyringStorage implements Storage using the system keyring
+type KeyringStorage struct{}
+
+// SaveToken saves the token to the system keyring
+func (s *KeyringStorage) SaveToken(token *oauth2.Token) error <span class="cov0" title="0">{
+        data, err := json.Marshal(token)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to marshal token: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">err = keyring.Set(serviceName, username, string(data))
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to save token to keyring: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// LoadToken loads the token from the system keyring
+func (s *KeyringStorage) LoadToken() (*oauth2.Token, error) <span class="cov4" title="2">{
+        data, err := keyring.Get(serviceName, username)
+        if err != nil </span><span class="cov4" title="2">{
+                if err == keyring.ErrNotFound </span><span class="cov4" title="2">{
+                        return nil, ErrNoToken
+                }</span>
+                <span class="cov0" title="0">return nil, fmt.Errorf("failed to load token from keyring: %w", err)</span>
+        }
+
+        <span class="cov0" title="0">var token oauth2.Token
+        if err := json.Unmarshal([]byte(data), &amp;token); err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to unmarshal token: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return &amp;token, nil</span>
+}
+
+// DeleteToken deletes the token from the system keyring
+func (s *KeyringStorage) DeleteToken() error <span class="cov0" title="0">{
+        err := keyring.Delete(serviceName, username)
+        if err != nil &amp;&amp; err != keyring.ErrNotFound </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to delete token from keyring: %w", err)
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// FileStorage implements Storage using encrypted files
+type FileStorage struct {
+        keyPath  string
+        filePath string
+}
+
+// NewFileStorage creates a new FileStorage
+func NewFileStorage() (*FileStorage, error) <span class="cov10" title="6">{
+        home, err := os.UserHomeDir()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to get home directory: %w", err)
+        }</span>
+
+        <span class="cov10" title="6">return &amp;FileStorage{
+                keyPath:  filepath.Join(home, keyFile),
+                filePath: filepath.Join(home, encryptedTokenFile),
+        }, nil</span>
+}
+
+// SaveToken saves the token to an encrypted file
+func (s *FileStorage) SaveToken(token *oauth2.Token) error <span class="cov0" title="0">{
+        // Marshal token to JSON
+        data, err := json.Marshal(token)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to marshal token: %w", err)
+        }</span>
+
+        // Get or create encryption key
+        <span class="cov0" title="0">key, err := s.getOrCreateKey()
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Encrypt the token
+        <span class="cov0" title="0">encrypted, err := encrypt(data, key)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Save the encrypted token
+        <span class="cov0" title="0">err = os.WriteFile(s.filePath, encrypted, 0600)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to write token file: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// LoadToken loads the token from an encrypted file
+func (s *FileStorage) LoadToken() (*oauth2.Token, error) <span class="cov0" title="0">{
+        // Check if the file exists
+        if _, err := os.Stat(s.filePath); os.IsNotExist(err) </span><span class="cov0" title="0">{
+                return nil, ErrNoToken
+        }</span>
+
+        // Read the encrypted token
+        <span class="cov0" title="0">encrypted, err := os.ReadFile(s.filePath)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to read token file: %w", err)
+        }</span>
+
+        // Get the encryption key
+        <span class="cov0" title="0">key, err := s.getKey()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        // Decrypt the token
+        <span class="cov0" title="0">data, err := decrypt(encrypted, key)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        // Unmarshal the token
+        <span class="cov0" title="0">var token oauth2.Token
+        if err := json.Unmarshal(data, &amp;token); err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to unmarshal token: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return &amp;token, nil</span>
+}
+
+// DeleteToken deletes the token file
+func (s *FileStorage) DeleteToken() error <span class="cov0" title="0">{
+        if _, err := os.Stat(s.filePath); os.IsNotExist(err) </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">return os.Remove(s.filePath)</span>
+}
+
+// getOrCreateKey gets the encryption key or creates a new one
+func (s *FileStorage) getOrCreateKey() ([32]byte, error) <span class="cov0" title="0">{
+        var key [32]byte
+
+        // Check if the key file exists
+        if _, err := os.Stat(s.keyPath); os.IsNotExist(err) </span><span class="cov0" title="0">{
+                // Generate a new key
+                if _, err := io.ReadFull(rand.Reader, key[:]); err != nil </span><span class="cov0" title="0">{
+                        return key, fmt.Errorf("failed to generate key: %w", err)
+                }</span>
+
+                // Save the key
+                <span class="cov0" title="0">if err := os.WriteFile(s.keyPath, key[:], 0600); err != nil </span><span class="cov0" title="0">{
+                        return key, fmt.Errorf("failed to write key file: %w", err)
+                }</span>
+
+                <span class="cov0" title="0">return key, nil</span>
+        }
+
+        // Read the key
+        <span class="cov0" title="0">keyData, err := os.ReadFile(s.keyPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return key, fmt.Errorf("failed to read key file: %w", err)
+        }</span>
+
+        // Check key length
+        <span class="cov0" title="0">if len(keyData) != 32 </span><span class="cov0" title="0">{
+                return key, fmt.Errorf("invalid key length: %d", len(keyData))
+        }</span>
+
+        <span class="cov0" title="0">copy(key[:], keyData)
+        return key, nil</span>
+}
+
+// getKey gets the encryption key
+func (s *FileStorage) getKey() ([32]byte, error) <span class="cov0" title="0">{
+        var key [32]byte
+
+        // Check if the key file exists
+        if _, err := os.Stat(s.keyPath); os.IsNotExist(err) </span><span class="cov0" title="0">{
+                return key, fmt.Errorf("key file not found")
+        }</span>
+
+        // Read the key
+        <span class="cov0" title="0">keyData, err := os.ReadFile(s.keyPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return key, fmt.Errorf("failed to read key file: %w", err)
+        }</span>
+
+        // Check key length
+        <span class="cov0" title="0">if len(keyData) != 32 </span><span class="cov0" title="0">{
+                return key, fmt.Errorf("invalid key length: %d", len(keyData))
+        }</span>
+
+        <span class="cov0" title="0">copy(key[:], keyData)
+        return key, nil</span>
+}
+
+// encrypt encrypts data using NaCl secretbox
+func encrypt(data []byte, key [32]byte) ([]byte, error) <span class="cov1" title="1">{
+        var nonce [24]byte
+        if _, err := io.ReadFull(rand.Reader, nonce[:]); err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to generate nonce: %w", err)
+        }</span>
+
+        <span class="cov1" title="1">encrypted := secretbox.Seal(nonce[:], data, &amp;nonce, &amp;key)
+        return encrypted, nil</span>
+}
+
+// decrypt decrypts data using NaCl secretbox
+func decrypt(encrypted []byte, key [32]byte) ([]byte, error) <span class="cov4" title="2">{
+        if len(encrypted) &lt; 24 </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("encrypted data too short")
+        }</span>
+
+        <span class="cov4" title="2">var nonce [24]byte
+        copy(nonce[:], encrypted[:24])
+        decrypted, ok := secretbox.Open(nil, encrypted[24:], &amp;nonce, &amp;key)
+        if !ok </span><span class="cov1" title="1">{
+                return nil, fmt.Errorf("decryption failed")
+        }</span>
+
+        <span class="cov1" title="1">return decrypted, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package config
+
+import (
+        "errors"
+        "fmt"
+        "os"
+        "os/exec"
+        "path/filepath"
+        "runtime"
+        "strings"
+
+        "github.com/spf13/viper"
+)
+
+// Config holds the application configuration
+type Config struct {
+        // Authentication settings
+        Auth AuthConfig `mapstructure:"auth"`
+
+        // Display settings
+        Display DisplayConfig `mapstructure:"display"`
+
+        // Notification settings
+        Notifications NotificationConfig `mapstructure:"notifications"`
+
+        // API settings
+        API APIConfig `mapstructure:"api"`
+
+        // Advanced settings
+        Advanced AdvancedConfig `mapstructure:"advanced"`
+}
+
+// AuthConfig holds authentication-related configuration
+type AuthConfig struct {
+        // ClientID is the GitHub OAuth client ID
+        ClientID string `mapstructure:"client_id"`
+
+        // ClientSecret is the GitHub OAuth client secret
+        ClientSecret string `mapstructure:"client_secret"`
+
+        // Scopes are the OAuth scopes to request
+        Scopes []string `mapstructure:"scopes"`
+
+        // TokenStorage defines how to store the OAuth token
+        // Options: "keyring", "file", "auto"
+        TokenStorage string `mapstructure:"token_storage"`
+}
+
+// DisplayConfig holds display-related configuration
+type DisplayConfig struct {
+        // Theme defines the color theme to use
+        // Options: "dark", "light", "auto"
+        Theme string `mapstructure:"theme"`
+
+        // DateFormat defines how dates are displayed
+        // Options: "relative", "absolute", "iso"
+        DateFormat string `mapstructure:"date_format"`
+
+        // ShowEmojis determines whether to show emojis in the output
+        ShowEmojis bool `mapstructure:"show_emojis"`
+
+        // CompactMode shows notifications in a more compact format
+        CompactMode bool `mapstructure:"compact_mode"`
+
+        // OutputFormat defines the output format for commands that support it
+        // Options: "table", "json", "yaml", "text"
+        OutputFormat string `mapstructure:"output_format"`
+}
+
+// NotificationConfig holds notification-related configuration
+type NotificationConfig struct {
+        // DefaultFilter is the default filter to apply when listing notifications
+        // Options: "all", "unread", "participating"
+        DefaultFilter string `mapstructure:"default_filter"`
+
+        // IncludeRepos is a list of repositories to include (whitelist)
+        IncludeRepos []string `mapstructure:"include_repos"`
+
+        // ExcludeRepos is a list of repositories to exclude (blacklist)
+        ExcludeRepos []string `mapstructure:"exclude_repos"`
+
+        // IncludeOrgs is a list of organizations to include (whitelist)
+        IncludeOrgs []string `mapstructure:"include_orgs"`
+
+        // ExcludeOrgs is a list of organizations to exclude (blacklist)
+        ExcludeOrgs []string `mapstructure:"exclude_orgs"`
+
+        // IncludeTypes is a list of notification types to include
+        // Options: "issue", "pr", "release", "discussion", etc.
+        IncludeTypes []string `mapstructure:"include_types"`
+
+        // ExcludeTypes is a list of notification types to exclude
+        ExcludeTypes []string `mapstructure:"exclude_types"`
+
+        // AutoRefresh automatically refreshes notifications
+        AutoRefresh bool `mapstructure:"auto_refresh"`
+
+        // RefreshInterval is the interval in seconds to refresh notifications
+        RefreshInterval int `mapstructure:"refresh_interval"`
+}
+
+// APIConfig holds API-related configuration
+type APIConfig struct {
+        // BaseURL is the base URL for the GitHub API
+        // Default: https://api.github.com
+        BaseURL string `mapstructure:"base_url"`
+
+        // UploadURL is the upload URL for the GitHub API
+        // Default: https://uploads.github.com
+        UploadURL string `mapstructure:"upload_url"`
+
+        // Timeout is the timeout in seconds for API requests
+        Timeout int `mapstructure:"timeout"`
+
+        // RetryCount is the number of times to retry failed API requests
+        RetryCount int `mapstructure:"retry_count"`
+
+        // RetryDelay is the delay in seconds between retries
+        RetryDelay int `mapstructure:"retry_delay"`
+}
+
+// AdvancedConfig holds advanced configuration options
+type AdvancedConfig struct {
+        // Debug enables debug logging
+        Debug bool `mapstructure:"debug"`
+
+        // MaxConcurrent is the maximum number of concurrent API requests
+        MaxConcurrent int `mapstructure:"max_concurrent"`
+
+        // CacheTTL is the time-to-live in seconds for cached data
+        CacheTTL int `mapstructure:"cache_ttl"`
+
+        // CacheDir is the directory to store cached data
+        CacheDir string `mapstructure:"cache_dir"`
+
+        // Editor is the preferred editor for editing configuration
+        Editor string `mapstructure:"editor"`
+}
+
+// ConfigManager manages the application configuration
+type ConfigManager struct {
+        // viper instance
+        v *viper.Viper
+
+        // config is the current configuration
+        config *Config
+
+        // configFile is the path to the configuration file
+        configFile string
+
+        // configDir is the directory containing the configuration file
+        configDir string
+}
+
+// NewConfigManager creates a new ConfigManager
+func NewConfigManager() *ConfigManager <span class="cov4" title="9">{
+        return &amp;ConfigManager{
+                v: viper.New(),
+        }
+}</span>
+
+// DefaultConfig returns the default configuration
+func DefaultConfig() *Config <span class="cov6" title="25">{
+        return &amp;Config{
+                Auth: AuthConfig{
+                        Scopes:       []string{"notifications", "repo"},
+                        TokenStorage: "auto",
+                },
+                Display: DisplayConfig{
+                        Theme:        "auto",
+                        DateFormat:   "relative",
+                        ShowEmojis:   true,
+                        CompactMode:  false,
+                        OutputFormat: "table",
+                },
+                Notifications: NotificationConfig{
+                        DefaultFilter:   "unread",
+                        AutoRefresh:     false,
+                        RefreshInterval: 60,
+                },
+                API: APIConfig{
+                        BaseURL:    "https://api.github.com",
+                        UploadURL:  "https://uploads.github.com",
+                        Timeout:    30,
+                        RetryCount: 3,
+                        RetryDelay: 1,
+                },
+                Advanced: AdvancedConfig{
+                        Debug:         false,
+                        MaxConcurrent: 5,
+                        CacheTTL:      3600,
+                        Editor:        getDefaultEditor(),
+                },
+        }
+}</span>
+
+// getDefaultEditor returns the default editor based on the OS
+func getDefaultEditor() string <span class="cov6" title="25">{
+        // Check for environment variables
+        if editor := os.Getenv("EDITOR"); editor != "" </span><span class="cov0" title="0">{
+                return editor
+        }</span>
+        <span class="cov6" title="25">if editor := os.Getenv("VISUAL"); editor != "" </span><span class="cov0" title="0">{
+                return editor
+        }</span>
+
+        // Default based on OS
+        <span class="cov6" title="25">switch runtime.GOOS </span>{
+        case "windows":<span class="cov6" title="25">
+                return "notepad"</span>
+        case "darwin":<span class="cov0" title="0">
+                return "nano"</span>
+        default:<span class="cov0" title="0">
+                // Try to find a common editor
+                for _, editor := range []string{"nano", "vim", "vi", "emacs"} </span><span class="cov0" title="0">{
+                        if _, err := exec.LookPath(editor); err == nil </span><span class="cov0" title="0">{
+                                return editor
+                        }</span>
+                }
+                <span class="cov0" title="0">return "nano"</span> // Fallback
+        }
+}
+
+// Load loads the configuration from file and environment variables
+func (cm *ConfigManager) Load() error <span class="cov4" title="6">{
+        // Set up defaults
+        defaultConfig := DefaultConfig()
+        cm.setDefaults(defaultConfig)
+
+        // Find config file locations
+        if err := cm.setupConfigLocations(); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Set up environment variables
+        <span class="cov4" title="6">cm.v.SetEnvPrefix("GH_NOTIF")
+        cm.v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+        cm.v.AutomaticEnv()
+
+        // Read config file
+        if err := cm.v.ReadInConfig(); err != nil </span><span class="cov0" title="0">{
+                // Create default config if it doesn't exist
+                if _, ok := err.(viper.ConfigFileNotFoundError); ok </span><span class="cov0" title="0">{
+                        if err := cm.createDefaultConfig(); err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("failed to create default config: %w", err)
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return fmt.Errorf("failed to read config: %w", err)
+                }</span>
+        }
+
+        // Unmarshal config
+        <span class="cov4" title="6">config := DefaultConfig()
+        if err := cm.v.Unmarshal(config); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to unmarshal config: %w", err)
+        }</span>
+
+        // Validate config
+        <span class="cov4" title="6">if err := cm.validateConfig(config); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("invalid configuration: %w", err)
+        }</span>
+
+        <span class="cov4" title="6">cm.config = config
+        return nil</span>
+}
+
+// setDefaults sets the default values in viper
+func (cm *ConfigManager) setDefaults(config *Config) <span class="cov4" title="6">{
+        // Auth defaults
+        cm.v.SetDefault("auth.scopes", config.Auth.Scopes)
+        cm.v.SetDefault("auth.token_storage", config.Auth.TokenStorage)
+
+        // Display defaults
+        cm.v.SetDefault("display.theme", config.Display.Theme)
+        cm.v.SetDefault("display.date_format", config.Display.DateFormat)
+        cm.v.SetDefault("display.show_emojis", config.Display.ShowEmojis)
+        cm.v.SetDefault("display.compact_mode", config.Display.CompactMode)
+        cm.v.SetDefault("display.output_format", config.Display.OutputFormat)
+
+        // Notification defaults
+        cm.v.SetDefault("notifications.default_filter", config.Notifications.DefaultFilter)
+        cm.v.SetDefault("notifications.auto_refresh", config.Notifications.AutoRefresh)
+        cm.v.SetDefault("notifications.refresh_interval", config.Notifications.RefreshInterval)
+
+        // API defaults
+        cm.v.SetDefault("api.base_url", config.API.BaseURL)
+        cm.v.SetDefault("api.upload_url", config.API.UploadURL)
+        cm.v.SetDefault("api.timeout", config.API.Timeout)
+        cm.v.SetDefault("api.retry_count", config.API.RetryCount)
+        cm.v.SetDefault("api.retry_delay", config.API.RetryDelay)
+
+        // Advanced defaults
+        cm.v.SetDefault("advanced.debug", config.Advanced.Debug)
+        cm.v.SetDefault("advanced.max_concurrent", config.Advanced.MaxConcurrent)
+        cm.v.SetDefault("advanced.cache_ttl", config.Advanced.CacheTTL)
+        cm.v.SetDefault("advanced.editor", config.Advanced.Editor)
+}</span>
+
+// setupConfigLocations sets up the configuration file locations
+func (cm *ConfigManager) setupConfigLocations() error <span class="cov4" title="6">{
+        // Find home directory
+        home, err := os.UserHomeDir()
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to find home directory: %w", err)
+        }</span>
+
+        // Set up config file name and type
+        <span class="cov4" title="6">cm.v.SetConfigName(".gh-notif")
+        cm.v.SetConfigType("yaml")
+
+        // Add config paths in order of precedence
+        // 1. Current directory
+        cm.v.AddConfigPath(".")
+
+        // 2. XDG config directory if available
+        if xdgConfigHome := os.Getenv("XDG_CONFIG_HOME"); xdgConfigHome != "" </span><span class="cov0" title="0">{
+                cm.v.AddConfigPath(filepath.Join(xdgConfigHome, "gh-notif"))
+        }</span>
+
+        // 3. Platform-specific config directory
+        <span class="cov4" title="6">switch runtime.GOOS </span>{
+        case "windows":<span class="cov4" title="6">
+                cm.v.AddConfigPath(filepath.Join(os.Getenv("APPDATA"), "gh-notif"))</span>
+        case "darwin":<span class="cov0" title="0">
+                cm.v.AddConfigPath(filepath.Join(home, "Library", "Application Support", "gh-notif"))</span>
+        default:<span class="cov0" title="0"> // Linux and others
+                if xdgConfigHome := os.Getenv("XDG_CONFIG_HOME"); xdgConfigHome == "" </span><span class="cov0" title="0">{
+                        cm.v.AddConfigPath(filepath.Join(home, ".config", "gh-notif"))
+                }</span>
+        }
+
+        // 4. Home directory
+        <span class="cov4" title="6">cm.v.AddConfigPath(home)
+
+        // Set config file and directory
+        if cm.v.ConfigFileUsed() != "" </span><span class="cov0" title="0">{
+                cm.configFile = cm.v.ConfigFileUsed()
+                cm.configDir = filepath.Dir(cm.configFile)
+        }</span> else<span class="cov4" title="6"> {
+                // Default to home directory
+                cm.configDir = home
+                cm.configFile = filepath.Join(home, ".gh-notif.yaml")
+        }</span>
+
+        <span class="cov4" title="6">return nil</span>
+}
+
+// createDefaultConfig creates a default configuration file
+func (cm *ConfigManager) createDefaultConfig() error <span class="cov0" title="0">{
+        // Create config directory if it doesn't exist
+        if err := os.MkdirAll(cm.configDir, 0755); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to create config directory: %w", err)
+        }</span>
+
+        // Write default config
+        <span class="cov0" title="0">if err := cm.v.SafeWriteConfigAs(cm.configFile); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to write default config: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// validateConfig validates the configuration
+func (cm *ConfigManager) validateConfig(config *Config) error <span class="cov6" title="18">{
+        // Validate display settings
+        if !contains([]string{"dark", "light", "auto"}, config.Display.Theme) </span><span class="cov1" title="1">{
+                return errors.New("invalid theme: must be 'dark', 'light', or 'auto'")
+        }</span>
+
+        <span class="cov6" title="17">if !contains([]string{"relative", "absolute", "iso"}, config.Display.DateFormat) </span><span class="cov1" title="1">{
+                return errors.New("invalid date format: must be 'relative', 'absolute', or 'iso'")
+        }</span>
+
+        <span class="cov5" title="16">if !contains([]string{"table", "json", "yaml", "text"}, config.Display.OutputFormat) </span><span class="cov1" title="1">{
+                return errors.New("invalid output format: must be 'table', 'json', 'yaml', or 'text'")
+        }</span>
+
+        // Validate notification settings
+        <span class="cov5" title="15">if !contains([]string{"all", "unread", "participating"}, config.Notifications.DefaultFilter) </span><span class="cov1" title="1">{
+                return errors.New("invalid default filter: must be 'all', 'unread', or 'participating'")
+        }</span>
+
+        <span class="cov5" title="14">if config.Notifications.RefreshInterval &lt; 0 </span><span class="cov1" title="1">{
+                return errors.New("invalid refresh interval: must be non-negative")
+        }</span>
+
+        // Validate API settings
+        <span class="cov5" title="13">if config.API.Timeout &lt;= 0 </span><span class="cov1" title="1">{
+                return errors.New("invalid timeout: must be positive")
+        }</span>
+
+        <span class="cov5" title="12">if config.API.RetryCount &lt; 0 </span><span class="cov1" title="1">{
+                return errors.New("invalid retry count: must be non-negative")
+        }</span>
+
+        <span class="cov5" title="11">if config.API.RetryDelay &lt; 0 </span><span class="cov0" title="0">{
+                return errors.New("invalid retry delay: must be non-negative")
+        }</span>
+
+        // Validate advanced settings
+        <span class="cov5" title="11">if config.Advanced.MaxConcurrent &lt;= 0 </span><span class="cov1" title="1">{
+                return errors.New("invalid max concurrent: must be positive")
+        }</span>
+
+        <span class="cov5" title="10">if config.Advanced.CacheTTL &lt; 0 </span><span class="cov1" title="1">{
+                return errors.New("invalid cache TTL: must be non-negative")
+        }</span>
+
+        <span class="cov4" title="9">return nil</span>
+}
+
+// contains checks if a string is in a slice
+func contains(slice []string, str string) bool <span class="cov8" title="83">{
+        for _, s := range slice </span><span class="cov10" title="156">{
+                if s == str </span><span class="cov8" title="72">{
+                        return true
+                }</span>
+        }
+        <span class="cov5" title="11">return false</span>
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package config
+
+import (
+        "encoding/json"
+        "errors"
+        "fmt"
+        "os"
+        "os/exec"
+        "path/filepath"
+        "reflect"
+        "strings"
+
+        "gopkg.in/yaml.v3"
+)
+
+// GetConfig returns the current configuration
+func (cm *ConfigManager) GetConfig() *Config <span class="cov1" title="1">{
+        return cm.config
+}</span>
+
+// GetConfigFile returns the path to the configuration file
+func (cm *ConfigManager) GetConfigFile() string <span class="cov0" title="0">{
+        return cm.configFile
+}</span>
+
+// Save saves the current configuration to file
+func (cm *ConfigManager) Save() error <span class="cov4" title="3">{
+        // Set all values in viper
+        cm.setConfigValues(cm.config)
+
+        // Write config file
+        return cm.v.WriteConfig()
+}</span>
+
+// setConfigValues sets all configuration values in viper
+func (cm *ConfigManager) setConfigValues(config *Config) <span class="cov4" title="3">{
+        // Auth settings
+        cm.v.Set("auth.client_id", config.Auth.ClientID)
+        cm.v.Set("auth.client_secret", config.Auth.ClientSecret)
+        cm.v.Set("auth.scopes", config.Auth.Scopes)
+        cm.v.Set("auth.token_storage", config.Auth.TokenStorage)
+
+        // Display settings
+        cm.v.Set("display.theme", config.Display.Theme)
+        cm.v.Set("display.date_format", config.Display.DateFormat)
+        cm.v.Set("display.show_emojis", config.Display.ShowEmojis)
+        cm.v.Set("display.compact_mode", config.Display.CompactMode)
+        cm.v.Set("display.output_format", config.Display.OutputFormat)
+
+        // Notification settings
+        cm.v.Set("notifications.default_filter", config.Notifications.DefaultFilter)
+        cm.v.Set("notifications.include_repos", config.Notifications.IncludeRepos)
+        cm.v.Set("notifications.exclude_repos", config.Notifications.ExcludeRepos)
+        cm.v.Set("notifications.include_orgs", config.Notifications.IncludeOrgs)
+        cm.v.Set("notifications.exclude_orgs", config.Notifications.ExcludeOrgs)
+        cm.v.Set("notifications.include_types", config.Notifications.IncludeTypes)
+        cm.v.Set("notifications.exclude_types", config.Notifications.ExcludeTypes)
+        cm.v.Set("notifications.auto_refresh", config.Notifications.AutoRefresh)
+        cm.v.Set("notifications.refresh_interval", config.Notifications.RefreshInterval)
+
+        // API settings
+        cm.v.Set("api.base_url", config.API.BaseURL)
+        cm.v.Set("api.upload_url", config.API.UploadURL)
+        cm.v.Set("api.timeout", config.API.Timeout)
+        cm.v.Set("api.retry_count", config.API.RetryCount)
+        cm.v.Set("api.retry_delay", config.API.RetryDelay)
+
+        // Advanced settings
+        cm.v.Set("advanced.debug", config.Advanced.Debug)
+        cm.v.Set("advanced.max_concurrent", config.Advanced.MaxConcurrent)
+        cm.v.Set("advanced.cache_ttl", config.Advanced.CacheTTL)
+        cm.v.Set("advanced.cache_dir", config.Advanced.CacheDir)
+        cm.v.Set("advanced.editor", config.Advanced.Editor)
+}</span>
+
+// GetValue gets a configuration value by key
+func (cm *ConfigManager) GetValue(key string) (interface{}, error) <span class="cov5" title="5">{
+        // Check if the key exists
+        if !cm.v.IsSet(key) </span><span class="cov1" title="1">{
+                return nil, fmt.Errorf("configuration key not found: %s", key)
+        }</span>
+
+        // Get the value
+        <span class="cov4" title="4">return cm.v.Get(key), nil</span>
+}
+
+// SetValue sets a configuration value by key
+func (cm *ConfigManager) SetValue(key string, value interface{}) error <span class="cov4" title="4">{
+        // Validate the key
+        if err := cm.validateKey(key); err != nil </span><span class="cov1" title="1">{
+                return err
+        }</span>
+
+        // Validate the value
+        <span class="cov4" title="3">if err := cm.validateValue(key, value); err != nil </span><span class="cov2" title="2">{
+                return err
+        }</span>
+
+        // Set the value
+        <span class="cov1" title="1">cm.v.Set(key, value)
+
+        // Update the config struct
+        if err := cm.v.Unmarshal(cm.config); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to update configuration: %w", err)
+        }</span>
+
+        // Save the configuration
+        <span class="cov1" title="1">return cm.Save()</span>
+}
+
+// validateKey validates a configuration key
+func (cm *ConfigManager) validateKey(key string) error <span class="cov6" title="8">{
+        // Split the key into parts
+        parts := strings.Split(key, ".")
+        if len(parts) &lt; 2 </span><span class="cov1" title="1">{
+                return fmt.Errorf("invalid key format: %s (expected section.key)", key)
+        }</span>
+
+        // Check if the section exists
+        <span class="cov6" title="7">section := parts[0]
+        validSections := []string{"auth", "display", "notifications", "api", "advanced"}
+        if !contains(validSections, section) </span><span class="cov2" title="2">{
+                return fmt.Errorf("invalid configuration section: %s (valid sections: %s)", section, strings.Join(validSections, ", "))
+        }</span>
+
+        // Check if the key exists in the section
+        <span class="cov5" title="5">configValue := reflect.ValueOf(cm.config).Elem()
+        sectionValue := configValue.FieldByNameFunc(func(name string) bool </span><span class="cov10" title="25">{
+                return strings.EqualFold(name, section)
+        }</span>)
+
+        <span class="cov5" title="5">if !sectionValue.IsValid() </span><span class="cov0" title="0">{
+                return fmt.Errorf("invalid configuration section: %s", section)
+        }</span>
+
+        // Check if the key exists in the section
+        <span class="cov5" title="5">keyName := parts[1]
+        keyValue := sectionValue.FieldByNameFunc(func(name string) bool </span><span class="cov10" title="25">{
+                return strings.EqualFold(name, keyName)
+        }</span>)
+
+        <span class="cov5" title="5">if !keyValue.IsValid() </span><span class="cov1" title="1">{
+                return fmt.Errorf("invalid configuration key: %s", key)
+        }</span>
+
+        <span class="cov4" title="4">return nil</span>
+}
+
+// validateValue validates a configuration value
+func (cm *ConfigManager) validateValue(key string, value interface{}) error <span class="cov9" title="20">{
+        // Validate based on the key
+        switch key </span>{
+        // Display settings
+        case "display.theme":<span class="cov6" title="6">
+                if str, ok := value.(string); ok </span><span class="cov4" title="4">{
+                        if !contains([]string{"dark", "light", "auto"}, str) </span><span class="cov2" title="2">{
+                                return errors.New("invalid theme: must be 'dark', 'light', or 'auto'")
+                        }</span>
+                } else<span class="cov2" title="2"> {
+                        return errors.New("theme must be a string")
+                }</span>
+        case "display.date_format":<span class="cov2" title="2">
+                if str, ok := value.(string); ok </span><span class="cov2" title="2">{
+                        if !contains([]string{"relative", "absolute", "iso"}, str) </span><span class="cov1" title="1">{
+                                return errors.New("invalid date format: must be 'relative', 'absolute', or 'iso'")
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return errors.New("date format must be a string")
+                }</span>
+        case "display.output_format":<span class="cov2" title="2">
+                if str, ok := value.(string); ok </span><span class="cov2" title="2">{
+                        if !contains([]string{"table", "json", "yaml", "text"}, str) </span><span class="cov1" title="1">{
+                                return errors.New("invalid output format: must be 'table', 'json', 'yaml', or 'text'")
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return errors.New("output format must be a string")
+                }</span>
+
+        // Notification settings
+        case "notifications.default_filter":<span class="cov2" title="2">
+                if str, ok := value.(string); ok </span><span class="cov2" title="2">{
+                        if !contains([]string{"all", "unread", "participating"}, str) </span><span class="cov1" title="1">{
+                                return errors.New("invalid default filter: must be 'all', 'unread', or 'participating'")
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return errors.New("default filter must be a string")
+                }</span>
+        case "notifications.refresh_interval":<span class="cov2" title="2">
+                if num, ok := value.(int); ok </span><span class="cov2" title="2">{
+                        if num &lt; 0 </span><span class="cov1" title="1">{
+                                return errors.New("refresh interval must be non-negative")
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return errors.New("refresh interval must be an integer")
+                }</span>
+
+        // API settings
+        case "api.timeout":<span class="cov2" title="2">
+                if num, ok := value.(int); ok </span><span class="cov2" title="2">{
+                        if num &lt;= 0 </span><span class="cov1" title="1">{
+                                return errors.New("timeout must be positive")
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return errors.New("timeout must be an integer")
+                }</span>
+        case "api.retry_count":<span class="cov2" title="2">
+                if num, ok := value.(int); ok </span><span class="cov2" title="2">{
+                        if num &lt; 0 </span><span class="cov1" title="1">{
+                                return errors.New("retry count must be non-negative")
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return errors.New("retry count must be an integer")
+                }</span>
+        case "api.retry_delay":<span class="cov0" title="0">
+                if num, ok := value.(int); ok </span><span class="cov0" title="0">{
+                        if num &lt; 0 </span><span class="cov0" title="0">{
+                                return errors.New("retry delay must be non-negative")
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return errors.New("retry delay must be an integer")
+                }</span>
+
+        // Advanced settings
+        case "advanced.max_concurrent":<span class="cov2" title="2">
+                if num, ok := value.(int); ok </span><span class="cov2" title="2">{
+                        if num &lt;= 0 </span><span class="cov1" title="1">{
+                                return errors.New("max concurrent must be positive")
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return errors.New("max concurrent must be an integer")
+                }</span>
+        case "advanced.cache_ttl":<span class="cov0" title="0">
+                if num, ok := value.(int); ok </span><span class="cov0" title="0">{
+                        if num &lt; 0 </span><span class="cov0" title="0">{
+                                return errors.New("cache TTL must be non-negative")
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        return errors.New("cache TTL must be an integer")
+                }</span>
+        }
+
+        <span class="cov7" title="9">return nil</span>
+}
+
+// ListConfig returns a formatted list of all configuration values
+func (cm *ConfigManager) ListConfig() (string, error) <span class="cov2" title="2">{
+        // Get all settings
+        allSettings := cm.v.AllSettings()
+
+        // Format as YAML
+        data, err := yaml.Marshal(allSettings)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("failed to format configuration: %w", err)
+        }</span>
+
+        <span class="cov2" title="2">return string(data), nil</span>
+}
+
+// EditConfig opens the configuration file in an editor
+func (cm *ConfigManager) EditConfig() error <span class="cov0" title="0">{
+        // Get the editor from config or environment
+        editor := cm.config.Advanced.Editor
+        if editor == "" </span><span class="cov0" title="0">{
+                editor = getDefaultEditor()
+        }</span>
+
+        // Create the command
+        <span class="cov0" title="0">cmd := exec.Command(editor, cm.configFile)
+        cmd.Stdin = os.Stdin
+        cmd.Stdout = os.Stdout
+        cmd.Stderr = os.Stderr
+
+        // Run the editor
+        if err := cmd.Run(); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to open editor: %w", err)
+        }</span>
+
+        // Reload the configuration
+        <span class="cov0" title="0">return cm.Load()</span>
+}
+
+// ExportConfig exports the configuration to a file
+func (cm *ConfigManager) ExportConfig(format, filePath string) error <span class="cov4" title="3">{
+        // Get all settings
+        allSettings := cm.v.AllSettings()
+
+        // Format the data
+        var data []byte
+        var err error
+
+        switch format </span>{
+        case "json":<span class="cov1" title="1">
+                data, err = json.MarshalIndent(allSettings, "", "  ")</span>
+        case "yaml":<span class="cov1" title="1">
+                data, err = yaml.Marshal(allSettings)</span>
+        default:<span class="cov1" title="1">
+                return fmt.Errorf("unsupported format: %s", format)</span>
+        }
+
+        <span class="cov2" title="2">if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to format configuration: %w", err)
+        }</span>
+
+        // Create the directory if it doesn't exist
+        <span class="cov2" title="2">dir := filepath.Dir(filePath)
+        if err := os.MkdirAll(dir, 0755); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to create directory: %w", err)
+        }</span>
+
+        // Write the file
+        <span class="cov2" title="2">if err := os.WriteFile(filePath, data, 0644); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to write file: %w", err)
+        }</span>
+
+        <span class="cov2" title="2">return nil</span>
+}
+
+// ImportConfig imports configuration from a file
+func (cm *ConfigManager) ImportConfig(filePath string) error <span class="cov2" title="2">{
+        // Read the file
+        data, err := os.ReadFile(filePath)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to read file: %w", err)
+        }</span>
+
+        // Determine the format based on the file extension
+        <span class="cov2" title="2">format := filepath.Ext(filePath)
+        if format == "" </span><span class="cov0" title="0">{
+                return fmt.Errorf("unknown file format: %s", filePath)
+        }</span>
+        <span class="cov2" title="2">format = format[1:] // Remove the leading dot
+
+        // Parse the data
+        var settings map[string]interface{}
+
+        switch format </span>{
+        case "json":<span class="cov1" title="1">
+                if err := json.Unmarshal(data, &amp;settings); err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to parse JSON: %w", err)
+                }</span>
+        case "yaml", "yml":<span class="cov1" title="1">
+                if err := yaml.Unmarshal(data, &amp;settings); err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to parse YAML: %w", err)
+                }</span>
+        default:<span class="cov0" title="0">
+                return fmt.Errorf("unsupported format: %s", format)</span>
+        }
+
+        // Update the configuration
+        <span class="cov2" title="2">for k, v := range settings </span><span class="cov7" title="10">{
+                cm.v.Set(k, v)
+        }</span>
+
+        // Unmarshal the updated configuration
+        <span class="cov2" title="2">if err := cm.v.Unmarshal(cm.config); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to update configuration: %w", err)
+        }</span>
+
+        // Validate the configuration
+        <span class="cov2" title="2">if err := cm.validateConfig(cm.config); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("invalid configuration: %w", err)
+        }</span>
+
+        // Save the configuration
+        <span class="cov2" title="2">return cm.Save()</span>
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package github
+
+import (
+        "context"
+        "fmt"
+        "net/http"
+
+        "github.com/google/go-github/v60/github"
+        "github.com/user/gh-notif/internal/auth"
+)
+
+// Client wraps the GitHub client with authentication
+type Client struct {
+        client *github.Client
+        ctx    context.Context
+}
+
+// NewClient creates a new authenticated GitHub client
+func NewClient(ctx context.Context) (*Client, error) <span class="cov0" title="0">{
+        // Get an authenticated HTTP client
+        httpClient, err := auth.GetClient(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to get authenticated client: %w", err)
+        }</span>
+
+        // Add the auth middleware
+        <span class="cov0" title="0">middleware := auth.NewAuthMiddleware()
+        httpClient.Transport = middleware.RoundTripper(httpClient.Transport)
+
+        // Create the GitHub client
+        client := github.NewClient(httpClient)
+
+        return &amp;Client{
+                client: client,
+                ctx:    ctx,
+        }, nil</span>
+}
+
+// NewClientOrExit creates a new authenticated GitHub client or exits on error
+func NewClientOrExit(ctx context.Context) *Client <span class="cov0" title="0">{
+        httpClient := auth.GetClientOrExit(ctx)
+
+        // Add the auth middleware
+        middleware := auth.NewAuthMiddleware()
+        httpClient.Transport = middleware.RoundTripper(httpClient.Transport)
+
+        // Create the GitHub client
+        client := github.NewClient(httpClient)
+
+        return &amp;Client{
+                client: client,
+                ctx:    ctx,
+        }
+}</span>
+
+// ListNotifications lists GitHub notifications
+func (c *Client) ListNotifications(opts *github.NotificationListOptions) ([]*github.Notification, *github.Response, error) <span class="cov0" title="0">{
+        return c.client.Activity.ListNotifications(c.ctx, opts)
+}</span>
+
+// MarkThreadRead marks a notification thread as read
+func (c *Client) MarkThreadRead(threadID string) (*github.Response, error) <span class="cov0" title="0">{
+        return c.client.Activity.MarkThreadRead(c.ctx, threadID)
+}</span>
+
+// We'll implement this later when we have more information about the API
+
+// GetThread gets a notification thread
+func (c *Client) GetThread(threadID string) (*github.Notification, *github.Response, error) <span class="cov0" title="0">{
+        return c.client.Activity.GetThread(c.ctx, threadID)
+}</span>
+
+// WithContext returns a new Client with the given context
+func (c *Client) WithContext(ctx context.Context) *Client <span class="cov0" title="0">{
+        return &amp;Client{
+                client: c.client,
+                ctx:    ctx,
+        }
+}</span>
+
+// Do performs an HTTP request and returns the API response
+func (c *Client) Do(req *http.Request, v interface{}) (*github.Response, error) <span class="cov0" title="0">{
+        return c.client.Do(c.ctx, req, v)
+}</span>
+
+// GetRawClient returns the underlying GitHub client
+func (c *Client) GetRawClient() *github.Client <span class="cov0" title="0">{
+        return c.client
+}</span>
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package github
+
+import (
+        "context"
+        "fmt"
+        "sync"
+        "time"
+
+        "github.com/google/go-github/v60/github"
+        "github.com/user/gh-notif/internal/ui"
+)
+
+// NotificationOptions contains options for filtering notifications
+type NotificationOptions struct {
+        All      bool
+        Unread   bool
+        RepoName string
+}
+
+// ListNotifications fetches and displays GitHub notifications
+func ListNotifications(options NotificationOptions) error <span class="cov0" title="0">{
+        ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+        defer cancel()
+
+        // Create an authenticated client with middleware
+        client, err := NewClient(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to create GitHub client: %w", err)
+        }</span>
+
+        // Set up the list options
+        <span class="cov0" title="0">listOptions := &amp;github.NotificationListOptions{
+                All:           options.All,
+                ListOptions:   github.ListOptions{PerPage: 100},
+        }
+
+        // Only filter by repository if specified
+        if options.RepoName != "" </span><span class="cov0" title="0">{
+                listOptions.ListOptions.PerPage = 100
+        }</span>
+
+        // Fetch notifications
+        <span class="cov0" title="0">notifications, _, err := client.ListNotifications(listOptions)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to fetch notifications: %w", err)
+        }</span>
+
+        // Filter notifications if needed
+        <span class="cov0" title="0">var filteredNotifications []*github.Notification
+        if options.RepoName != "" </span><span class="cov0" title="0">{
+                for _, n := range notifications </span><span class="cov0" title="0">{
+                        if n.GetRepository().GetFullName() == options.RepoName </span><span class="cov0" title="0">{
+                                filteredNotifications = append(filteredNotifications, n)
+                        }</span>
+                }
+        } else<span class="cov0" title="0"> {
+                filteredNotifications = notifications
+        }</span>
+
+        // Use the UI package to display notifications
+        <span class="cov0" title="0">return ui.DisplayNotifications(filteredNotifications)</span>
+}
+
+// MarkAsRead marks a notification as read
+func MarkAsRead(id int64) error <span class="cov0" title="0">{
+        ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+        defer cancel()
+
+        // Create an authenticated client with middleware
+        client, err := NewClient(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to create GitHub client: %w", err)
+        }</span>
+
+        // In a real implementation, you would need to map the ID to the thread ID
+        // This is a simplified version
+        <span class="cov0" title="0">threadID := fmt.Sprintf("%d", id)
+
+        _, err = client.MarkThreadRead(threadID)
+        return err</span>
+}
+
+// FetchNotificationDetails fetches additional details for notifications in parallel
+func FetchNotificationDetails(notifications []*github.Notification) error <span class="cov0" title="0">{
+        ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+        defer cancel()
+
+        // Create an authenticated client with middleware
+        // We'll use this client in the actual implementation to fetch details
+        // For now, just check if we can create it to ensure authentication works
+        _, err := NewClient(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to create GitHub client: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">var wg sync.WaitGroup
+        errCh := make(chan error, len(notifications))
+
+        // Use a semaphore to limit concurrent requests
+        semaphore := make(chan struct{}, 5)
+
+        for _, notification := range notifications </span><span class="cov0" title="0">{
+                wg.Add(1)
+                go func(n *github.Notification) </span><span class="cov0" title="0">{
+                        defer wg.Done()
+
+                        // Acquire semaphore
+                        semaphore &lt;- struct{}{}
+                        defer func() </span><span class="cov0" title="0">{ &lt;-semaphore }</span>()
+
+                        // Fetch additional details
+                        // This would depend on the notification type
+                        // For example, for issues:
+                        <span class="cov0" title="0">if n.GetSubject().GetType() == "Issue" </span>{<span class="cov0" title="0">
+                                // Parse the URL to get owner, repo, and issue number
+                                // Then fetch issue details using the client
+                                // This is simplified
+                        }</span>
+
+                }(notification)
+        }
+
+        // Wait for all goroutines to complete
+        <span class="cov0" title="0">wg.Wait()
+        close(errCh)
+
+        // Check if there were any errors
+        for err := range errCh </span><span class="cov0" title="0">{
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package testutil
+
+import (
+        "encoding/json"
+        "io"
+        "net/http"
+        "net/http/httptest"
+        "os"
+        "path/filepath"
+        "testing"
+        "time"
+
+        "github.com/spf13/viper"
+        "golang.org/x/oauth2"
+)
+
+// TempDir creates a temporary directory for testing and returns a cleanup function
+func TempDir(t *testing.T) (string, func()) <span class="cov0" title="0">{
+        t.Helper()
+        dir, err := os.MkdirTemp("", "gh-notif-test-*")
+        if err != nil </span><span class="cov0" title="0">{
+                t.Fatalf("Failed to create temp dir: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">cleanup := func() </span><span class="cov0" title="0">{
+                os.RemoveAll(dir)
+        }</span>
+
+        <span class="cov0" title="0">return dir, cleanup</span>
+}
+
+// SetupTestConfig creates a test configuration in a temporary directory
+func SetupTestConfig(t *testing.T) (string, func()) <span class="cov0" title="0">{
+        t.Helper()
+
+        // Create a temporary directory
+        tempDir, cleanup := TempDir(t)
+
+        // Create a test config file
+        configPath := filepath.Join(tempDir, ".gh-notif.yaml")
+
+        // Create a new viper instance
+        v := viper.New()
+        v.SetConfigFile(configPath)
+
+        // Set some test values
+        v.Set("auth.client_id", "test-client-id")
+        v.Set("auth.client_secret", "test-client-secret")
+        v.Set("auth.scopes", []string{"notifications", "repo"})
+        v.Set("auth.token_storage", "file")
+
+        // Save the config
+        if err := v.WriteConfigAs(configPath); err != nil </span><span class="cov0" title="0">{
+                cleanup()
+                t.Fatalf("Failed to write test config: %v", err)
+        }</span>
+
+        // Set environment variable to point to our test config
+        <span class="cov0" title="0">oldHome := os.Getenv("HOME")
+        os.Setenv("HOME", tempDir)
+
+        // Return a cleanup function that restores the environment
+        cleanupAll := func() </span><span class="cov0" title="0">{
+                os.Setenv("HOME", oldHome)
+                cleanup()
+        }</span>
+
+        <span class="cov0" title="0">return tempDir, cleanupAll</span>
+}
+
+// CreateTestToken creates a test OAuth2 token
+func CreateTestToken(t *testing.T, expired bool) *oauth2.Token <span class="cov0" title="0">{
+        t.Helper()
+
+        var expiry time.Time
+        if expired </span><span class="cov0" title="0">{
+                expiry = time.Now().Add(-1 * time.Hour)
+        }</span> else<span class="cov0" title="0"> {
+                expiry = time.Now().Add(1 * time.Hour)
+        }</span>
+
+        <span class="cov0" title="0">return &amp;oauth2.Token{
+                AccessToken:  "test-access-token",
+                TokenType:    "Bearer",
+                RefreshToken: "test-refresh-token",
+                Expiry:       expiry,
+        }</span>
+}
+
+// MockGitHubAPI creates a mock GitHub API server
+func MockGitHubAPI(t *testing.T, handlers map[string]http.HandlerFunc) *httptest.Server <span class="cov0" title="0">{
+        t.Helper()
+
+        mux := http.NewServeMux()
+
+        // Add handlers
+        for path, handler := range handlers </span><span class="cov0" title="0">{
+                mux.HandleFunc(path, handler)
+        }</span>
+
+        // Create a test server
+        <span class="cov0" title="0">server := httptest.NewServer(mux)
+
+        return server</span>
+}
+
+// MockDeviceFlowServer creates a mock server for GitHub's device flow
+func MockDeviceFlowServer(t *testing.T) *httptest.Server <span class="cov0" title="0">{
+        t.Helper()
+
+        mux := http.NewServeMux()
+
+        // Device code endpoint
+        mux.HandleFunc("/login/device/code", func(w http.ResponseWriter, r *http.Request) </span><span class="cov0" title="0">{
+                if r.Method != "POST" </span><span class="cov0" title="0">{
+                        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+                        return
+                }</span>
+
+                <span class="cov0" title="0">response := map[string]interface{}{
+                        "device_code":      "test-device-code",
+                        "user_code":        "ABCD-1234",
+                        "verification_uri": "https://github.com/login/device",
+                        "expires_in":       900,
+                        "interval":         5,
+                }
+
+                w.Header().Set("Content-Type", "application/json")
+                json.NewEncoder(w).Encode(response)</span>
+        })
+
+        // Token endpoint
+        <span class="cov0" title="0">var tokenRequests int
+        mux.HandleFunc("/login/oauth/access_token", func(w http.ResponseWriter, r *http.Request) </span><span class="cov0" title="0">{
+                if r.Method != "POST" </span><span class="cov0" title="0">{
+                        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+                        return
+                }</span>
+
+                <span class="cov0" title="0">tokenRequests++
+
+                // Parse the request
+                if err := r.ParseForm(); err != nil </span><span class="cov0" title="0">{
+                        http.Error(w, "Bad request", http.StatusBadRequest)
+                        return
+                }</span>
+
+                // Check device code
+                <span class="cov0" title="0">deviceCode := r.FormValue("device_code")
+                if deviceCode != "test-device-code" </span><span class="cov0" title="0">{
+                        response := map[string]string{
+                                "error": "invalid_device_code",
+                        }
+                        w.Header().Set("Content-Type", "application/json")
+                        json.NewEncoder(w).Encode(response)
+                        return
+                }</span>
+
+                // First request: authorization pending
+                <span class="cov0" title="0">if tokenRequests == 1 </span><span class="cov0" title="0">{
+                        response := map[string]string{
+                                "error": "authorization_pending",
+                        }
+                        w.Header().Set("Content-Type", "application/json")
+                        json.NewEncoder(w).Encode(response)
+                        return
+                }</span>
+
+                // Second request: slow down
+                <span class="cov0" title="0">if tokenRequests == 2 </span><span class="cov0" title="0">{
+                        response := map[string]string{
+                                "error": "slow_down",
+                        }
+                        w.Header().Set("Content-Type", "application/json")
+                        json.NewEncoder(w).Encode(response)
+                        return
+                }</span>
+
+                // Third request: success
+                <span class="cov0" title="0">response := map[string]interface{}{
+                        "access_token":  "test-access-token",
+                        "token_type":    "bearer",
+                        "scope":         "notifications repo",
+                        "refresh_token": "test-refresh-token",
+                        "expires_in":    3600,
+                }
+
+                w.Header().Set("Content-Type", "application/json")
+                json.NewEncoder(w).Encode(response)</span>
+        })
+
+        <span class="cov0" title="0">return httptest.NewServer(mux)</span>
+}
+
+// ReadTestFile reads a test file from the testdata directory
+func ReadTestFile(t *testing.T, filename string) []byte <span class="cov0" title="0">{
+        t.Helper()
+
+        data, err := os.ReadFile(filepath.Join("testdata", filename))
+        if err != nil </span><span class="cov0" title="0">{
+                t.Fatalf("Failed to read test file %s: %v", filename, err)
+        }</span>
+
+        <span class="cov0" title="0">return data</span>
+}
+
+// CaptureOutput captures stdout and stderr during a test
+func CaptureOutput(t *testing.T, f func()) (stdout, stderr string) <span class="cov0" title="0">{
+        t.Helper()
+
+        // Redirect stdout
+        oldStdout := os.Stdout
+        oldStderr := os.Stderr
+
+        rOut, wOut, err := os.Pipe()
+        if err != nil </span><span class="cov0" title="0">{
+                t.Fatalf("Failed to create stdout pipe: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">rErr, wErr, err := os.Pipe()
+        if err != nil </span><span class="cov0" title="0">{
+                t.Fatalf("Failed to create stderr pipe: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">os.Stdout = wOut
+        os.Stderr = wErr
+
+        // Run the function
+        f()
+
+        // Restore stdout and stderr
+        wOut.Close()
+        wErr.Close()
+
+        os.Stdout = oldStdout
+        os.Stderr = oldStderr
+
+        // Read captured output
+        outBytes, err := io.ReadAll(rOut)
+        if err != nil </span><span class="cov0" title="0">{
+                t.Fatalf("Failed to read stdout: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">errBytes, err := io.ReadAll(rErr)
+        if err != nil </span><span class="cov0" title="0">{
+                t.Fatalf("Failed to read stderr: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">return string(outBytes), string(errBytes)</span>
+}
+
+// SetEnvVars sets environment variables for testing and returns a cleanup function
+func SetEnvVars(t *testing.T, vars map[string]string) func() <span class="cov0" title="0">{
+        t.Helper()
+
+        // Save old values
+        oldValues := make(map[string]string)
+        for k := range vars </span><span class="cov0" title="0">{
+                oldValues[k] = os.Getenv(k)
+        }</span>
+
+        // Set new values
+        <span class="cov0" title="0">for k, v := range vars </span><span class="cov0" title="0">{
+                os.Setenv(k, v)
+        }</span>
+
+        // Return cleanup function
+        <span class="cov0" title="0">return func() </span><span class="cov0" title="0">{
+                for k, v := range oldValues </span><span class="cov0" title="0">{
+                        os.Setenv(k, v)
+                }</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package ui
+
+import (
+        "fmt"
+        "time"
+
+        "github.com/charmbracelet/bubbles/table"
+        tea "github.com/charmbracelet/bubbletea"
+        "github.com/charmbracelet/lipgloss"
+        "github.com/google/go-github/v60/github"
+)
+
+var (
+        baseStyle = lipgloss.NewStyle().
+                BorderStyle(lipgloss.NormalBorder()).
+                BorderForeground(lipgloss.Color("240"))
+
+        headerStyle = lipgloss.NewStyle().
+                Bold(true).
+                Foreground(lipgloss.Color("170"))
+
+        unreadStyle = lipgloss.NewStyle().
+                Foreground(lipgloss.Color("86"))
+
+        readStyle = lipgloss.NewStyle().
+                Foreground(lipgloss.Color("240"))
+)
+
+// NotificationModel represents the UI model for notifications
+type NotificationModel struct {
+        table  table.Model
+        width  int
+        height int
+        notifications []*github.Notification
+}
+
+// DisplayNotifications shows the notifications in a terminal UI
+func DisplayNotifications(notifications []*github.Notification) error <span class="cov0" title="0">{
+        if len(notifications) == 0 </span><span class="cov0" title="0">{
+                fmt.Println("No notifications found.")
+                return nil
+        }</span>
+
+        // Create table columns
+        <span class="cov0" title="0">columns := []table.Column{
+                {Title: "ID", Width: 5},
+                {Title: "Type", Width: 10},
+                {Title: "Repository", Width: 30},
+                {Title: "Title", Width: 50},
+                {Title: "Updated", Width: 20},
+        }
+
+        // Create table rows
+        rows := []table.Row{}
+        for i, n := range notifications </span><span class="cov0" title="0">{
+                id := fmt.Sprintf("%d", i+1)
+                notifType := n.GetSubject().GetType()
+                repo := n.GetRepository().GetFullName()
+                title := n.GetSubject().GetTitle()
+                updated := n.GetUpdatedAt().Format(time.RFC822)
+
+                rows = append(rows, table.Row{id, notifType, repo, title, updated})
+        }</span>
+
+        // Create table
+        <span class="cov0" title="0">t := table.New(
+                table.WithColumns(columns),
+                table.WithRows(rows),
+                table.WithFocused(true),
+                table.WithHeight(len(rows)),
+        )
+
+        // Style the table
+        s := table.DefaultStyles()
+        s.Header = s.Header.
+                BorderStyle(lipgloss.NormalBorder()).
+                BorderForeground(lipgloss.Color("240")).
+                BorderBottom(true).
+                Bold(true)
+        s.Selected = s.Selected.
+                Foreground(lipgloss.Color("229")).
+                Background(lipgloss.Color("57")).
+                Bold(true)
+        t.SetStyles(s)
+
+        // Create model
+        m := NotificationModel{
+                table: t,
+                notifications: notifications,
+        }
+
+        // Run the UI
+        p := tea.NewProgram(m)
+        if _, err := p.Run(); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("error running UI: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// Init initializes the model
+func (m NotificationModel) Init() tea.Cmd <span class="cov0" title="0">{
+        return nil
+}</span>
+
+// Update handles UI events
+func (m NotificationModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) <span class="cov0" title="0">{
+        var cmd tea.Cmd
+        switch msg := msg.(type) </span>{
+        case tea.KeyMsg:<span class="cov0" title="0">
+                switch msg.String() </span>{
+                case "q", "ctrl+c":<span class="cov0" title="0">
+                        return m, tea.Quit</span>
+                case "enter":<span class="cov0" title="0">
+                        // Handle selection - open notification in browser or mark as read
+                        return m, tea.Quit</span>
+                }
+        case tea.WindowSizeMsg:<span class="cov0" title="0">
+                m.height = msg.Height
+                m.width = msg.Width
+                m.table.SetHeight(m.height - 4)
+                m.table.SetWidth(m.width)
+                return m, nil</span>
+        }
+
+        <span class="cov0" title="0">m.table, cmd = m.table.Update(msg)
+        return m, cmd</span>
+}
+
+// View renders the UI
+func (m NotificationModel) View() string <span class="cov0" title="0">{
+        if len(m.notifications) == 0 </span><span class="cov0" title="0">{
+                return "No notifications found."
+        }</span>
+
+        <span class="cov0" title="0">header := headerStyle.Render("GitHub Notifications")
+        help := "↑/↓: navigate • enter: select • q: quit"
+
+        return fmt.Sprintf(
+                "%s\n\n%s\n\n%s",
+                header,
+                m.table.View(),
+                help,
+        )</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package main
+
+import (
+        "fmt"
+        "os"
+
+        "github.com/user/gh-notif/cmd/gh-notif"
+)
+
+func main() <span class="cov0" title="0">{
+        if err := ghnotif.Execute(); err != nil </span><span class="cov0" title="0">{
+                fmt.Fprintln(os.Stderr, err)
+                os.Exit(1)
+        }</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
