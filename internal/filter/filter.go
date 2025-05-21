@@ -318,3 +318,185 @@ func (f *RegexFilter) Apply(n *github.Notification) bool {
 func (f *RegexFilter) Description() string {
 	return fmt.Sprintf("%s matches regex %s", f.Field, f.Pattern.String())
 }
+
+// AllFilter matches all notifications
+type AllFilter struct{}
+
+// Apply returns true for all notifications
+func (f *AllFilter) Apply(notification *github.Notification) bool {
+	return true
+}
+
+// Description returns a human-readable description of the filter
+func (f *AllFilter) Description() string {
+	return "all notifications"
+}
+
+// ReadFilter filters notifications by read status
+type ReadFilter struct {
+	// Read is true to match read notifications, false to match unread
+	Read bool
+}
+
+// Apply returns true if the notification matches the read status
+func (f *ReadFilter) Apply(notification *github.Notification) bool {
+	return notification.GetUnread() != f.Read
+}
+
+// Description returns a human-readable description of the filter
+func (f *ReadFilter) Description() string {
+	if f.Read {
+		return "read notifications"
+	}
+	return "unread notifications"
+}
+
+// RepoFilter filters notifications by repository
+type RepoFilter struct {
+	// Repo is the repository name to match
+	Repo string
+}
+
+// Apply returns true if the notification is from the specified repository
+func (f *RepoFilter) Apply(notification *github.Notification) bool {
+	return strings.EqualFold(notification.GetRepository().GetFullName(), f.Repo)
+}
+
+// Description returns a human-readable description of the filter
+func (f *RepoFilter) Description() string {
+	return fmt.Sprintf("repository is %s", f.Repo)
+}
+
+// OrgFilter filters notifications by organization
+type OrgFilter struct {
+	// Org is the organization name to match
+	Org string
+}
+
+// Apply returns true if the notification is from the specified organization
+func (f *OrgFilter) Apply(notification *github.Notification) bool {
+	return strings.EqualFold(notification.GetRepository().GetOwner().GetLogin(), f.Org)
+}
+
+// Description returns a human-readable description of the filter
+func (f *OrgFilter) Description() string {
+	return fmt.Sprintf("organization is %s", f.Org)
+}
+
+// ReasonFilter filters notifications by reason
+type ReasonFilter struct {
+	// Reason is the notification reason to match
+	Reason string
+}
+
+// Apply returns true if the notification has the specified reason
+func (f *ReasonFilter) Apply(notification *github.Notification) bool {
+	return strings.EqualFold(notification.GetReason(), f.Reason)
+}
+
+// Description returns a human-readable description of the filter
+func (f *ReasonFilter) Description() string {
+	return fmt.Sprintf("reason is %s", f.Reason)
+}
+
+// TextFilter filters notifications by text
+type TextFilter struct {
+	// Text is the text to search for
+	Text string
+}
+
+// Apply returns true if the notification contains the specified text
+func (f *TextFilter) Apply(notification *github.Notification) bool {
+	// Check the title
+	if strings.Contains(strings.ToLower(notification.GetSubject().GetTitle()), strings.ToLower(f.Text)) {
+		return true
+	}
+
+	// Check the repository name
+	if strings.Contains(strings.ToLower(notification.GetRepository().GetFullName()), strings.ToLower(f.Text)) {
+		return true
+	}
+
+	// Check the type
+	if strings.Contains(strings.ToLower(notification.GetSubject().GetType()), strings.ToLower(f.Text)) {
+		return true
+	}
+
+	// Check the reason
+	if strings.Contains(strings.ToLower(notification.GetReason()), strings.ToLower(f.Text)) {
+		return true
+	}
+
+	return false
+}
+
+// Description returns a human-readable description of the filter
+func (f *TextFilter) Description() string {
+	return fmt.Sprintf("contains text '%s'", f.Text)
+}
+
+// AndFilter combines multiple filters with AND logic
+type AndFilter struct {
+	// Filters is the list of filters to combine
+	Filters []Filter
+}
+
+// Apply returns true if all filters match
+func (f *AndFilter) Apply(notification *github.Notification) bool {
+	for _, filter := range f.Filters {
+		if !filter.Apply(notification) {
+			return false
+		}
+	}
+	return true
+}
+
+// Description returns a human-readable description of the filter
+func (f *AndFilter) Description() string {
+	var descriptions []string
+	for _, filter := range f.Filters {
+		descriptions = append(descriptions, filter.Description())
+	}
+	return fmt.Sprintf("(%s)", strings.Join(descriptions, " AND "))
+}
+
+// OrFilter combines multiple filters with OR logic
+type OrFilter struct {
+	// Filters is the list of filters to combine
+	Filters []Filter
+}
+
+// Apply returns true if any filter matches
+func (f *OrFilter) Apply(notification *github.Notification) bool {
+	for _, filter := range f.Filters {
+		if filter.Apply(notification) {
+			return true
+		}
+	}
+	return false
+}
+
+// Description returns a human-readable description of the filter
+func (f *OrFilter) Description() string {
+	var descriptions []string
+	for _, filter := range f.Filters {
+		descriptions = append(descriptions, filter.Description())
+	}
+	return fmt.Sprintf("(%s)", strings.Join(descriptions, " OR "))
+}
+
+// NotFilter negates a filter
+type NotFilter struct {
+	// Filter is the filter to negate
+	Filter Filter
+}
+
+// Apply returns true if the filter does not match
+func (f *NotFilter) Apply(notification *github.Notification) bool {
+	return !f.Filter.Apply(notification)
+}
+
+// Description returns a human-readable description of the filter
+func (f *NotFilter) Description() string {
+	return fmt.Sprintf("NOT (%s)", f.Filter.Description())
+}

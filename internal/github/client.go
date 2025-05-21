@@ -458,3 +458,8 @@ func (c *Client) Do(req *http.Request, v interface{}) (*github.Response, error) 
 func (c *Client) GetRawClient() *github.Client {
 	return c.client
 }
+
+// SetRawClient sets the underlying GitHub client
+func (c *Client) SetRawClient(client *github.Client) {
+	c.client = client
+}

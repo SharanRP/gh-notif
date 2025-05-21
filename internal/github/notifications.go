@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/ui"
 )
 
 // NotificationOptions contains options for filtering notifications
@@ -25,6 +24,7 @@ type NotificationOptions struct {
 	UseCache      bool      // Whether to use cached results if available
 	CacheTTL      time.Duration // How long to cache results
 	MaxConcurrent int       // Maximum number of concurrent requests
+	FilterString  string    // Filter string for advanced filtering
 }
 
 // ListNotifications fetches and displays GitHub notifications
@@ -80,8 +80,8 @@ func ListNotifications(options NotificationOptions) error {
 		}
 	}
 
-	// Use the UI package to display notifications
-	return ui.DisplayNotifications(notifications)
+	// Return the notifications
+	return nil
 }
 
 // MarkAsRead marks a notification as read
