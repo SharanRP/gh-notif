@@ -1,0 +1,253 @@
+# gh-notif Configuration File
+# This is a sample configuration file with detailed comments
+
+# API settings
+api:
+  # Base URL for the GitHub API
+  # Use this to connect to GitHub Enterprise instances
+  # Default: https://api.github.com
+  base_url: https://api.github.com
+  
+  # Upload URL for the GitHub API
+  # Default: https://uploads.github.com
+  upload_url: https://uploads.github.com
+  
+  # Timeout in seconds for API requests
+  # Default: 30
+  timeout: 30
+  
+  # Number of times to retry failed API requests
+  # Default: 3
+  retry_count: 3
+  
+  # Delay in seconds between retries
+  # Default: 1
+  retry_delay: 1
+
+# Authentication settings
+auth:
+  # GitHub OAuth client ID
+  # This is used for the OAuth device flow
+  # Default: Ov23lirRc5ncZbqzHOgH (gh-notif's client ID)
+  client_id: Ov23lirRc5ncZbqzHOgH
+  
+  # GitHub OAuth client secret
+  # This is used for the OAuth device flow
+  # Default: (gh-notif's client secret)
+  client_secret: your_client_secret
+  
+  # OAuth scopes to request
+  # Default: ["notifications", "repo", "user"]
+  scopes:
+    - notifications
+    - repo
+    - user
+  
+  # Token storage method
+  # Options:
+  #   - file: Store token in a file
+  #   - keyring: Store token in the system keyring
+  #   - auto: Use keyring if available, otherwise file
+  # Default: auto
+  token_storage: auto
+
+# Display settings
+display:
+  # Color theme
+  # Options:
+  #   - dark: Dark theme
+  #   - light: Light theme
+  #   - auto: Detect based on terminal
+  # Default: auto
+  theme: dark
+  
+  # Date format
+  # Options:
+  #   - relative: Show dates as relative (e.g., "2 days ago")
+  #   - absolute: Show dates as absolute (e.g., "2023-01-01")
+  #   - iso: Show dates in ISO format (e.g., "2023-01-01T12:00:00Z")
+  # Default: relative
+  date_format: relative
+  
+  # Whether to show emojis in the output
+  # Default: true
+  show_emojis: true
+  
+  # Whether to use compact mode for output
+  # Default: false
+  compact_mode: false
+  
+  # Default output format
+  # Options:
+  #   - table: Table format
+  #   - json: JSON format
+  #   - yaml: YAML format
+  #   - text: Plain text format
+  # Default: table
+  output_format: table
+
+# Notification settings
+notifications:
+  # Default filter to apply when listing notifications
+  # Options:
+  #   - all: Show all notifications
+  #   - unread: Show only unread notifications
+  #   - participating: Show only notifications in which you're participating
+  # Default: unread
+  default_filter: unread
+  
+  # Whether to automatically refresh notifications
+  # Default: false
+  auto_refresh: false
+  
+  # Refresh interval in seconds
+  # Default: 60
+  refresh_interval: 60
+  
+  # Organizations to exclude from notifications
+  # Default: []
+  exclude_orgs: []
+  
+  # Repositories to exclude from notifications
+  # Default: []
+  exclude_repos: []
+  
+  # Notification types to exclude
+  # Default: []
+  exclude_types: []
+  
+  # Organizations to include in notifications (if empty, include all)
+  # Default: []
+  include_orgs: []
+  
+  # Repositories to include in notifications (if empty, include all)
+  # Default: []
+  include_repos: []
+  
+  # Notification types to include (if empty, include all)
+  # Default: []
+  include_types: []
+
+# Advanced settings
+advanced:
+  # Enable debug logging
+  # Default: false
+  debug: false
+  
+  # Maximum number of concurrent operations
+  # Default: 5
+  max_concurrent: 5
+  
+  # Cache time-to-live in seconds
+  # Default: 3600 (1 hour)
+  cache_ttl: 3600
+  
+  # Cache directory
+  # Default: ~/.gh-notif-cache
+  cache_dir: ""
+  
+  # Cache type
+  # Options:
+  #   - memory: In-memory cache
+  #   - badger: BadgerDB-backed cache
+  #   - bolt: BoltDB-backed cache
+  #   - null: No caching
+  # Default: badger
+  cache_type: badger
+  
+  # Maximum cache size in bytes
+  # Default: 1073741824 (1GB)
+  cache_max_size: 1073741824
+  
+  # Memory limit for cache in bytes
+  # Default: 104857600 (100MB)
+  cache_memory_limit: 104857600
+  
+  # Default editor for config edit
+  # Default: Depends on OS (notepad on Windows, nano on Unix)
+  editor: notepad
+  
+  # Size of batches for concurrent requests
+  # Default: 5
+  batch_size: 5
+  
+  # Whether to use ETags for conditional requests
+  # Default: true
+  use_etag: true
+  
+  # Whether to refresh cache in the background
+  # Default: true
+  background_refresh: true
+  
+  # Number of concurrent prefetch operations
+  # Default: 2
+  prefetch_concurrency: 2
+  
+  # Whether to stream API responses
+  # Default: false
+  stream_response: false
+
+# Scoring settings
+scoring:
+  # Weight for age factor in notification scoring
+  # Default: 0.5
+  age_weight: 0.5
+  
+  # Weight for involvement factor in notification scoring
+  # Default: 0.8
+  involvement_weight: 0.8
+  
+  # Weight for activity factor in notification scoring
+  # Default: 0.6
+  activity_weight: 0.6
+  
+  # Weight for repository factor in notification scoring
+  # Default: 0.7
+  repository_weight: 0.7
+  
+  # Weight for notification type factor in scoring
+  # Default: 0.5
+  type_weight: 0.5
+  
+  # Weight for notification reason factor in scoring
+  # Default: 0.6
+  reason_weight: 0.6
+
+# UI settings
+ui:
+  # Default view mode
+  # Options:
+  #   - compact: Compact view
+  #   - detailed: Detailed view
+  #   - split: Split view
+  #   - table: Table view
+  # Default: split
+  default_view: split
+  
+  # Whether to show keyboard shortcuts
+  # Default: true
+  show_shortcuts: true
+  
+  # Whether to show help text
+  # Default: true
+  show_help: true
+  
+  # Whether to use animations
+  # Default: true
+  use_animations: true
+  
+  # Whether to use Unicode characters
+  # Default: true
+  use_unicode: true
+  
+  # Whether to optimize for screen readers
+  # Default: false
+  screen_reader_mode: false
+  
+  # Whether to use large text
+  # Default: false
+  large_text: false
+  
+  # Whether to use high contrast mode
+  # Default: false
+  high_contrast: false

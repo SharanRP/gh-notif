@@ -1,0 +1,142 @@
+.TH GH-NOTIF 1 "May 2025" "gh-notif" "User Commands"
+.SH NAME
+gh-notif \- A high-performance CLI tool for managing GitHub notifications
+.SH SYNOPSIS
+.B gh-notif
+[\fICOMMAND\fR] [\fIOPTIONS\fR]
+.SH DESCRIPTION
+.B gh-notif
+is a command-line tool for managing GitHub notifications with advanced filtering, grouping, and search capabilities. It provides a modern terminal UI and supports concurrent operations for improved performance.
+.SH COMMANDS
+.TP
+.BR auth
+Manage GitHub authentication
+.TP
+.BR list
+List GitHub notifications with powerful filtering
+.TP
+.BR read
+Mark a notification as read
+.TP
+.BR mark-read
+Mark multiple notifications as read
+.TP
+.BR open
+Open a notification in the browser
+.TP
+.BR group
+Group notifications by various criteria
+.TP
+.BR search
+Search notifications with full-text search
+.TP
+.BR watch
+Watch for new notifications in real-time
+.TP
+.BR ui
+Display notifications in an interactive terminal UI
+.TP
+.BR filter
+Manage notification filters
+.TP
+.BR config
+Manage configuration settings
+.TP
+.BR profile
+Profile and benchmark the application
+.TP
+.BR tutorial
+Interactive tutorial for learning gh-notif
+.TP
+.BR wizard
+Setup wizard for configuring gh-notif
+.TP
+.BR actions
+Interactive action mode for notifications
+.TP
+.BR archive
+Archive notifications
+.TP
+.BR unarchive
+Unarchive notifications
+.TP
+.BR subscribe
+Subscribe to notification threads
+.TP
+.BR unsubscribe
+Unsubscribe from notification threads
+.TP
+.BR mute
+Mute notifications from repositories
+.TP
+.BR unmute
+Unmute notifications from repositories
+.TP
+.BR history
+Show action history
+.TP
+.BR undo
+Undo previous actions
+.TP
+.BR completion
+Generate shell completion scripts
+.SH OPTIONS
+.TP
+.BR \-\-config " " \fIFILE\fR
+Specify the configuration file (default: $HOME/.gh-notif.yaml)
+.TP
+.BR \-h ", " \-\-help
+Show help information
+.SH EXAMPLES
+.TP
+List all unread notifications:
+.B gh-notif list
+.TP
+List notifications for a specific repository:
+.B gh-notif list --repo="owner/repo"
+.TP
+Search for notifications containing "bug fix":
+.B gh-notif search "bug fix"
+.TP
+Group notifications by repository:
+.B gh-notif group --by repository
+.TP
+Watch for new notifications:
+.B gh-notif watch
+.TP
+Start the interactive terminal UI:
+.B gh-notif ui
+.TP
+Run the interactive tutorial:
+.B gh-notif tutorial
+.SH FILES
+.TP
+.I ~/.gh-notif.yaml
+Default configuration file
+.TP
+.I ~/.gh-notif-cache/
+Cache directory
+.TP
+.I ~/.gh-notif-token.json
+Token storage file (when using file-based storage)
+.SH ENVIRONMENT
+.TP
+.B GH_NOTIF_AUTH_TOKEN
+GitHub authentication token (overrides stored token)
+.TP
+.B GH_NOTIF_CONFIG
+Path to configuration file (overrides default)
+.TP
+.B GH_NOTIF_CACHE_DIR
+Path to cache directory (overrides default)
+.TP
+.B GH_NOTIF_DEBUG
+Enable debug mode when set to "true"
+.SH BUGS
+Report bugs at https://github.com/user/gh-notif/issues
+.SH AUTHOR
+gh-notif Contributors
+.SH COPYRIGHT
+Copyright © 2025 gh-notif Contributors. License MIT.
+.SH SEE ALSO
+Full documentation at: https://github.com/user/gh-notif

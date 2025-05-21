@@ -19,6 +19,10 @@ A high-performance CLI tool for managing GitHub notifications in the terminal wi
 - **Watch Mode**: Real-time updates with desktop notifications
 - **Comprehensive Actions**: Mark as read, archive, subscribe/unsubscribe with batch operations
 - **Platform-specific Secure Storage**: Secure credential storage for each platform
+- **Interactive Tutorial**: Built-in tutorial for learning the tool
+- **Setup Wizard**: Guided configuration for optimal settings
+- **Progressive Discovery**: Learn features as you need them
+- **Comprehensive Documentation**: Detailed help, examples, and man pages
 
 ### Performance Optimizations
 
@@ -448,6 +452,8 @@ gh-notif/
 | `mute` | Mute notifications from repositories |
 | `unmute` | Unmute notifications from repositories |
 | `profile` | Profile and benchmark the application |
+| `tutorial` | Interactive tutorial for learning gh-notif |
+| `wizard` | Setup wizard for configuring gh-notif |
 
 ### UI Command
 
@@ -525,9 +531,115 @@ gh-notif profile --benchmark-runs 10 --benchmark-size 200
 | `--benchmark-runs` | Number of benchmark runs (default: 5) |
 | `--benchmark-size` | Size of benchmark data (default: 100) |
 
+### Tutorial Command
+
+The `tutorial` command provides an interactive tutorial for learning gh-notif:
+
+```bash
+# Start the interactive tutorial
+gh-notif tutorial
+
+# Skip the authentication section
+gh-notif tutorial --skip-auth
+
+# Skip the basics section
+gh-notif tutorial --skip-basics
+
+# Skip the advanced section
+gh-notif tutorial --skip-advanced
+
+# Use a specific theme
+gh-notif tutorial --theme light
+
+# Disable colors
+gh-notif tutorial --no-color
+```
+
+#### Tutorial Command Options
+
+| Option | Description |
+|--------|-------------|
+| `--interactive` | Run in interactive mode (default: true) |
+| `--skip-auth` | Skip the authentication section |
+| `--skip-basics` | Skip the basics section |
+| `--skip-advanced` | Skip the advanced section |
+| `--theme` | Color theme (dark, light, auto) |
+| `--no-color` | Disable colors |
+| `--width` | Width of the tutorial |
+| `--height` | Height of the tutorial |
+
+### Wizard Command
+
+The `wizard` command provides an interactive setup wizard for configuring gh-notif:
+
+```bash
+# Start the interactive wizard
+gh-notif wizard
+
+# Skip the authentication section
+gh-notif wizard --skip-auth
+
+# Skip the display section
+gh-notif wizard --skip-display
+
+# Skip the notifications section
+gh-notif wizard --skip-notifications
+
+# Skip the advanced section
+gh-notif wizard --skip-advanced
+
+# Use a specific theme
+gh-notif wizard --theme light
+
+# Disable colors
+gh-notif wizard --no-color
+```
+
+#### Wizard Command Options
+
+| Option | Description |
+|--------|-------------|
+| `--interactive` | Run in interactive mode (default: true) |
+| `--skip-auth` | Skip the authentication section |
+| `--skip-display` | Skip the display section |
+| `--skip-notifications` | Skip the notifications section |
+| `--skip-advanced` | Skip the advanced section |
+| `--theme` | Color theme (dark, light, auto) |
+| `--no-color` | Disable colors |
+| `--width` | Width of the wizard |
+| `--height` | Height of the wizard |
+| `--config` | Path to the configuration file |
+
 ## License
 
 MIT
+
+## Documentation
+
+gh-notif provides comprehensive documentation to help you get the most out of the tool:
+
+### In-tool Documentation
+
+- **Command Help**: Detailed help for all commands with `--help` flag
+- **Examples**: Practical examples for common use cases
+- **Interactive Tutorial**: Step-by-step guide with `gh-notif tutorial`
+- **Contextual Help**: Keyboard shortcut `?` in the TUI for context-specific help
+
+### Project Documentation
+
+- **README.md**: Overview, installation, and usage instructions
+- **CONTRIBUTING.md**: Guidelines for contributors
+- **Man Pages**: System-level documentation with `man gh-notif`
+- **API Documentation**: Generated from code comments
+- **Tutorials**: Step-by-step guides in the `docs/tutorials` directory
+- **Examples**: Sample configurations and usage in the `docs/examples` directory
+
+### Visual Documentation
+
+- **Terminal Recordings**: Demonstrations of features
+- **Screenshots**: Annotated UI examples
+- **Quick Reference**: Visual guide to common commands
+- **Diagrams**: Explanations of complex features
 
 ## Contributing
 
@@ -538,3 +650,5 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
