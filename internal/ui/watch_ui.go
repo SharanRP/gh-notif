@@ -121,7 +121,7 @@ func (m WatchModel) Init() tea.Cmd {
 		return tea.Batch(
 			spinner.Tick,
 			func() tea.Msg {
-				return errMsg{err}
+				return watchErrMsg{err}
 			},
 		)
 	}
@@ -190,7 +190,7 @@ func (m WatchModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return refreshMsg{}
 		})
 
-	case errMsg:
+	case watchErrMsg:
 		m.Error = msg.err
 		m.Loading = false
 		return m, nil
@@ -240,11 +240,11 @@ func (m WatchModel) View() string {
 			eventType := string(event.Type)
 			switch event.Type {
 			case watch.EventNew:
-				eventType = lipgloss.NewStyle().Foreground(m.Styles.SuccessColor).Bold(true).Render("NEW")
+				eventType = lipgloss.NewStyle().Foreground(lipgloss.Color("green")).Bold(true).Render("NEW")
 			case watch.EventUpdated:
-				eventType = lipgloss.NewStyle().Foreground(m.Styles.WarningColor).Bold(true).Render("UPDATED")
+				eventType = lipgloss.NewStyle().Foreground(lipgloss.Color("yellow")).Bold(true).Render("UPDATED")
 			case watch.EventRead:
-				eventType = lipgloss.NewStyle().Foreground(m.Styles.InfoColor).Bold(true).Render("READ")
+				eventType = lipgloss.NewStyle().Foreground(lipgloss.Color("blue")).Bold(true).Render("READ")
 			}
 			s.WriteString(fmt.Sprintf("%s %s - %s\n",
 				eventType,
@@ -275,8 +275,8 @@ func (m WatchModel) View() string {
 // refreshMsg is a message to refresh the UI
 type refreshMsg struct{}
 
-// errMsg is a message containing an error
-type errMsg struct {
+// watchErrMsg is a message containing an error
+type watchErrMsg struct {
 	err error
 }
 

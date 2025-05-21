@@ -9,7 +9,6 @@ import (
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/google/go-github/v60/github"
 	githubclient "github.com/user/gh-notif/internal/github"
 	"github.com/user/gh-notif/internal/grouping"
@@ -55,6 +54,8 @@ type GroupModel struct {
 	GroupBy string
 	// SecondaryGroupBy is the secondary grouping type
 	SecondaryGroupBy string
+	// GroupTableFocused indicates whether the group table is focused
+	GroupTableFocused bool
 }
 
 // NewGroupModel creates a new group UI model
@@ -129,6 +130,7 @@ func NewGroupModel(ctx context.Context, client *githubclient.Client, notificatio
 		Loading:           true,
 		GroupBy:           groupBy,
 		SecondaryGroupBy:  secondaryGroupBy,
+		GroupTableFocused: true,
 	}
 
 	return model
@@ -185,12 +187,12 @@ func (m GroupModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		case "tab":
 			// Toggle focus between tables
-			m.GroupTable.SetFocused(!m.GroupTable.Focused())
-			m.NotificationTable.SetFocused(!m.NotificationTable.Focused())
+			// Note: We need to implement our own focus tracking since table.Model doesn't have SetFocused
+			m.GroupTableFocused = !m.GroupTableFocused
 			return m, nil
 		case "enter":
 			// If a group is selected, show its notifications
-			if m.GroupTable.Focused() && len(m.Groups) > 0 {
+			if m.GroupTableFocused && len(m.Groups) > 0 {
 				selectedRow := m.GroupTable.SelectedRow()
 				if selectedRow[0] != "" {
 					// Find the selected group
@@ -235,7 +237,7 @@ func (m GroupModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, func() tea.Msg {
 			groups, err := m.Grouper.Group(m.Context, m.Notifications)
 			if err != nil {
-				return errMsg{err}
+				return groupErrMsg{err}
 			}
 			return groupResultMsg{groups: groups}
 		}
@@ -283,20 +285,20 @@ func (m GroupModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		return m, nil
 
-	case errMsg:
+	case groupErrMsg:
 		m.Error = msg.err
 		m.Loading = false
 		return m, nil
 	}
 
 	// Update the group table
-	if m.GroupTable.Focused() {
+	if m.GroupTableFocused {
 		m.GroupTable, cmd = m.GroupTable.Update(msg)
 		cmds = append(cmds, cmd)
 	}
 
 	// Update the notification table
-	if m.NotificationTable.Focused() {
+	if !m.GroupTableFocused {
 		m.NotificationTable, cmd = m.NotificationTable.Update(msg)
 		cmds = append(cmds, cmd)
 	}
@@ -365,8 +367,8 @@ type selectGroupMsg struct {
 	group *grouping.Group
 }
 
-// errMsg is a message containing an error
-type errMsg struct {
+// groupErrMsg is a message containing an error
+type groupErrMsg struct {
 	err error
 }
 

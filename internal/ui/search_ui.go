@@ -10,7 +10,6 @@ import (
 	"github.com/charmbracelet/bubbles/table"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/google/go-github/v60/github"
 	githubclient "github.com/user/gh-notif/internal/github"
 	"github.com/user/gh-notif/internal/search"
@@ -171,7 +170,7 @@ func (m SearchModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, func() tea.Msg {
 			results, err := m.Searcher.Search(m.Context, m.Notifications, msg.query)
 			if err != nil {
-				return errMsg{err}
+				return searchErrMsg{err}
 			}
 			return searchResultMsg{results: results}
 		}
@@ -194,7 +193,7 @@ func (m SearchModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.Table.SetRows(rows)
 		return m, nil
 
-	case errMsg:
+	case searchErrMsg:
 		m.Error = msg.err
 		m.Loading = false
 		return m, nil
@@ -268,8 +267,8 @@ type searchResultMsg struct {
 	results []*search.SearchResult
 }
 
-// errMsg is a message containing an error
-type errMsg struct {
+// searchErrMsg is a message containing an error
+type searchErrMsg struct {
 	err error
 }
 
