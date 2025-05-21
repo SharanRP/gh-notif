@@ -13,12 +13,22 @@ A high-performance CLI tool for managing GitHub notifications in the terminal wi
 - **Advanced Filtering**: Complex filters with boolean expressions and named filters
 - **Smart Grouping**: Group notifications by repository, owner, type, or using smart algorithms
 - **Notification Scoring**: Automatically prioritize important notifications
-- **High Performance**: Concurrent operations for improved performance
+- **High Performance**: Concurrent operations with optimized caching for lightning-fast response
 - **Modern Terminal UI**: Interactive interface with responsive layouts
 - **Powerful Search**: Full-text search across all notification content
 - **Watch Mode**: Real-time updates with desktop notifications
 - **Comprehensive Actions**: Mark as read, archive, subscribe/unsubscribe with batch operations
 - **Platform-specific Secure Storage**: Secure credential storage for each platform
+
+### Performance Optimizations
+
+- **Persistent Caching**: BadgerDB/BoltDB-backed persistent cache with smart invalidation
+- **Conditional Requests**: ETag/If-Modified-Since support to minimize API usage
+- **Concurrent Operations**: Optimized worker pools with intelligent backpressure
+- **Memory Efficiency**: Object pooling and streaming responses for reduced memory usage
+- **Request Batching**: Smart batching of API requests for optimal throughput
+- **Background Prefetching**: Predictive loading of likely-needed data
+- **Profiling Tools**: Built-in profiling and benchmarking capabilities
 
 ### Advanced Filtering
 
@@ -327,9 +337,17 @@ display:
 advanced:
   cache_dir: ""          # Default: ~/.gh-notif-cache
   cache_ttl: 3600        # Cache time-to-live in seconds
+  cache_type: "badger"   # Options: memory, badger, bolt, null
+  cache_max_size: 1073741824  # 1GB max cache size
+  cache_memory_limit: 104857600  # 100MB memory limit
   debug: false
   editor: notepad        # Default editor for config edit
   max_concurrent: 5      # Maximum concurrent operations
+  batch_size: 5          # Size of batches for concurrent requests
+  use_etag: true         # Use ETags for conditional requests
+  background_refresh: true  # Refresh cache in the background
+  prefetch_concurrency: 2  # Number of concurrent prefetch operations
+  stream_response: false  # Stream API responses
 
 # Notification settings
 notifications:
@@ -429,6 +447,7 @@ gh-notif/
 | `unsubscribe` | Unsubscribe from notification threads |
 | `mute` | Mute notifications from repositories |
 | `unmute` | Unmute notifications from repositories |
+| `profile` | Profile and benchmark the application |
 
 ### UI Command
 
@@ -469,6 +488,42 @@ gh-notif ui --high-contrast
 | `--screen-reader` | Optimize for screen readers |
 | `--no-unicode` | Use ASCII characters instead of Unicode |
 | `--no-animations` | Disable animations |
+
+### Profile Command
+
+The `profile` command provides tools for profiling and benchmarking the application:
+
+```bash
+# Run basic profiling
+gh-notif profile
+
+# Enable CPU profiling
+gh-notif profile --cpu
+
+# Enable memory profiling
+gh-notif profile --memory
+
+# Set profiling duration
+gh-notif profile --duration 60
+
+# Enable HTTP profiling server
+gh-notif profile --http
+
+# Run benchmarks
+gh-notif profile --benchmark-runs 10 --benchmark-size 200
+```
+
+#### Profile Command Options
+
+| Option | Description |
+|--------|-------------|
+| `--cpu` | Enable CPU profiling (default: true) |
+| `--memory` | Enable memory profiling (default: true) |
+| `--duration` | Duration of profiling in seconds (default: 30) |
+| `--http` | Enable HTTP profiling server |
+| `--http-addr` | HTTP profiling server address (default: localhost:6060) |
+| `--benchmark-runs` | Number of benchmark runs (default: 5) |
+| `--benchmark-size` | Size of benchmark data (default: 100) |
 
 ## License
 

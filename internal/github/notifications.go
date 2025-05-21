@@ -12,19 +12,24 @@ import (
 
 // NotificationOptions contains options for filtering notifications
 type NotificationOptions struct {
-	All           bool      // Include all notifications, not just unread ones
-	Unread        bool      // Only include unread notifications
-	RepoName      string    // Filter by repository name
-	OrgName       string    // Filter by organization name
-	Since         time.Time // Only show notifications updated after this time
-	Before        time.Time // Only show notifications updated before this time
-	Participating bool      // Only show notifications in which the user is participating or mentioned
-	PerPage       int       // Number of results per page
-	Page          int       // Page number
-	UseCache      bool      // Whether to use cached results if available
-	CacheTTL      time.Duration // How long to cache results
-	MaxConcurrent int       // Maximum number of concurrent requests
-	FilterString  string    // Filter string for advanced filtering
+	All               bool          // Include all notifications, not just unread ones
+	Unread            bool          // Only include unread notifications
+	RepoName          string        // Filter by repository name
+	OrgName           string        // Filter by organization name
+	Since             time.Time     // Only show notifications updated after this time
+	Before            time.Time     // Only show notifications updated before this time
+	Participating     bool          // Only show notifications in which the user is participating or mentioned
+	PerPage           int           // Number of results per page
+	Page              int           // Page number
+	UseCache          bool          // Whether to use cached results if available
+	CacheTTL          time.Duration // How long to cache results
+	MaxConcurrent     int           // Maximum number of concurrent requests
+	FilterString      string        // Filter string for advanced filtering
+	BackgroundRefresh bool          // Whether to refresh cache in the background
+	UseETag           bool          // Whether to use ETags for conditional requests
+	BatchSize         int           // Size of batches for concurrent requests
+	StreamResponse    bool          // Whether to stream the response
+	UseOptimized      bool          // Whether to use optimized fetching
 }
 
 // ListNotifications fetches and displays GitHub notifications
@@ -54,6 +59,20 @@ func ListNotifications(options NotificationOptions) error {
 		options.MaxConcurrent = 5
 	}
 
+	// Enable optimized fetching by default
+	options.UseOptimized = true
+
+	// Enable background refresh by default
+	options.BackgroundRefresh = true
+
+	// Enable ETags by default
+	options.UseETag = true
+
+	// Set batch size if not specified
+	if options.BatchSize <= 0 {
+		options.BatchSize = 5
+	}
+
 	// Fetch notifications using the high-performance implementation
 	var notifications []*github.Notification
 
@@ -65,7 +84,12 @@ func ListNotifications(options NotificationOptions) error {
 	} else if !options.All {
 		notifications, err = client.GetUnreadNotifications(options)
 	} else {
-		notifications, err = client.GetAllNotifications(options)
+		// Use optimized implementation if enabled
+		if options.UseOptimized {
+			notifications, err = client.OptimizedGetAllNotifications(options)
+		} else {
+			notifications, err = client.GetAllNotifications(options)
+		}
 	}
 
 	if err != nil {
@@ -191,8 +215,8 @@ func (c *Client) GetAllNotifications(opts NotificationOptions) ([]*github.Notifi
 		opts.Since.Unix(), opts.Before.Unix(), opts.Participating, opts.PerPage)
 
 	// Check cache if enabled
-	if opts.UseCache {
-		if cached, found := c.cache.Get(cacheKey); found {
+	if opts.UseCache && c.cacheManager != nil {
+		if cached, found := c.cacheManager.Manager.Get(cacheKey); found {
 			if notifications, ok := cached.([]*github.Notification); ok {
 				if c.debug {
 					fmt.Printf("Using cached notifications (%d items)\n", len(notifications))
@@ -260,8 +284,8 @@ func (c *Client) GetAllNotifications(opts NotificationOptions) ([]*github.Notifi
 	// If there's only one page, return the results
 	if resp.NextPage == 0 {
 		// Cache the results if enabled
-		if opts.UseCache && opts.CacheTTL > 0 {
-			c.cache.Set(cacheKey, notifications, opts.CacheTTL)
+		if opts.UseCache && opts.CacheTTL > 0 && c.cacheManager != nil {
+			c.cacheManager.Manager.Set(cacheKey, notifications, opts.CacheTTL)
 		}
 		return notifications, nil
 	}
@@ -340,8 +364,8 @@ func (c *Client) GetAllNotifications(opts NotificationOptions) ([]*github.Notifi
 	}
 
 	// Cache the results if enabled
-	if opts.UseCache && opts.CacheTTL > 0 {
-		c.cache.Set(cacheKey, allNotifications, opts.CacheTTL)
+	if opts.UseCache && opts.CacheTTL > 0 && c.cacheManager != nil {
+		c.cacheManager.Manager.Set(cacheKey, allNotifications, opts.CacheTTL)
 	}
 
 	return allNotifications, nil

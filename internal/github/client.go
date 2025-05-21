@@ -23,8 +23,7 @@ type Client struct {
 	ctx           context.Context
 	rateLimiter   *rate.Limiter
 	retryClient   *retryablehttp.Client
-	cache         *Cache
-	cacheMu       sync.RWMutex
+	cacheManager  *CacheManager
 	configManager *config.ConfigManager
 	baseURL       string
 	uploadURL     string
@@ -34,70 +33,10 @@ type Client struct {
 	timeout       time.Duration
 	cacheTTL      time.Duration
 	debug         bool
-}
 
-// Cache is a simple cache for GitHub API responses
-type Cache struct {
-	items map[string]*CacheItem
-	mu    sync.RWMutex
-}
-
-// CacheItem represents a cached API response
-type CacheItem struct {
-	Value      interface{}
-	Expiration time.Time
-}
-
-// NewCache creates a new cache
-func NewCache() *Cache {
-	return &Cache{
-		items: make(map[string]*CacheItem),
-	}
-}
-
-// Get retrieves a value from the cache
-func (c *Cache) Get(key string) (interface{}, bool) {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-
-	item, found := c.items[key]
-	if !found {
-		return nil, false
-	}
-
-	// Check if the item has expired
-	if time.Now().After(item.Expiration) {
-		return nil, false
-	}
-
-	return item.Value, true
-}
-
-// Set adds a value to the cache with the given TTL
-func (c *Cache) Set(key string, value interface{}, ttl time.Duration) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
-	c.items[key] = &CacheItem{
-		Value:      value,
-		Expiration: time.Now().Add(ttl),
-	}
-}
-
-// Delete removes a value from the cache
-func (c *Cache) Delete(key string) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
-	delete(c.items, key)
-}
-
-// Clear removes all items from the cache
-func (c *Cache) Clear() {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
-	c.items = make(map[string]*CacheItem)
+	// Object pools for memory efficiency
+	notificationPool sync.Pool
+	responsePool     sync.Pool
 }
 
 // ClientOption is a function that configures a Client
@@ -174,7 +113,6 @@ func NewClient(ctx context.Context, opts ...ClientOption) (*Client, error) {
 	client := &Client{
 		ctx:           ctx,
 		configManager: cm,
-		cache:         NewCache(),
 		baseURL:       config.API.BaseURL,
 		uploadURL:     config.API.UploadURL,
 		maxConcurrent: config.Advanced.MaxConcurrent,
@@ -183,6 +121,18 @@ func NewClient(ctx context.Context, opts ...ClientOption) (*Client, error) {
 		timeout:       time.Duration(config.API.Timeout) * time.Second,
 		cacheTTL:      time.Duration(config.Advanced.CacheTTL) * time.Second,
 		debug:         config.Advanced.Debug,
+
+		// Initialize object pools
+		notificationPool: sync.Pool{
+			New: func() interface{} {
+				return &github.Notification{}
+			},
+		},
+		responsePool: sync.Pool{
+			New: func() interface{} {
+				return &github.Response{}
+			},
+		},
 	}
 
 	// Apply options
@@ -234,6 +184,13 @@ func NewClient(ctx context.Context, opts ...ClientOption) (*Client, error) {
 	}
 
 	client.client = ghClient
+
+	// Initialize the cache manager
+	cacheManager, err := NewCacheManager(client, config)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create cache manager: %w", err)
+	}
+	client.cacheManager = cacheManager
 
 	return client, nil
 }

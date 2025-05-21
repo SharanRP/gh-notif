@@ -161,6 +161,12 @@ func NewConfigManager() *ConfigManager {
 
 // DefaultConfig returns the default configuration
 func DefaultConfig() *Config {
+	// Find home directory
+	home, err := os.UserHomeDir()
+	if err != nil {
+		home = "."
+	}
+
 	return &Config{
 		Auth: AuthConfig{
 			Scopes:       []string{"notifications", "repo"},
@@ -189,6 +195,7 @@ func DefaultConfig() *Config {
 			Debug:         false,
 			MaxConcurrent: 5,
 			CacheTTL:      3600,
+			CacheDir:      filepath.Join(home, ".gh-notif-cache"),
 			Editor:        getDefaultEditor(),
 		},
 	}
@@ -293,6 +300,7 @@ func (cm *ConfigManager) setDefaults(config *Config) {
 	cm.v.SetDefault("advanced.debug", config.Advanced.Debug)
 	cm.v.SetDefault("advanced.max_concurrent", config.Advanced.MaxConcurrent)
 	cm.v.SetDefault("advanced.cache_ttl", config.Advanced.CacheTTL)
+	cm.v.SetDefault("advanced.cache_dir", config.Advanced.CacheDir)
 	cm.v.SetDefault("advanced.editor", config.Advanced.Editor)
 }
 

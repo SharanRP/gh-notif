@@ -23,7 +23,6 @@ func NewMockClient(ctx context.Context) (*Client, *httptest.Server, error) {
 	// Create a client with default settings
 	client := &Client{
 		ctx:           ctx,
-		cache:         NewCache(),
 		baseURL:       server.URL,
 		uploadURL:     server.URL,
 		maxConcurrent: 5,
@@ -65,7 +64,6 @@ func NewTestClient(ctx context.Context, handler http.Handler) (*Client, *httptes
 	// Create a client with default settings
 	client := &Client{
 		ctx:           ctx,
-		cache:         NewCache(),
 		baseURL:       server.URL,
 		uploadURL:     server.URL,
 		maxConcurrent: 5,

@@ -37,11 +37,41 @@ Thumbs.db
 .gh-notif-config/
 .gh-notif-cache/
 .gh-notif-history/
+.gh-notif-badger/
+.gh-notif-bolt/
+
+# Database files
+*.vlog
+*.sst
+*.mem
+MANIFEST
+KEYREGISTRY
+DISCARD
+*.db
+*.bolt
+*.badger
+
+# Profiling files
+*.prof
+*.pprof
+cpu.prof
+mem.prof
+heap.prof
+goroutine.prof
+block.prof
+mutex.prof
+trace.out
+pprof/
+pprof.*
+http-profile/
 
 # Temporary files
 *.tmp
 *.temp
 *.log
+*.bak
+main_*.go.bak
+test_*.go.bak
 
 # Build artifacts
 gh-notif
