@@ -2,13 +2,23 @@
 
 A high-performance CLI tool for managing GitHub notifications in the terminal with advanced filtering, grouping, and search capabilities.
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/user/gh-notif)](https://goreportcard.com/report/github.com/user/gh-notif)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+`gh-notif` helps you efficiently manage GitHub notifications with powerful filtering, sorting, and grouping capabilities. It provides a modern terminal UI and supports concurrent operations for improved performance.
+
 ## Features
 
-- View and filter GitHub notifications
-- Mark notifications as read
-- Interactive terminal UI
-- Concurrent processing for improved performance
-- OAuth2 authentication with GitHub
+- **Secure Authentication**: OAuth2 device flow with secure token storage
+- **Advanced Filtering**: Complex filters with boolean expressions and named filters
+- **Smart Grouping**: Group notifications by repository, owner, type, or using smart algorithms
+- **Notification Scoring**: Automatically prioritize important notifications
+- **High Performance**: Concurrent operations for improved performance
+- **Modern Terminal UI**: Interactive interface with responsive layouts
+- **Powerful Search**: Full-text search across all notification content
+- **Watch Mode**: Real-time updates with desktop notifications
+- **Comprehensive Actions**: Mark as read, archive, subscribe/unsubscribe with batch operations
+- **Platform-specific Secure Storage**: Secure credential storage for each platform
 
 ### Advanced Filtering
 
@@ -93,21 +103,37 @@ A high-performance CLI tool for managing GitHub notifications in the terminal wi
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/gh-notif.git
+git clone https://github.com/user/gh-notif.git
 cd gh-notif
 
 # Build the binary
-make build
+go build -o gh-notif
 
-# Install to your GOPATH
-make install
+# Install to your GOPATH (optional)
+go install
 ```
 
-### Using Go
+### Using Go Install
 
 ```bash
-go install github.com/yourusername/gh-notif@latest
+go install github.com/user/gh-notif@latest
 ```
+
+### Windows
+
+```powershell
+# Clone the repository
+git clone https://github.com/user/gh-notif.git
+cd gh-notif
+
+# Build the binary
+go build -o gh-notif.exe
+```
+
+### Prerequisites
+
+- Go 1.18 or higher
+- GitHub account with personal access token (for authentication)
 
 ## Usage
 
@@ -116,10 +142,25 @@ go install github.com/yourusername/gh-notif@latest
 Before using gh-notif, you need to authenticate with GitHub:
 
 ```bash
-gh-notif auth
+# Start the authentication process
+gh-notif auth login
+
+# Check authentication status
+gh-notif auth status
+
+# Refresh your token if it has expired
+gh-notif auth refresh
+
+# Log out and remove stored credentials
+gh-notif auth logout
 ```
 
-This will guide you through the authentication process.
+The login command will guide you through the OAuth2 device flow:
+1. A device code will be displayed
+2. A browser will open automatically to GitHub's device activation page
+3. Enter the code on the GitHub page
+4. Authorize the application
+5. The token will be securely stored on your system
 
 ### Listing Notifications
 
@@ -227,60 +268,80 @@ gh-notif read <notification-id>
 
 ## Configuration
 
-gh-notif uses a configuration file located at `~/.config/gh-notif/config.yaml` by default. You can specify a different configuration file using the `--config` flag.
+gh-notif uses a configuration file located at `~/.gh-notif.yaml` by default on Unix systems and `%USERPROFILE%\.gh-notif.yaml` on Windows. You can specify a different configuration file using the `--config` flag.
 
-Example configuration:
-
-```yaml
-# GitHub settings
-github:
-  client_id: your_client_id
-  client_secret: your_client_secret
-  enterprise_url: https://github.example.com  # Optional, for GitHub Enterprise
-
-# General settings
-general:
-  refresh_interval: 60
-  max_concurrent: 5
-  debug: false
-
-# Scoring settings
-scoring:
-  age_weight: 0.3
-  activity_weight: 0.2
-  involvement_weight: 0.3
-  type_weight: 0.1
-  reason_weight: 0.1
-  repo_weight: 0.1
-  custom_repo_weights:
-    owner/important-repo: 0.9
-
-# Watch settings
-watch:
-  refresh_interval: 30
-  max_refresh_interval: 300
-  backoff_factor: 1.5
-  backoff_threshold: 3
-  desktop_notifications: false
-
-# UI settings
-ui:
-  theme: dark
-  highlight_color: "205"
-  show_status_bar: true
-```
+### Configuration Management
 
 You can manage configuration using the `config` command:
 
 ```bash
 # Get a configuration value
-gh-notif config get scoring.age_weight
+gh-notif config get auth.client_id
 
 # Set a configuration value
 gh-notif config set scoring.age_weight 0.5
 
 # List all configuration values
 gh-notif config list
+
+# Edit the configuration file in your default editor
+gh-notif config edit
+
+# Export configuration to a file
+gh-notif config export config-backup.yaml
+
+# Import configuration from a file
+gh-notif config import config-backup.yaml
+```
+
+### Example Configuration
+
+```yaml
+# API settings
+api:
+  base_url: https://api.github.com
+  retry_count: 3
+  retry_delay: 1
+  timeout: 30
+  upload_url: https://uploads.github.com
+
+# Authentication settings
+auth:
+  client_id: your_client_id
+  client_secret: your_client_secret
+  scopes:
+    - notifications
+    - repo
+    - user
+  token_storage: file  # Options: file, keyring, auto
+
+# Display settings
+display:
+  compact_mode: false
+  date_format: relative  # Options: relative, absolute, iso
+  output_format: table   # Options: table, json, yaml, csv
+  show_emojis: true
+  theme: dark            # Options: dark, light
+
+# Advanced settings
+advanced:
+  cache_dir: ""          # Default: ~/.gh-notif-cache
+  cache_ttl: 3600        # Cache time-to-live in seconds
+  debug: false
+  editor: notepad        # Default editor for config edit
+  max_concurrent: 5      # Maximum concurrent operations
+
+# Notification settings
+notifications:
+  auto_refresh: false
+  default_filter: unread
+  exclude_orgs: []       # Organizations to exclude
+  exclude_repos: []      # Repositories to exclude
+  exclude_types: []      # Notification types to exclude
+  include_orgs: []       # Organizations to include (if empty, include all)
+  include_repos: []      # Repositories to include (if empty, include all)
+  include_types: []      # Notification types to include (if empty, include all)
+  refresh_interval: 60   # Refresh interval in seconds
 ```
 
 ## Development
@@ -288,25 +349,126 @@ gh-notif config list
 ### Prerequisites
 
 - Go 1.18 or higher
-- Make (optional, for using the Makefile)
+- Git
 
 ### Building
 
 ```bash
-make build
+# Build for your current platform
+go build -o gh-notif
+
+# Build for Windows
+GOOS=windows GOARCH=amd64 go build -o gh-notif.exe
+
+# Build for macOS
+GOOS=darwin GOARCH=amd64 go build -o gh-notif-macos
+
+# Build for Linux
+GOOS=linux GOARCH=amd64 go build -o gh-notif-linux
 ```
 
 ### Testing
 
 ```bash
-make test
+# Run all tests
+go test ./...
+
+# Run tests with coverage
+go test -coverprofile=coverage.out ./...
+go tool cover -html=coverage.out -o coverage.html
 ```
 
-### Linting
+### Project Structure
+
+```
+gh-notif/
+├── cmd/                  # Command-line interface
+│   └── gh-notif/         # Main command and subcommands
+├── internal/             # Internal packages
+│   ├── auth/             # Authentication
+│   ├── config/           # Configuration management
+│   ├── filter/           # Notification filtering
+│   ├── github/           # GitHub API client
+│   ├── grouping/         # Notification grouping
+│   ├── output/           # Output formatting
+│   ├── scoring/          # Notification scoring
+│   ├── search/           # Search functionality
+│   ├── ui/               # Terminal UI
+│   └── watch/            # Watch mode
+├── main.go               # Application entry point
+└── README.md             # Documentation
+```
+
+## Command Reference
+
+| Command | Description |
+|---------|-------------|
+| `auth login` | Authenticate with GitHub |
+| `auth status` | Check authentication status |
+| `auth logout` | Log out from GitHub |
+| `auth refresh` | Refresh authentication token |
+| `config get` | Get a configuration value |
+| `config set` | Set a configuration value |
+| `config list` | List all configuration values |
+| `config edit` | Edit the configuration file |
+| `config export` | Export configuration to a file |
+| `config import` | Import configuration from a file |
+| `list` | List notifications with filtering |
+| `read` | Mark a notification as read |
+| `mark-read` | Mark multiple notifications as read |
+| `open` | Open a notification in the browser |
+| `group` | Group notifications |
+| `search` | Search notifications |
+| `watch` | Watch for new notifications |
+| `ui` | Interactive terminal UI |
+| `filter save` | Save a filter |
+| `filter list` | List saved filters |
+| `filter get` | Get a filter |
+| `filter delete` | Delete a filter |
+| `subscribe` | Subscribe to notification threads |
+| `unsubscribe` | Unsubscribe from notification threads |
+| `mute` | Mute notifications from repositories |
+| `unmute` | Unmute notifications from repositories |
+
+### UI Command
+
+The `ui` command provides an interactive terminal interface for managing notifications:
 
 ```bash
-make lint
+# Show all notifications in the UI
+gh-notif ui
+
+# Show only unread notifications
+gh-notif ui --unread
+
+# Show notifications for a specific repository
+gh-notif ui --repo owner/repo
+
+# Use a specific view mode
+gh-notif ui --view split
+
+# Use a specific color scheme
+gh-notif ui --theme light
+
+# Enable high contrast mode for accessibility
+gh-notif ui --high-contrast
 ```
+
+#### UI Command Options
+
+| Option | Description |
+|--------|-------------|
+| `--all`, `-a` | Show all notifications, including read ones |
+| `--unread`, `-u` | Show only unread notifications (default: true) |
+| `--repo`, `-r` | Show notifications for a specific repository |
+| `--org`, `-o` | Show notifications for a specific organization |
+| `--view`, `-v` | Initial view mode (compact, detailed, split, table) |
+| `--theme`, `-t` | Color theme (dark, light, high-contrast) |
+| `--high-contrast` | Enable high contrast mode |
+| `--large-text` | Enable large text mode |
+| `--screen-reader` | Optimize for screen readers |
+| `--no-unicode` | Use ASCII characters instead of Unicode |
+| `--no-animations` | Disable animations |
 
 ## License
 
@@ -315,3 +477,9 @@ MIT
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request

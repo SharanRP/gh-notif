@@ -32,3 +32,26 @@ Thumbs.db
 # Application specific files
 .gh-notif.yaml
 .gh-notif-token.json
+.gh-notif-token.enc
+.gh-notif-key
+.gh-notif-config/
+.gh-notif-cache/
+.gh-notif-history/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Build artifacts
+gh-notif
+gh-notif.exe
+gh-notif-ui
+gh-notif-ui.exe
+gh-notif-simple
+gh-notif-simple.exe
+
+# Coverage reports
+coverage/
+coverage.out
+coverage.html
