@@ -17,16 +17,16 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         go-version: ['1.20', '1.21']
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go-version }}
-        
+
     - name: Cache Go modules
       uses: actions/cache@v3
       with:
@@ -36,16 +36,16 @@ jobs:
         key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
         restore-keys: |
           ${{ runner.os }}-go-${{ matrix.go-version }}-
-          
+
     - name: Download dependencies
       run: go mod download
-      
+
     - name: Verify dependencies
       run: go mod verify
-      
+
     - name: Run tests
       run: go test -v -race -coverprofile=coverage.out ./...
-      
+
     - name: Upload coverage to Codecov
       if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.21'
       uses: codecov/codecov-action@v3
@@ -57,16 +57,16 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: ${{ env.GO_VERSION }}
-        
+
     - name: golangci-lint
       uses: golangci/golangci-lint-action@v3
       with:
@@ -76,16 +76,16 @@ jobs:
   format:
     name: Format Check
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: ${{ env.GO_VERSION }}
-        
+
     - name: Check formatting
       run: |
         if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then
@@ -97,21 +97,21 @@ jobs:
   security:
     name: Security Scan
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: ${{ env.GO_VERSION }}
-        
+
     - name: Run Gosec Security Scanner
       uses: securecodewarrior/github-action-gosec@master
       with:
         args: '-fmt sarif -out gosec.sarif ./...'
-        
+
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v2
       with:
@@ -120,19 +120,19 @@ jobs:
   vulnerability-check:
     name: Vulnerability Check
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: ${{ env.GO_VERSION }}
-        
+
     - name: Install govulncheck
       run: go install golang.org/x/vuln/cmd/govulncheck@latest
-      
+
     - name: Run govulncheck
       run: govulncheck ./...
 
@@ -140,18 +140,18 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     needs: [test, lint, format, security, vulnerability-check]
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        
+
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: ${{ env.GO_VERSION }}
-        
+
     - name: Cache Go modules
       uses: actions/cache@v3
       with:
@@ -161,21 +161,30 @@ jobs:
         key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
         restore-keys: |
           ${{ runner.os }}-go-${{ env.GO_VERSION }}-
-          
+
+    - name: Create dist directory
+      run: mkdir -p dist
+
     - name: Build for multiple platforms
       run: |
+        # Set version info
+        VERSION=$(git describe --tags --always --dirty)
+        COMMIT=$(git rev-parse --short HEAD)
+        DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        LDFLAGS="-s -w -X main.versionString=${VERSION} -X main.commitString=${COMMIT} -X main.dateString=${DATE}"
+
         # Linux
-        GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o dist/gh-notif-linux-amd64
-        GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o dist/gh-notif-linux-arm64
-        
+        GOOS=linux GOARCH=amd64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-linux-amd64 .
+        GOOS=linux GOARCH=arm64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-linux-arm64 .
+
         # macOS
-        GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o dist/gh-notif-darwin-amd64
-        GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o dist/gh-notif-darwin-arm64
-        
+        GOOS=darwin GOARCH=amd64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-darwin-amd64 .
+        GOOS=darwin GOARCH=arm64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-darwin-arm64 .
+
         # Windows
-        GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o dist/gh-notif-windows-amd64.exe
-        GOOS=windows GOARCH=arm64 go build -ldflags="-s -w" -o dist/gh-notif-windows-arm64.exe
-        
+        GOOS=windows GOARCH=amd64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-windows-amd64.exe .
+        GOOS=windows GOARCH=arm64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-windows-arm64.exe .
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -189,33 +198,33 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
         name: binaries
         path: dist/
-        
+
     - name: Make binaries executable (Unix)
       if: runner.os != 'Windows'
       run: chmod +x dist/*
-      
+
     - name: Run integration tests (Linux)
       if: runner.os == 'Linux'
       run: |
         ./dist/gh-notif-linux-amd64 --version
         ./dist/gh-notif-linux-amd64 --help
-        
+
     - name: Run integration tests (macOS)
       if: runner.os == 'macOS'
       run: |
         ./dist/gh-notif-darwin-amd64 --version
         ./dist/gh-notif-darwin-amd64 --help
-        
+
     - name: Run integration tests (Windows)
       if: runner.os == 'Windows'
       run: |

@@ -8,7 +8,7 @@ param(
 )
 
 # Configuration
-$Repo = "user/gh-notif"
+$Repo = "SharanRP/gh-notif"
 $BinaryName = "gh-notif.exe"
 $TempDir = [System.IO.Path]::GetTempPath() + [System.Guid]::NewGuid().ToString()
 
@@ -61,7 +61,7 @@ function Download-File {
         [string]$Url,
         [string]$OutputPath
     )
-    
+
     try {
         Write-Info "Downloading from: $Url"
         Invoke-WebRequest -Uri $Url -OutFile $OutputPath -UseBasicParsing
@@ -77,7 +77,7 @@ function Extract-Archive {
         [string]$ArchivePath,
         [string]$DestinationPath
     )
-    
+
     try {
         Write-Info "Extracting archive..."
         Expand-Archive -Path $ArchivePath -DestinationPath $DestinationPath -Force
@@ -90,7 +90,7 @@ function Extract-Archive {
 # Add to PATH
 function Add-ToPath {
     param([string]$Directory)
-    
+
     $currentPath = [Environment]::GetEnvironmentVariable("PATH", "User")
     if ($currentPath -notlike "*$Directory*") {
         Write-Info "Adding $Directory to PATH..."
@@ -108,38 +108,38 @@ function Install-GhNotif {
     $arch = Get-Architecture
     $version = Get-LatestVersion
     $platform = "Windows_$arch"
-    
+
     Write-Info "Detected platform: $platform"
     Write-Info "Latest version: $version"
-    
+
     # Create temp directory
     New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
-    
+
     # Construct download URL
     $filename = "gh-notif_${platform}.zip"
     $downloadUrl = "https://github.com/$Repo/releases/download/$version/$filename"
     $archivePath = Join-Path $TempDir $filename
-    
+
     # Download
     Download-File -Url $downloadUrl -OutputPath $archivePath
-    
+
     # Extract
     Extract-Archive -ArchivePath $archivePath -DestinationPath $TempDir
-    
+
     # Find the binary
     $binaryPath = Get-ChildItem -Path $TempDir -Name $BinaryName -Recurse | Select-Object -First 1
     if (-not $binaryPath) {
         Write-Error "Binary not found in archive"
     }
-    
+
     $fullBinaryPath = Join-Path $TempDir $binaryPath
-    
+
     # Create install directory
     if (-not (Test-Path $InstallDir)) {
         Write-Info "Creating install directory: $InstallDir"
         New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
     }
-    
+
     # Check if binary already exists
     $targetPath = Join-Path $InstallDir $BinaryName
     if ((Test-Path $targetPath) -and -not $Force) {
@@ -149,18 +149,18 @@ function Install-GhNotif {
             return
         }
     }
-    
+
     # Copy binary
     Write-Info "Installing to $InstallDir"
     Copy-Item -Path $fullBinaryPath -Destination $targetPath -Force
-    
+
     Write-Success "gh-notif installed successfully!"
-    
+
     # Add to PATH if requested
     if ($AddToPath) {
         Add-ToPath -Directory $InstallDir
     }
-    
+
     # Verify installation
     try {
         $versionOutput = & $targetPath --version
@@ -182,15 +182,15 @@ function Cleanup {
 # Main execution
 try {
     Write-Info "Installing gh-notif..."
-    
+
     # Check PowerShell version
     if ($PSVersionTable.PSVersion.Major -lt 5) {
         Write-Error "PowerShell 5.0 or later is required"
     }
-    
+
     # Install
     Install-GhNotif
-    
+
     # Show next steps
     Write-Host ""
     Write-Info "Next steps:"
@@ -199,13 +199,13 @@ try {
     Write-Host "  3. Run 'gh-notif tutorial' for an interactive tutorial"
     Write-Host "  4. Run 'gh-notif wizard' to configure your preferences"
     Write-Host ""
-    
+
     if (-not $AddToPath) {
         Write-Info "To use gh-notif from anywhere, add it to your PATH:"
         Write-Host "  Add-ToPath '$InstallDir'"
         Write-Host "  Or run this script with -AddToPath"
     }
-    
+
     Write-Host ""
     Write-Info "For more information, visit: https://github.com/$Repo"
 }

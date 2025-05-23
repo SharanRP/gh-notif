@@ -160,24 +160,24 @@ A high-performance CLI tool for managing GitHub notifications in the terminal wi
 
 #### Linux/macOS
 ```bash
-curl -fsSL https://raw.githubusercontent.com/user/gh-notif/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/SharanRP/gh-notif/main/scripts/install.sh | bash
 ```
 
 #### Windows (PowerShell)
 ```powershell
-iwr -useb https://raw.githubusercontent.com/user/gh-notif/main/scripts/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/SharanRP/gh-notif/main/scripts/install.ps1 | iex
 ```
 
 ### Package Managers
 
 #### Homebrew (macOS/Linux)
 ```bash
-brew install user/tap/gh-notif
+brew install SharanRP/tap/gh-notif
 ```
 
 #### Scoop (Windows)
 ```powershell
-scoop bucket add user https://github.com/user/scoop-bucket
+scoop bucket add SharanRP https://github.com/SharanRP/scoop-bucket
 scoop install gh-notif
 ```
 
@@ -188,20 +188,20 @@ sudo snap install gh-notif
 
 #### Flatpak (Linux)
 ```bash
-flatpak install flathub com.github.user.gh-notif
+flatpak install flathub com.github.SharanRP.gh-notif
 ```
 
 #### APT (Debian/Ubuntu)
 ```bash
 # Download and install DEB package
-curl -fsSL https://github.com/user/gh-notif/releases/latest/download/gh-notif_amd64.deb -o gh-notif.deb
+curl -fsSL https://github.com/SharanRP/gh-notif/releases/latest/download/gh-notif_amd64.deb -o gh-notif.deb
 sudo dpkg -i gh-notif.deb
 ```
 
 #### YUM/DNF (RHEL/Fedora)
 ```bash
 # Download and install RPM package
-curl -fsSL https://github.com/user/gh-notif/releases/latest/download/gh-notif-1.0.0-1.x86_64.rpm -o gh-notif.rpm
+curl -fsSL https://github.com/SharanRP/gh-notif/releases/latest/download/gh-notif-1.0.0-1.x86_64.rpm -o gh-notif.rpm
 sudo rpm -i gh-notif.rpm
 ```
 
@@ -209,27 +209,27 @@ sudo rpm -i gh-notif.rpm
 
 ```bash
 # Run directly
-docker run --rm -it ghcr.io/user/gh-notif:latest --help
+docker run --rm -it ghcr.io/SharanRP/gh-notif:latest --help
 
 # Create alias for easier use
-echo 'alias gh-notif="docker run --rm -it -v ~/.gh-notif:/root/.gh-notif ghcr.io/user/gh-notif:latest"' >> ~/.bashrc
+echo 'alias gh-notif="docker run --rm -it -v ~/.gh-notif:/root/.gh-notif ghcr.io/SharanRP/gh-notif:latest"' >> ~/.bashrc
 ```
 
 ### Manual Download
 
-Download the latest release for your platform from the [releases page](https://github.com/user/gh-notif/releases/latest).
+Download the latest release for your platform from the [releases page](https://github.com/SharanRP/gh-notif/releases/latest).
 
 ### From Source
 
 #### Using Go Install
 ```bash
-go install github.com/user/gh-notif@latest
+go install github.com/SharanRP/gh-notif@latest
 ```
 
 #### Build from source
 ```bash
 # Clone the repository
-git clone https://github.com/user/gh-notif.git
+git clone https://github.com/SharanRP/gh-notif.git
 cd gh-notif
 
 # Build the binary
@@ -876,6 +876,8 @@ gh-notif provides comprehensive documentation to help you get the most out of th
 - **[Repository Subscriptions](docs/repository-subscriptions.md)**: Advanced subscription management
 - **[Enhanced UI](docs/ENHANCED_UI.md)**: Modern terminal interface features
 - **[Additional Commands](docs/additional-commands.md)**: Archive, undo, batch actions, and utilities
+- **[Installation Guide](docs/installation.md)**: Comprehensive installation instructions
+- **[Package Distribution](docs/package-distribution-summary.md)**: Distribution system overview
 - **[Quick Reference](docs/quick-reference.md)**: Command cheat sheet
 - **[Keyboard Shortcuts](docs/keyboard-shortcuts.md)**: Complete keyboard navigation guide
 - **CONTRIBUTING.md**: Guidelines for contributors

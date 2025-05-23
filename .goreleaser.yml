@@ -7,7 +7,7 @@ before:
 
 builds:
   - id: gh-notif
-    main: ./main.go
+    main: .
     binary: gh-notif
     env:
       - CGO_ENABLED=0
@@ -83,7 +83,7 @@ changelog:
 
 release:
   github:
-    owner: user
+    owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
     name: gh-notif
   draft: false
   prerelease: auto
@@ -97,12 +97,12 @@ release:
 
     #### Homebrew (macOS/Linux)
     ```bash
-    brew install user/tap/gh-notif
+    brew install SharanRP/tap/gh-notif
     ```
 
     #### Scoop (Windows)
     ```powershell
-    scoop bucket add user https://github.com/user/scoop-bucket
+    scoop bucket add SharanRP https://github.com/SharanRP/scoop-bucket
     scoop install gh-notif
     ```
 
@@ -110,23 +110,23 @@ release:
     Download the appropriate binary for your platform from the assets below.
 
   footer: |
-    **Full Changelog**: https://github.com/user/gh-notif/compare/{{ .PreviousTag }}...{{ .Tag }}
+    **Full Changelog**: https://github.com/SharanRP/gh-notif/compare/{{ .PreviousTag }}...{{ .Tag }}
 
     ## Docker Images
 
     ```bash
-    docker pull ghcr.io/user/gh-notif:{{ .Tag }}
-    docker pull ghcr.io/user/gh-notif:latest
+    docker pull ghcr.io/SharanRP/gh-notif:{{ .Tag }}
+    docker pull ghcr.io/SharanRP/gh-notif:latest
     ```
 
 brews:
   - name: gh-notif
     repository:
-      owner: user
+      owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     folder: Formula
-    homepage: https://github.com/user/gh-notif
+    homepage: https://github.com/SharanRP/gh-notif
     description: "A high-performance CLI tool for managing GitHub notifications"
     license: MIT
     test: |
@@ -141,10 +141,10 @@ brews:
 scoops:
   - name: gh-notif
     repository:
-      owner: user
+      owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
       name: scoop-bucket
       token: "{{ .Env.SCOOP_BUCKET_GITHUB_TOKEN }}"
-    homepage: https://github.com/user/gh-notif
+    homepage: https://github.com/SharanRP/gh-notif
     description: "A high-performance CLI tool for managing GitHub notifications"
     license: MIT
 
@@ -153,7 +153,7 @@ nfpms:
     package_name: gh-notif
     file_name_template: "{{ .ConventionalFileName }}"
     vendor: gh-notif Contributors
-    homepage: https://github.com/user/gh-notif
+    homepage: https://github.com/SharanRP/gh-notif
     maintainer: gh-notif Contributors <noreply@github.com>
     description: |-
       A high-performance CLI tool for managing GitHub notifications.
@@ -206,8 +206,8 @@ snapcrafts:
 
 dockers:
   - image_templates:
-      - "ghcr.io/user/gh-notif:{{ .Tag }}-amd64"
-      - "ghcr.io/user/gh-notif:latest-amd64"
+      - "ghcr.io/SharanRP/gh-notif:{{ .Tag }}-amd64"
+      - "ghcr.io/SharanRP/gh-notif:latest-amd64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -222,8 +222,8 @@ dockers:
       - docs/
       - completions/
   - image_templates:
-      - "ghcr.io/user/gh-notif:{{ .Tag }}-arm64"
-      - "ghcr.io/user/gh-notif:latest-arm64"
+      - "ghcr.io/SharanRP/gh-notif:{{ .Tag }}-arm64"
+      - "ghcr.io/SharanRP/gh-notif:latest-arm64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -240,14 +240,14 @@ dockers:
       - completions/
 
 docker_manifests:
-  - name_template: "ghcr.io/user/gh-notif:{{ .Tag }}"
+  - name_template: "ghcr.io/SharanRP/gh-notif:{{ .Tag }}"
     image_templates:
-      - "ghcr.io/user/gh-notif:{{ .Tag }}-amd64"
-      - "ghcr.io/user/gh-notif:{{ .Tag }}-arm64"
-  - name_template: "ghcr.io/user/gh-notif:latest"
+      - "ghcr.io/SharanRP/gh-notif:{{ .Tag }}-amd64"
+      - "ghcr.io/SharanRP/gh-notif:{{ .Tag }}-arm64"
+  - name_template: "ghcr.io/SharanRP/gh-notif:latest"
     image_templates:
-      - "ghcr.io/user/gh-notif:latest-amd64"
-      - "ghcr.io/user/gh-notif:latest-arm64"
+      - "ghcr.io/SharanRP/gh-notif:latest-amd64"
+      - "ghcr.io/SharanRP/gh-notif:latest-arm64"
 
 announce:
   skip: true
