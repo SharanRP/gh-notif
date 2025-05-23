@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 env:
-  GO_VERSION: '1.21'
+  GO_VERSION: '1.22'
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        go-version: ['1.21']
+        go-version: ['1.22']
 
     steps:
     - name: Checkout code
@@ -27,12 +27,24 @@ jobs:
       with:
         go-version: ${{ matrix.go-version }}
 
-    - name: Cache Go modules
+    - name: Cache Go modules (Unix)
+      if: runner.os != 'Windows'
       uses: actions/cache@v3
       with:
         path: |
           ~/.cache/go-build
           ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-${{ matrix.go-version }}-
+
+    - name: Cache Go modules (Windows)
+      if: runner.os == 'Windows'
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~\AppData\Local\go-build
+          ~\go\pkg\mod
         key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
         restore-keys: |
           ${{ runner.os }}-go-${{ matrix.go-version }}-
@@ -43,15 +55,30 @@ jobs:
     - name: Verify dependencies
       run: go mod verify
 
-    - name: Run tests
+    - name: Set up test environment
+      run: |
+        # Set environment variables for consistent test behavior
+        echo "CGO_ENABLED=1" >> $GITHUB_ENV
+        echo "GOOS=${{ runner.os == 'Windows' && 'windows' || runner.os == 'macOS' && 'darwin' || 'linux' }}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Run tests (Unix)
+      if: runner.os != 'Windows'
       run: |
         # Run only internal package tests, excluding integration/distribution tests
         # Skip flaky tests that depend on previous state or have timing issues
-        go test -v -race -coverprofile=coverage.out ./internal/... ./cmd/... \
+        go test -v -race -timeout=10m -coverprofile=coverage.out ./internal/... ./cmd/... \
           -skip="TestConfigManagerGetSetValue/Get_display.theme|TestFilterEngine"
 
+    - name: Run tests (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        # Run only internal package tests, excluding integration/distribution tests
+        # Skip flaky tests that depend on previous state or have timing issues
+        go test -v -race -timeout=10m -coverprofile=coverage.out ./internal/... ./cmd/... -skip="TestConfigManagerGetSetValue/Get_display.theme|TestFilterEngine"
+
     - name: Upload coverage to Codecov
-      if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.21'
+      if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.22'
       uses: codecov/codecov-action@v3
       with:
         file: ./coverage.out
