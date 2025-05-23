@@ -18,6 +18,10 @@ A high-performance CLI tool for managing GitHub notifications in the terminal wi
 - **Powerful Search**: Full-text search across all notification content
 - **Watch Mode**: Real-time updates with desktop notifications
 - **Comprehensive Actions**: Mark as read, archive, subscribe/unsubscribe with batch operations
+- **GitHub Discussions Monitoring**: Full-featured discussions tracking with analytics and engagement metrics
+- **Discussion Analytics**: Trending topics, community insights, and engagement analysis
+- **Smart Discussion Search**: Full-text search with indexing and relevance scoring
+- **Discussion Thread Visualization**: Interactive terminal UI for viewing discussions and comments
 - **Platform-specific Secure Storage**: Secure credential storage for each platform
 - **Interactive Tutorial**: Built-in tutorial for learning the tool
 - **Setup Wizard**: Guided configuration for optimal settings
@@ -109,6 +113,45 @@ A high-performance CLI tool for managing GitHub notifications in the terminal wi
 - **Advanced Query Syntax**: Use complex search queries
   ```
   gh-notif search "bug fix" --regex --case-sensitive
+  ```
+
+### GitHub Discussions Monitoring
+
+- **Comprehensive Discussion Tracking**: Monitor discussions across repositories
+  ```
+  gh-notif discussions list
+  gh-notif discussions list --repo owner/repo
+  gh-notif discussions list --category "Q&A" --state open
+  ```
+
+- **Discussion Analytics**: Get insights into community engagement
+  ```
+  gh-notif discussions analytics
+  gh-notif discussions analytics --repo owner/repo
+  gh-notif discussions trending
+  ```
+
+- **Smart Search**: Full-text search across discussions with relevance scoring
+  ```
+  gh-notif discussions search "bug report"
+  gh-notif discussions search "feature request" --category "Ideas"
+  ```
+
+- **Interactive Discussion Viewer**: View discussions with threading and markdown rendering
+  ```
+  gh-notif discussions view owner/repo 123
+  ```
+
+- **Unanswered Questions**: Find questions that need attention
+  ```
+  gh-notif discussions unanswered
+  gh-notif discussions unanswered --repo owner/repo
+  ```
+
+- **Discussion Filtering**: Advanced filtering by category, state, author, and engagement
+  ```
+  gh-notif discussions list --category "Q&A" --author username
+  gh-notif discussions list --state open --min-upvotes 5
   ```
 
 ## Installation
@@ -363,6 +406,43 @@ gh-notif watch --desktop-notification
 
 # Watch in interactive mode
 gh-notif watch --interactive
+```
+
+### Managing Discussions
+
+To work with GitHub discussions:
+
+```bash
+# List discussions from subscribed repositories
+gh-notif discussions list
+
+# List discussions from a specific repository
+gh-notif discussions list --repo owner/repo
+
+# Filter discussions by category and state
+gh-notif discussions list --category "Q&A" --state open
+
+# Search discussions
+gh-notif discussions search "bug report"
+gh-notif discussions search "feature request" --repo owner/repo
+
+# View a specific discussion with comments
+gh-notif discussions view owner/repo 123
+
+# Show trending discussions
+gh-notif discussions trending
+gh-notif discussions trending --repo owner/repo --limit 10
+
+# Find unanswered questions
+gh-notif discussions unanswered
+gh-notif discussions unanswered --repo owner/repo
+
+# Generate discussion analytics
+gh-notif discussions analytics
+gh-notif discussions analytics --repo owner/repo
+
+# Interactive discussion browser
+gh-notif discussions list --interactive
 ```
 
 ### Marking Notifications as Read
