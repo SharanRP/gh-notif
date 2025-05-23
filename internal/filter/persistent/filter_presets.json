@@ -3,7 +3,7 @@
     "name": "test-filter",
     "description": "Test filter",
     "expression": "repo:owner/repo is:unread",
-    "created": "2025-05-24T00:00:47.3657155+05:30",
+    "created": "2025-05-24T00:10:36.4394564+05:30",
     "last_used": "0001-01-01T00:00:00Z",
     "use_count": 0
   }
