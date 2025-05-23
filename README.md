@@ -113,41 +113,134 @@ A high-performance CLI tool for managing GitHub notifications in the terminal wi
 
 ## Installation
 
-### From Source
+### Quick Install (Recommended)
 
+#### Linux/macOS
 ```bash
-# Clone the repository
-git clone https://github.com/user/gh-notif.git
-cd gh-notif
-
-# Build the binary
-go build -o gh-notif
-
-# Install to your GOPATH (optional)
-go install
+curl -fsSL https://raw.githubusercontent.com/user/gh-notif/main/scripts/install.sh | bash
 ```
 
-### Using Go Install
+#### Windows (PowerShell)
+```powershell
+iwr -useb https://raw.githubusercontent.com/user/gh-notif/main/scripts/install.ps1 | iex
+```
 
+### Package Managers
+
+#### Homebrew (macOS/Linux)
+```bash
+brew install user/tap/gh-notif
+```
+
+#### Scoop (Windows)
+```powershell
+scoop bucket add user https://github.com/user/scoop-bucket
+scoop install gh-notif
+```
+
+#### Snap (Linux)
+```bash
+sudo snap install gh-notif
+```
+
+#### Flatpak (Linux)
+```bash
+flatpak install flathub com.github.user.gh-notif
+```
+
+#### APT (Debian/Ubuntu)
+```bash
+# Download and install DEB package
+curl -fsSL https://github.com/user/gh-notif/releases/latest/download/gh-notif_amd64.deb -o gh-notif.deb
+sudo dpkg -i gh-notif.deb
+```
+
+#### YUM/DNF (RHEL/Fedora)
+```bash
+# Download and install RPM package
+curl -fsSL https://github.com/user/gh-notif/releases/latest/download/gh-notif-1.0.0-1.x86_64.rpm -o gh-notif.rpm
+sudo rpm -i gh-notif.rpm
+```
+
+### Docker
+
+```bash
+# Run directly
+docker run --rm -it ghcr.io/user/gh-notif:latest --help
+
+# Create alias for easier use
+echo 'alias gh-notif="docker run --rm -it -v ~/.gh-notif:/root/.gh-notif ghcr.io/user/gh-notif:latest"' >> ~/.bashrc
+```
+
+### Manual Download
+
+Download the latest release for your platform from the [releases page](https://github.com/user/gh-notif/releases/latest).
+
+### From Source
+
+#### Using Go Install
 ```bash
 go install github.com/user/gh-notif@latest
 ```
 
-### Windows
-
-```powershell
+#### Build from source
+```bash
 # Clone the repository
 git clone https://github.com/user/gh-notif.git
 cd gh-notif
 
 # Build the binary
-go build -o gh-notif.exe
+make build
+
+# Or build manually
+go build -o gh-notif
+```
+
+### Shell Completions
+
+After installation, enable shell completions:
+
+#### Bash
+```bash
+# For current session
+source <(gh-notif completion bash)
+
+# For all sessions
+gh-notif completion bash | sudo tee /etc/bash_completion.d/gh-notif
+```
+
+#### Zsh
+```bash
+# For current session
+source <(gh-notif completion zsh)
+
+# For all sessions
+gh-notif completion zsh > "${fpath[1]}/_gh-notif"
+```
+
+#### Fish
+```bash
+# For current session
+gh-notif completion fish | source
+
+# For all sessions
+gh-notif completion fish > ~/.config/fish/completions/gh-notif.fish
+```
+
+#### PowerShell
+```powershell
+# For current session
+gh-notif completion powershell | Out-String | Invoke-Expression
+
+# For all sessions
+gh-notif completion powershell > gh-notif.ps1
+# Add ". path\to\gh-notif.ps1" to your PowerShell profile
 ```
 
 ### Prerequisites
 
-- Go 1.18 or higher
-- GitHub account with personal access token (for authentication)
+- GitHub account for authentication
+- For building from source: Go 1.20 or higher
 
 ## Usage
 

@@ -1,0 +1,84 @@
+app-id: com.github.user.gh-notif
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.golang
+command: gh-notif
+
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+  - --filesystem=home
+  - --filesystem=xdg-config/gh-notif:create
+  - --filesystem=xdg-cache/gh-notif:create
+  - --filesystem=xdg-data/gh-notif:create
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.freedesktop.secrets
+
+modules:
+  - name: gh-notif
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/golang/bin
+      env:
+        GOROOT: /usr/lib/sdk/golang
+        GOCACHE: /run/build/gh-notif/go-build-cache
+        GOMODCACHE: /run/build/gh-notif/go-mod-cache
+        CGO_ENABLED: "0"
+    build-commands:
+      - |
+        set -eu
+        export GOPATH=/run/build/gh-notif/go
+        export GOPROXY=https://proxy.golang.org,direct
+        export GOSUMDB=sum.golang.org
+        
+        # Build the application
+        go build -v -ldflags="-s -w" -o gh-notif ./main.go
+        
+        # Install binary
+        install -Dm755 gh-notif /app/bin/gh-notif
+        
+        # Install documentation
+        install -Dm644 README.md /app/share/doc/gh-notif/README.md
+        install -Dm644 LICENSE /app/share/licenses/gh-notif/LICENSE
+        install -Dm644 CHANGELOG.md /app/share/doc/gh-notif/CHANGELOG.md
+        
+        # Install man pages if they exist
+        if [ -d docs/man ]; then
+          for manpage in docs/man/*.1; do
+            if [ -f "$manpage" ]; then
+              install -Dm644 "$manpage" "/app/share/man/man1/$(basename "$manpage")"
+            fi
+          done
+        fi
+        
+        # Install shell completions if they exist
+        if [ -d completions ]; then
+          if [ -f completions/gh-notif.bash ]; then
+            install -Dm644 completions/gh-notif.bash /app/share/bash-completion/completions/gh-notif
+          fi
+          if [ -f completions/gh-notif.zsh ]; then
+            install -Dm644 completions/gh-notif.zsh /app/share/zsh/site-functions/_gh-notif
+          fi
+          if [ -f completions/gh-notif.fish ]; then
+            install -Dm644 completions/gh-notif.fish /app/share/fish/completions/gh-notif.fish
+          fi
+        fi
+        
+        # Install desktop file
+        install -Dm644 packaging/flatpak/com.github.user.gh-notif.desktop /app/share/applications/com.github.user.gh-notif.desktop
+        
+        # Install icon
+        install -Dm644 packaging/flatpak/com.github.user.gh-notif.svg /app/share/icons/hicolor/scalable/apps/com.github.user.gh-notif.svg
+        
+        # Install metainfo
+        install -Dm644 packaging/flatpak/com.github.user.gh-notif.metainfo.xml /app/share/metainfo/com.github.user.gh-notif.metainfo.xml
+    sources:
+      - type: git
+        url: https://github.com/user/gh-notif.git
+        tag: v1.0.0
+        commit: commit-hash-placeholder

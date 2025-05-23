@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="console-application">
+  <id>com.github.user.gh-notif</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>gh-notif</name>
+  <summary>A high-performance CLI tool for managing GitHub notifications</summary>
+  <description>
+    <p>
+      gh-notif helps you efficiently manage GitHub notifications with powerful
+      filtering, sorting, and grouping capabilities. It provides a modern
+      terminal UI and supports concurrent operations for improved performance.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>High-performance notification listing with efficient filtering</li>
+      <li>Advanced filtering with boolean expressions and named filters</li>
+      <li>Smart grouping and notification scoring</li>
+      <li>Real-time watch mode with desktop notifications</li>
+      <li>Interactive terminal UI with responsive layouts</li>
+      <li>Comprehensive actions (mark as read, archive, subscribe/unsubscribe)</li>
+      <li>Platform-specific secure credential storage</li>
+      <li>Performance optimizations with caching and concurrent operations</li>
+    </ul>
+  </description>
+  
+  <launchable type="desktop-id">com.github.user.gh-notif.desktop</launchable>
+  
+  <provides>
+    <binary>gh-notif</binary>
+  </provides>
+  
+  <url type="homepage">https://github.com/user/gh-notif</url>
+  <url type="bugtracker">https://github.com/user/gh-notif/issues</url>
+  <url type="help">https://github.com/user/gh-notif/blob/main/README.md</url>
+  <url type="vcs-browser">https://github.com/user/gh-notif</url>
+  
+  <developer_name>gh-notif Contributors</developer_name>
+  
+  <categories>
+    <category>Development</category>
+    <category>Utility</category>
+  </categories>
+  
+  <keywords>
+    <keyword>github</keyword>
+    <keyword>notifications</keyword>
+    <keyword>cli</keyword>
+    <keyword>terminal</keyword>
+    <keyword>git</keyword>
+  </keywords>
+  
+  <screenshots>
+    <screenshot type="default">
+      <caption>Main notification list view</caption>
+      <image>https://raw.githubusercontent.com/user/gh-notif/main/docs/screenshots/main-view.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Interactive terminal UI</caption>
+      <image>https://raw.githubusercontent.com/user/gh-notif/main/docs/screenshots/terminal-ui.png</image>
+    </screenshot>
+  </screenshots>
+  
+  <releases>
+    <release version="1.0.0" date="2025-01-01">
+      <description>
+        <p>Initial release of gh-notif with comprehensive GitHub notification management features.</p>
+      </description>
+    </release>
+  </releases>
+  
+  <content_rating type="oars-1.1" />
+</component>

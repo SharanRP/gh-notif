@@ -1,0 +1,253 @@
+project_name: gh-notif
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - id: gh-notif
+    main: ./main.go
+    binary: gh-notif
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    goarm:
+      - "7"
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -X main.versionString={{.Version}}
+      - -X main.commitString={{.Commit}}
+      - -X main.dateString={{.Date}}
+      - -X main.builtByString=goreleaser
+
+archives:
+  - id: default
+    builds:
+      - gh-notif
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE
+      - CHANGELOG.md
+      - docs/**/*
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^chore:'
+      - '^style:'
+      - Merge pull request
+      - Merge branch
+  groups:
+    - title: Features
+      regexp: "^.*feat[(\\w)]*:+.*$"
+      order: 0
+    - title: 'Bug fixes'
+      regexp: "^.*fix[(\\w)]*:+.*$"
+      order: 1
+    - title: 'Performance improvements'
+      regexp: "^.*perf[(\\w)]*:+.*$"
+      order: 2
+    - title: Others
+      order: 999
+
+release:
+  github:
+    owner: user
+    name: gh-notif
+  draft: false
+  prerelease: auto
+  mode: replace
+  header: |
+    ## gh-notif {{ .Tag }}
+
+    Welcome to this new release of gh-notif!
+
+    ### Installation
+
+    #### Homebrew (macOS/Linux)
+    ```bash
+    brew install user/tap/gh-notif
+    ```
+
+    #### Scoop (Windows)
+    ```powershell
+    scoop bucket add user https://github.com/user/scoop-bucket
+    scoop install gh-notif
+    ```
+
+    #### Direct Download
+    Download the appropriate binary for your platform from the assets below.
+
+  footer: |
+    **Full Changelog**: https://github.com/user/gh-notif/compare/{{ .PreviousTag }}...{{ .Tag }}
+
+    ## Docker Images
+
+    ```bash
+    docker pull ghcr.io/user/gh-notif:{{ .Tag }}
+    docker pull ghcr.io/user/gh-notif:latest
+    ```
+
+brews:
+  - name: gh-notif
+    repository:
+      owner: user
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    folder: Formula
+    homepage: https://github.com/user/gh-notif
+    description: "A high-performance CLI tool for managing GitHub notifications"
+    license: MIT
+    test: |
+      system "#{bin}/gh-notif --version"
+    install: |
+      bin.install "gh-notif"
+      man1.install Dir["docs/man/*.1"]
+      bash_completion.install "completions/gh-notif.bash" => "gh-notif"
+      zsh_completion.install "completions/gh-notif.zsh" => "_gh-notif"
+      fish_completion.install "completions/gh-notif.fish"
+
+scoops:
+  - name: gh-notif
+    repository:
+      owner: user
+      name: scoop-bucket
+      token: "{{ .Env.SCOOP_BUCKET_GITHUB_TOKEN }}"
+    homepage: https://github.com/user/gh-notif
+    description: "A high-performance CLI tool for managing GitHub notifications"
+    license: MIT
+
+nfpms:
+  - id: packages
+    package_name: gh-notif
+    file_name_template: "{{ .ConventionalFileName }}"
+    vendor: gh-notif Contributors
+    homepage: https://github.com/user/gh-notif
+    maintainer: gh-notif Contributors <noreply@github.com>
+    description: |-
+      A high-performance CLI tool for managing GitHub notifications.
+      gh-notif helps you efficiently manage GitHub notifications with powerful
+      filtering, sorting, and grouping capabilities.
+    license: MIT
+    formats:
+      - deb
+      - rpm
+      - apk
+    dependencies:
+      - git
+    recommends:
+      - ca-certificates
+    bindir: /usr/bin
+    contents:
+      - src: ./docs/man/*.1
+        dst: /usr/share/man/man1/
+        file_info:
+          mode: 0644
+      - src: ./completions/gh-notif.bash
+        dst: /usr/share/bash-completion/completions/gh-notif
+        file_info:
+          mode: 0644
+      - src: ./completions/gh-notif.zsh
+        dst: /usr/share/zsh/site-functions/_gh-notif
+        file_info:
+          mode: 0644
+      - src: ./completions/gh-notif.fish
+        dst: /usr/share/fish/completions/gh-notif.fish
+        file_info:
+          mode: 0644
+
+snapcrafts:
+  - name: gh-notif
+    summary: A high-performance CLI tool for managing GitHub notifications
+    description: |
+      gh-notif helps you efficiently manage GitHub notifications with powerful
+      filtering, sorting, and grouping capabilities. It provides a modern
+      terminal UI and supports concurrent operations for improved performance.
+    grade: stable
+    confinement: strict
+    publish: true
+    license: MIT
+    base: core22
+    apps:
+      gh-notif:
+        command: gh-notif
+        plugs: ["home", "network"]
+
+dockers:
+  - image_templates:
+      - "ghcr.io/user/gh-notif:{{ .Tag }}-amd64"
+      - "ghcr.io/user/gh-notif:latest-amd64"
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/amd64"
+    extra_files:
+      - docs/
+      - completions/
+  - image_templates:
+      - "ghcr.io/user/gh-notif:{{ .Tag }}-arm64"
+      - "ghcr.io/user/gh-notif:latest-arm64"
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/arm64"
+    goarch: arm64
+    extra_files:
+      - docs/
+      - completions/
+
+docker_manifests:
+  - name_template: "ghcr.io/user/gh-notif:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/user/gh-notif:{{ .Tag }}-amd64"
+      - "ghcr.io/user/gh-notif:{{ .Tag }}-arm64"
+  - name_template: "ghcr.io/user/gh-notif:latest"
+    image_templates:
+      - "ghcr.io/user/gh-notif:latest-amd64"
+      - "ghcr.io/user/gh-notif:latest-arm64"
+
+announce:
+  skip: true

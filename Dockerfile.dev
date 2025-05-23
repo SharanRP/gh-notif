@@ -1,0 +1,86 @@
+# Development Dockerfile with all build tools
+FROM golang:1.21-alpine AS dev
+
+# Install development dependencies
+RUN apk add --no-cache \
+    git \
+    ca-certificates \
+    tzdata \
+    make \
+    bash \
+    curl \
+    jq \
+    gcc \
+    musl-dev
+
+# Install development tools
+RUN go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
+    go install github.com/goreleaser/goreleaser@latest && \
+    go install golang.org/x/vuln/cmd/govulncheck@latest && \
+    go install github.com/securecodewarrior/sast-scan/cmd/gosec@latest
+
+# Set working directory
+WORKDIR /app
+
+# Copy go mod files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Default command for development
+CMD ["go", "run", "./main.go"]
+
+# Build stage for testing
+FROM dev AS test
+
+# Run tests
+RUN go test -v -race -coverprofile=coverage.out ./...
+
+# Run linting
+RUN golangci-lint run
+
+# Run security scan
+RUN gosec ./...
+
+# Run vulnerability check
+RUN govulncheck ./...
+
+# Production build stage
+FROM dev AS build
+
+# Build the application with optimizations
+RUN CGO_ENABLED=0 GOOS=linux go build \
+    -ldflags='-w -s -extldflags "-static"' \
+    -a -installsuffix cgo \
+    -o gh-notif \
+    ./main.go
+
+# Final production stage
+FROM scratch AS production
+
+# Import certificates and timezone data
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
+
+# Copy the binary
+COPY --from=build /app/gh-notif /usr/local/bin/gh-notif
+
+# Copy documentation
+COPY --from=build /app/docs /docs
+COPY --from=build /app/README.md /README.md
+COPY --from=build /app/LICENSE /LICENSE
+
+# Set the entrypoint
+ENTRYPOINT ["/usr/local/bin/gh-notif"]
+
+# Add labels
+LABEL org.opencontainers.image.title="gh-notif"
+LABEL org.opencontainers.image.description="A high-performance CLI tool for managing GitHub notifications"
+LABEL org.opencontainers.image.vendor="gh-notif Contributors"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.source="https://github.com/user/gh-notif"
+LABEL org.opencontainers.image.documentation="https://github.com/user/gh-notif/blob/main/README.md"

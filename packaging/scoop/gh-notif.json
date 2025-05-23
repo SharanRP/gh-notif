@@ -1,0 +1,40 @@
+{
+    "version": "1.0.0",
+    "description": "A high-performance CLI tool for managing GitHub notifications",
+    "homepage": "https://github.com/user/gh-notif",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/user/gh-notif/releases/download/v1.0.0/gh-notif_Windows_x86_64.zip",
+            "hash": "sha256-placeholder",
+            "extract_dir": "gh-notif_Windows_x86_64"
+        },
+        "arm64": {
+            "url": "https://github.com/user/gh-notif/releases/download/v1.0.0/gh-notif_Windows_arm64.zip",
+            "hash": "sha256-placeholder",
+            "extract_dir": "gh-notif_Windows_arm64"
+        }
+    },
+    "bin": "gh-notif.exe",
+    "checkver": {
+        "github": "https://github.com/user/gh-notif"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/user/gh-notif/releases/download/v$version/gh-notif_Windows_x86_64.zip",
+                "extract_dir": "gh-notif_Windows_x86_64"
+            },
+            "arm64": {
+                "url": "https://github.com/user/gh-notif/releases/download/v$version/gh-notif_Windows_arm64.zip",
+                "extract_dir": "gh-notif_Windows_arm64"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/checksums.txt"
+        }
+    },
+    "suggest": {
+        "Git": "git"
+    }
+}

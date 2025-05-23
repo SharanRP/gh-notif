@@ -1,0 +1,224 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  GO_VERSION: '1.21'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ env.GO_VERSION }}
+        
+    - name: Cache Go modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ env.GO_VERSION }}-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-${{ env.GO_VERSION }}-
+          
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Run GoReleaser
+      uses: goreleaser/goreleaser-action@v5
+      with:
+        distribution: goreleaser
+        version: latest
+        args: release --clean
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+        SCOOP_BUCKET_GITHUB_TOKEN: ${{ secrets.SCOOP_BUCKET_GITHUB_TOKEN }}
+
+  update-homebrew:
+    name: Update Homebrew Formula
+    runs-on: ubuntu-latest
+    needs: [release]
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: Update Homebrew formula
+      uses: mislav/bump-homebrew-formula-action@v3
+      with:
+        formula-name: gh-notif
+        formula-path: Formula/gh-notif.rb
+        homebrew-tap: user/homebrew-tap
+        base-branch: main
+        download-url: https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/gh-notif_${{ github.ref_name }}_darwin_amd64.tar.gz
+        commit-message: |
+          {{formulaName}} {{version}}
+          
+          Created by https://github.com/mislav/bump-homebrew-formula-action
+      env:
+        COMMITTER_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+
+  update-scoop:
+    name: Update Scoop Manifest
+    runs-on: ubuntu-latest
+    needs: [release]
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: Update Scoop manifest
+      uses: ScoopInstaller/GithubActions@v1
+      with:
+        app: gh-notif
+        bucket: user/scoop-bucket
+        gh_token: ${{ secrets.SCOOP_BUCKET_GITHUB_TOKEN }}
+
+  publish-packages:
+    name: Publish Packages
+    runs-on: ubuntu-latest
+    needs: [release]
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ env.GO_VERSION }}
+        
+    - name: Install packaging tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y rpm
+        
+    - name: Download release artifacts
+      run: |
+        gh release download ${{ github.ref_name }} --pattern "*.tar.gz" --pattern "*.zip"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Create Debian package
+      run: |
+        mkdir -p packaging/deb/gh-notif/DEBIAN
+        mkdir -p packaging/deb/gh-notif/usr/bin
+        mkdir -p packaging/deb/gh-notif/usr/share/man/man1
+        
+        # Extract binary
+        tar -xzf gh-notif_*_linux_amd64.tar.gz
+        cp gh-notif packaging/deb/gh-notif/usr/bin/
+        
+        # Copy man pages
+        cp docs/man/*.1 packaging/deb/gh-notif/usr/share/man/man1/
+        
+        # Create control file
+        cat > packaging/deb/gh-notif/DEBIAN/control << EOF
+        Package: gh-notif
+        Version: ${GITHUB_REF_NAME#v}
+        Section: utils
+        Priority: optional
+        Architecture: amd64
+        Maintainer: gh-notif Contributors <noreply@github.com>
+        Description: A high-performance CLI tool for managing GitHub notifications
+         gh-notif helps you efficiently manage GitHub notifications with powerful
+         filtering, sorting, and grouping capabilities.
+        EOF
+        
+        # Build package
+        dpkg-deb --build packaging/deb/gh-notif
+        mv packaging/deb/gh-notif.deb gh-notif_${GITHUB_REF_NAME#v}_amd64.deb
+        
+    - name: Create RPM package
+      run: |
+        mkdir -p packaging/rpm/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+        
+        # Create spec file
+        cat > packaging/rpm/SPECS/gh-notif.spec << EOF
+        Name:           gh-notif
+        Version:        ${GITHUB_REF_NAME#v}
+        Release:        1%{?dist}
+        Summary:        A high-performance CLI tool for managing GitHub notifications
+        
+        License:        MIT
+        URL:            https://github.com/${{ github.repository }}
+        Source0:        gh-notif_%{version}_linux_amd64.tar.gz
+        
+        BuildArch:      x86_64
+        
+        %description
+        gh-notif helps you efficiently manage GitHub notifications with powerful
+        filtering, sorting, and grouping capabilities.
+        
+        %prep
+        %setup -q -n gh-notif_%{version}_linux_amd64
+        
+        %install
+        mkdir -p %{buildroot}%{_bindir}
+        mkdir -p %{buildroot}%{_mandir}/man1
+        install -m 755 gh-notif %{buildroot}%{_bindir}/
+        install -m 644 docs/man/*.1 %{buildroot}%{_mandir}/man1/
+        
+        %files
+        %{_bindir}/gh-notif
+        %{_mandir}/man1/gh-notif*.1*
+        
+        %changelog
+        * $(date +'%a %b %d %Y') gh-notif Contributors <noreply@github.com> - ${GITHUB_REF_NAME#v}-1
+        - Release ${GITHUB_REF_NAME#v}
+        EOF
+        
+        # Copy source
+        cp gh-notif_*_linux_amd64.tar.gz packaging/rpm/SOURCES/
+        
+        # Build RPM
+        rpmbuild --define "_topdir $(pwd)/packaging/rpm" -ba packaging/rpm/SPECS/gh-notif.spec
+        cp packaging/rpm/RPMS/x86_64/gh-notif-*.rpm .
+        
+    - name: Upload packages to release
+      run: |
+        gh release upload ${{ github.ref_name }} *.deb *.rpm
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify:
+    name: Notify
+    runs-on: ubuntu-latest
+    needs: [release, update-homebrew, update-scoop, publish-packages]
+    if: always()
+    
+    steps:
+    - name: Notify on success
+      if: needs.release.result == 'success'
+      run: |
+        echo "Release ${{ github.ref_name }} completed successfully!"
+        
+    - name: Notify on failure
+      if: needs.release.result == 'failure'
+      run: |
+        echo "Release ${{ github.ref_name }} failed!"
+        exit 1

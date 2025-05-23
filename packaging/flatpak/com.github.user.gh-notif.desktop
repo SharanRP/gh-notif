@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=gh-notif
+GenericName=GitHub Notifications Manager
+Comment=A high-performance CLI tool for managing GitHub notifications
+Exec=gh-notif ui
+Icon=com.github.user.gh-notif
+Terminal=true
+Type=Application
+Categories=Development;Utility;
+Keywords=github;notifications;cli;terminal;git;
+StartupNotify=false
+MimeType=x-scheme-handler/github;
+X-Flatpak-RenamedFrom=gh-notif.desktop;

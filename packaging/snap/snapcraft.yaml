@@ -1,0 +1,75 @@
+name: gh-notif
+base: core22
+version: '1.0.0'
+summary: A high-performance CLI tool for managing GitHub notifications
+description: |
+  gh-notif helps you efficiently manage GitHub notifications with powerful
+  filtering, sorting, and grouping capabilities. It provides a modern
+  terminal UI and supports concurrent operations for improved performance.
+
+  Features:
+  - High-performance notification listing with efficient filtering
+  - Advanced filtering with boolean expressions and named filters
+  - Smart grouping and notification scoring
+  - Real-time watch mode with desktop notifications
+  - Interactive terminal UI with responsive layouts
+  - Comprehensive actions (mark as read, archive, subscribe/unsubscribe)
+  - Platform-specific secure credential storage
+  - Performance optimizations with caching and concurrent operations
+
+grade: stable
+confinement: strict
+license: MIT
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
+apps:
+  gh-notif:
+    command: bin/gh-notif
+    plugs:
+      - home
+      - network
+      - network-bind
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - unity7
+
+parts:
+  gh-notif:
+    plugin: go
+    source: .
+    source-type: git
+    build-snaps:
+      - go/1.21/stable
+    build-environment:
+      - CGO_ENABLED: "0"
+    override-build: |
+      craftctl default
+      
+      # Copy documentation
+      mkdir -p $CRAFT_PART_INSTALL/share/doc/gh-notif
+      cp README.md LICENSE CHANGELOG.md $CRAFT_PART_INSTALL/share/doc/gh-notif/
+      
+      # Copy man pages
+      if [ -d docs/man ]; then
+        mkdir -p $CRAFT_PART_INSTALL/share/man/man1
+        cp docs/man/*.1 $CRAFT_PART_INSTALL/share/man/man1/
+      fi
+      
+      # Copy shell completions
+      if [ -d completions ]; then
+        mkdir -p $CRAFT_PART_INSTALL/share/bash-completion/completions
+        mkdir -p $CRAFT_PART_INSTALL/share/zsh/site-functions
+        mkdir -p $CRAFT_PART_INSTALL/share/fish/completions
+        
+        cp completions/gh-notif.bash $CRAFT_PART_INSTALL/share/bash-completion/completions/gh-notif
+        cp completions/gh-notif.zsh $CRAFT_PART_INSTALL/share/zsh/site-functions/_gh-notif
+        cp completions/gh-notif.fish $CRAFT_PART_INSTALL/share/fish/completions/gh-notif.fish
+      fi
+    stage-packages:
+      - ca-certificates
+      - git
