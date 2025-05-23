@@ -150,6 +150,24 @@ func (cm *ConfigManager) validateKey(key string) error {
 func (cm *ConfigManager) validateValue(key string, value interface{}) error {
 	// Validate based on the key
 	switch key {
+	// Auth settings
+	case "auth.client_id":
+		if _, ok := value.(string); !ok {
+			return errors.New("client ID must be a string")
+		}
+	case "auth.client_secret":
+		if _, ok := value.(string); !ok {
+			return errors.New("client secret must be a string")
+		}
+	case "auth.token_storage":
+		if str, ok := value.(string); ok {
+			if !contains([]string{"auto", "keyring", "file"}, str) {
+				return errors.New("invalid token storage: must be 'auto', 'keyring', or 'file'")
+			}
+		} else {
+			return errors.New("token storage must be a string")
+		}
+
 	// Display settings
 	case "display.theme":
 		if str, ok := value.(string); ok {

@@ -169,6 +169,7 @@ func DefaultConfig() *Config {
 
 	return &Config{
 		Auth: AuthConfig{
+			ClientID:     "Ov23lirRc5ncZbqzHOgH", // Default gh-notif client ID
 			Scopes:       []string{"notifications", "repo"},
 			TokenStorage: "auto",
 		},
@@ -274,6 +275,7 @@ func (cm *ConfigManager) Load() error {
 // setDefaults sets the default values in viper
 func (cm *ConfigManager) setDefaults(config *Config) {
 	// Auth defaults
+	cm.v.SetDefault("auth.client_id", config.Auth.ClientID)
 	cm.v.SetDefault("auth.scopes", config.Auth.Scopes)
 	cm.v.SetDefault("auth.token_storage", config.Auth.TokenStorage)
 

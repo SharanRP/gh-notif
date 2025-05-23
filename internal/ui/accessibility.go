@@ -103,6 +103,60 @@ func GetAccessibleSymbols(settings AccessibilitySettings) Symbols {
 	}
 }
 
+// EnhancedAccessibilitySettings extends accessibility settings with more options
+type EnhancedAccessibilitySettings struct {
+	AccessibilitySettings
+
+	// Screen reader support
+	ScreenReaderMode    bool
+	VerboseDescriptions bool
+	AnnounceChanges     bool
+
+	// Keyboard navigation
+	TabNavigation       bool
+	ArrowKeyNavigation  bool
+	VimKeyBindings      bool
+	CustomKeyBindings   map[string]string
+
+	// Visual accessibility
+	HighContrastMode    bool
+	LargeText           bool
+	ReducedMotion       bool
+	ColorBlindFriendly  bool
+
+	// Audio feedback
+	SoundEffects        bool
+	VoiceFeedback       bool
+
+	// Timing and interaction
+	SlowAnimations      bool
+	ExtendedTimeouts    bool
+	ConfirmActions      bool
+}
+
+// DefaultEnhancedAccessibilitySettings returns default enhanced accessibility settings
+func DefaultEnhancedAccessibilitySettings() EnhancedAccessibilitySettings {
+	return EnhancedAccessibilitySettings{
+		AccessibilitySettings: DefaultAccessibilitySettings(),
+		ScreenReaderMode:      false,
+		VerboseDescriptions:   false,
+		AnnounceChanges:       false,
+		TabNavigation:         true,
+		ArrowKeyNavigation:    true,
+		VimKeyBindings:        false,
+		CustomKeyBindings:     make(map[string]string),
+		HighContrastMode:      false,
+		LargeText:             false,
+		ReducedMotion:         false,
+		ColorBlindFriendly:    false,
+		SoundEffects:          false,
+		VoiceFeedback:         false,
+		SlowAnimations:        false,
+		ExtendedTimeouts:      false,
+		ConfirmActions:        false,
+	}
+}
+
 // GetAccessibleTheme returns a theme appropriate for the given accessibility settings
 func GetAccessibleTheme(settings AccessibilitySettings) Theme {
 	switch settings.ColorScheme {
@@ -198,7 +252,7 @@ func GenerateAccessibleStatusBar(model Model, settings AccessibilitySettings) st
 
 	// Basic information
 	sb.WriteString(fmt.Sprintf("%d notifications", len(model.notifications)))
-	
+
 	if len(model.filteredItems) != len(model.notifications) {
 		sb.WriteString(fmt.Sprintf(" (%d filtered)", len(model.filteredItems)))
 	}

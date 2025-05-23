@@ -14,12 +14,12 @@ func RunApp(ctx context.Context, client *githubclient.Client) error {
 		All:      false,
 		UseCache: true,
 	}
-	
+
 	notifications, err := client.GetUnreadNotifications(options)
 	if err != nil {
 		return fmt.Errorf("failed to get notifications: %w", err)
 	}
-	
-	// Display notifications
-	return DisplayNotifications(notifications)
+
+	// Display notifications with enhanced UI
+	return DisplayEnhancedNotifications(notifications)
 }
