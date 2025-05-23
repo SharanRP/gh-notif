@@ -445,6 +445,60 @@ gh-notif discussions analytics --repo owner/repo
 gh-notif discussions list --interactive
 ```
 
+### Managing Repository Subscriptions
+
+To manage repository subscriptions:
+
+```bash
+# Subscribe to a repository
+gh-notif repo-subscribe owner/repo
+
+# Subscribe with specific activity types
+gh-notif repo-subscribe owner/repo --types issues,pulls,releases
+
+# Subscribe to organization repositories
+gh-notif repo-subscribe "myorg/*" --priority high
+
+# Unsubscribe from repository
+gh-notif repo-unsubscribe owner/repo
+
+# List your subscriptions
+gh-notif subscriptions list
+
+# View subscription activity
+gh-notif subscriptions activity
+
+# Export subscriptions
+gh-notif subscriptions export subscriptions.yaml
+
+# Import subscriptions
+gh-notif subscriptions import subscriptions.yaml
+```
+
+### Additional Commands
+
+For additional functionality:
+
+```bash
+# Archive old notifications
+gh-notif archive --older-than 7d
+
+# Undo last action
+gh-notif undo
+
+# Perform batch actions
+gh-notif actions mark-read --filter "repo:owner/repo"
+
+# Generate man pages
+gh-notif man generate
+
+# Install shell completions
+gh-notif completion install
+
+# Show version information
+gh-notif version
+```
+
 ### Marking Notifications as Read
 
 To mark a notification as read:
@@ -627,6 +681,22 @@ gh-notif/
 | `profile` | Profile and benchmark the application |
 | `tutorial` | Interactive tutorial for learning gh-notif |
 | `wizard` | Setup wizard for configuring gh-notif |
+| `discussions list` | List GitHub discussions with filtering |
+| `discussions search` | Search GitHub discussions |
+| `discussions view` | View a specific discussion with comments |
+| `discussions analytics` | Show discussion analytics and insights |
+| `discussions trending` | Show trending discussions |
+| `discussions unanswered` | Show unanswered questions |
+| `repo-subscribe` | Subscribe to repository notifications |
+| `repo-unsubscribe` | Unsubscribe from repository notifications |
+| `subscriptions` | Manage repository subscriptions |
+| `subscriptions activity` | Show subscription activity |
+| `archive` | Archive notifications |
+| `undo` | Undo the last action |
+| `actions` | Perform batch actions on notifications |
+| `man` | Generate and install man pages |
+| `completion` | Generate shell completion scripts |
+| `version` | Show version information |
 
 ### UI Command
 
@@ -801,6 +871,13 @@ gh-notif provides comprehensive documentation to help you get the most out of th
 ### Project Documentation
 
 - **README.md**: Overview, installation, and usage instructions
+- **[Features Overview](docs/features-overview.md)**: Comprehensive feature guide
+- **[Discussions Guide](docs/discussions.md)**: GitHub Discussions monitoring and analytics
+- **[Repository Subscriptions](docs/repository-subscriptions.md)**: Advanced subscription management
+- **[Enhanced UI](docs/ENHANCED_UI.md)**: Modern terminal interface features
+- **[Additional Commands](docs/additional-commands.md)**: Archive, undo, batch actions, and utilities
+- **[Quick Reference](docs/quick-reference.md)**: Command cheat sheet
+- **[Keyboard Shortcuts](docs/keyboard-shortcuts.md)**: Complete keyboard navigation guide
 - **CONTRIBUTING.md**: Guidelines for contributors
 - **Man Pages**: System-level documentation with `man gh-notif`
 - **API Documentation**: Generated from code comments

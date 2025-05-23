@@ -312,6 +312,34 @@ config := components.ComponentConfig{
 component, err := registry.CreateComponent(config)
 ```
 
+### Discussions UI
+
+The discussions feature includes a beautiful, modern terminal interface:
+
+```go
+// Create enhanced discussion list
+discussionList := discussionsUI.NewDiscussionList(discussions)
+
+// Create discussion viewer with tabs
+discussionViewer := discussionsUI.NewDiscussionViewer(discussion, comments)
+```
+
+**Features:**
+- **Beautiful Visual Design**: Rich emojis, status indicators, engagement metrics
+- **Interactive Components**: Enhanced list view with keyboard navigation
+- **Multiple Output Formats**: Table, interactive box-style, and JSON formats
+- **Real-time Analytics**: Trending topics and community insights
+- **Enhanced Filtering**: Advanced search and filtering capabilities
+- **Multi-tab Viewer**: Discussion/Comments/Analytics/Metadata views
+- **Keyboard Navigation**: Full keyboard support with vim-style bindings
+
+**Visual Elements:**
+- 🟢 OPEN / ✅ ANSWERED status indicators
+- 📝 📁 📂 👤 Rich emoji integration
+- 👍 💬 🔥 Engagement metrics display
+- Smart relative time formatting (2h ago, 3d ago)
+- Enhanced box-style layout for interactive mode
+
 ### Demo Application
 
 Run the comprehensive demo to see all features:
@@ -330,6 +358,7 @@ The demo showcases:
 - Markdown rendering with syntax highlighting
 - Layout system demonstrations
 - Enhanced styling effects
+- Discussions UI components
 
 ## Best Practices
 

@@ -190,6 +190,82 @@ gh-notif ui --high-contrast
 gh-notif ui --large-text
 ```
 
+## GitHub Discussions
+
+```bash
+# List discussions
+gh-notif discussions list
+
+# List from specific repository
+gh-notif discussions list --repo owner/repo
+
+# Search discussions
+gh-notif discussions search "bug report"
+
+# Show analytics
+gh-notif discussions analytics
+
+# Show trending discussions
+gh-notif discussions trending
+
+# Find unanswered questions
+gh-notif discussions unanswered
+
+# Interactive mode
+gh-notif discussions list --interactive
+```
+
+## Repository Subscriptions
+
+```bash
+# Subscribe to repository
+gh-notif repo-subscribe owner/repo
+
+# Subscribe with activity types
+gh-notif repo-subscribe owner/repo --types issues,pulls
+
+# Subscribe to organization
+gh-notif repo-subscribe "myorg/*"
+
+# Unsubscribe
+gh-notif repo-unsubscribe owner/repo
+
+# List subscriptions
+gh-notif subscriptions list
+
+# View activity
+gh-notif subscriptions activity
+
+# Export/import
+gh-notif subscriptions export subs.yaml
+gh-notif subscriptions import subs.yaml
+```
+
+## Additional Commands
+
+```bash
+# Archive notifications
+gh-notif archive --older-than 7d
+
+# Undo last action
+gh-notif undo
+
+# Batch actions
+gh-notif actions mark-read --filter "repo:owner/repo"
+
+# Generate man pages
+gh-notif man generate
+
+# Install completions
+gh-notif completion install
+
+# Show version
+gh-notif version
+
+# First run setup
+gh-notif firstrun
+```
+
 ## Configuration Management
 
 ```bash
