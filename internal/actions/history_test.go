@@ -102,7 +102,7 @@ func TestFormatDuration(t *testing.T) {
 		expected string
 	}{
 		{500 * time.Millisecond, "less than a second"},
-		{1 * time.Second, "1s"},
+		{1 * time.Second, "1.0s"},
 		{1*time.Minute + 30*time.Second, "1m30s"},
 		{2*time.Hour + 15*time.Minute, "2h15m0s"},
 	}

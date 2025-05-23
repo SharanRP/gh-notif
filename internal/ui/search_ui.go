@@ -183,7 +183,7 @@ func (m SearchModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		for i, result := range m.Results {
 			n := result.Notification
 			rows[i] = table.Row{
-				fmt.Sprintf("%d", result.Score),
+				fmt.Sprintf("%.1f", result.Score),
 				n.GetRepository().GetFullName(),
 				n.GetSubject().GetType(),
 				n.GetSubject().GetTitle(),
