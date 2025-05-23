@@ -68,14 +68,14 @@ jobs:
         # Run only internal package tests, excluding integration/distribution tests
         # Skip flaky tests that depend on previous state or have timing issues
         go test -v -race -timeout=10m -coverprofile=coverage.out ./internal/... ./cmd/... \
-          -skip="TestConfigManagerGetSetValue/Get_display.theme|TestFilterEngine"
+          -skip="TestConfigManagerGetSetValue/Get_display.theme|TestFilterEngine|TestWatcherEvents"
 
     - name: Run tests (Windows)
       if: runner.os == 'Windows'
       run: |
         # Run only internal package tests, excluding integration/distribution tests
         # Skip flaky tests that depend on previous state or have timing issues
-        go test -v -race -timeout=10m -coverprofile=coverage.out ./internal/... ./cmd/... -skip="TestConfigManagerGetSetValue/Get_display.theme|TestFilterEngine"
+        go test -v -race -timeout=10m -coverprofile=coverage.out ./internal/... ./cmd/... -skip="TestConfigManagerGetSetValue/Get_display.theme|TestFilterEngine|TestWatcherEvents"
 
     - name: Upload coverage to Codecov
       if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.22'

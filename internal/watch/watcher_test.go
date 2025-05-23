@@ -2,6 +2,7 @@ package watch
 
 import (
 	"context"
+	"sync"
 	"testing"
 	"time"
 
@@ -11,6 +12,7 @@ import (
 
 // MockClient is a mock GitHub client for testing
 type MockClient struct {
+	mu            sync.RWMutex
 	notifications []*github.Notification
 	callCount     int
 	client        *github.Client
@@ -19,24 +21,32 @@ type MockClient struct {
 
 // GetUnreadNotifications returns mock notifications
 func (m *MockClient) GetUnreadNotifications(options githubclient.NotificationOptions) ([]*github.Notification, error) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
 	m.callCount++
 	return m.notifications, nil
 }
 
 // GetAllNotifications returns mock notifications
 func (m *MockClient) GetAllNotifications(options githubclient.NotificationOptions) ([]*github.Notification, error) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
 	m.callCount++
 	return m.notifications, nil
 }
 
 // GetNotificationsByRepo returns mock notifications
 func (m *MockClient) GetNotificationsByRepo(repo string, options githubclient.NotificationOptions) ([]*github.Notification, error) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
 	m.callCount++
 	return m.notifications, nil
 }
 
 // GetNotificationsByOrg returns mock notifications
 func (m *MockClient) GetNotificationsByOrg(org string, options githubclient.NotificationOptions) ([]*github.Notification, error) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
 	m.callCount++
 	return m.notifications, nil
 }
@@ -79,6 +89,13 @@ func (m *MockClient) SetRawClient(client *github.Client) {
 func (m *MockClient) WithContext(ctx context.Context) *MockClient {
 	m.ctx = ctx
 	return m
+}
+
+// SetNotifications safely updates the notifications slice
+func (m *MockClient) SetNotifications(notifications []*github.Notification) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.notifications = notifications
 }
 
 func TestWatcher(t *testing.T) {
@@ -280,7 +297,7 @@ func TestWatcherEvents(t *testing.T) {
 	time.Sleep(200 * time.Millisecond)
 
 	// Update the mock client to return the updated notifications
-	mockClient.notifications = updatedNotifications
+	mockClient.SetNotifications(updatedNotifications)
 
 	// Wait for the second refresh
 	var foundNewNotification bool
