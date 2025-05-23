@@ -2,21 +2,12 @@ run:
   timeout: 5m
   issues-exit-code: 1
   tests: true
-  skip-dirs:
-    - vendor
-    - .git
-    - .github
-    - docs
-    - scripts
-  skip-files:
-    - ".*\\.pb\\.go$"
-    - ".*_generated\\.go$"
 
 output:
-  format: colored-line-number
+  formats:
+    - format: colored-line-number
   print-issued-lines: true
   print-linter-name: true
-  uniq-by-line: true
   sort-results: true
 
 linters-settings:
@@ -29,10 +20,10 @@ linters-settings:
       - (*database/sql.Stmt).Close
 
   govet:
-    check-shadowing: true
     enable-all: true
     disable:
       - fieldalignment
+      - shadow
 
   gocyclo:
     min-complexity: 15
@@ -77,18 +68,16 @@ linters-settings:
   nestif:
     min-complexity: 4
 
-  gomnd:
-    settings:
-      mnd:
-        checks:
-          - argument
-          - case
-          - condition
-          - operation
-          - return
-          - assign
-        ignored-numbers: 0,1,2,3
-        ignored-functions: strings.SplitN
+  mnd:
+    checks:
+      - argument
+      - case
+      - condition
+      - operation
+      - return
+      - assign
+    ignored-numbers: 0,1,2,3
+    ignored-functions: strings.SplitN
 
   godox:
     keywords:
@@ -111,12 +100,11 @@ linters:
   disable-all: true
   enable:
     - bodyclose
-    - deadcode
     - depguard
     - dogsled
     - dupl
     - errcheck
-    - exportloopref
+    - copyloopvar
     - exhaustive
     - funlen
     - gochecknoinits
@@ -125,7 +113,7 @@ linters:
     - gocyclo
     - gofmt
     - goimports
-    - gomnd
+    - mnd
     - goprintffuncname
     - gosec
     - gosimple
@@ -138,20 +126,28 @@ linters:
     - nolintlint
     - rowserrcheck
     - staticcheck
-    - structcheck
     - stylecheck
     - typecheck
     - unconvert
     - unparam
     - unused
-    - varcheck
     - whitespace
 
 issues:
+  exclude-files:
+    - ".*\\.pb\\.go$"
+    - ".*_generated\\.go$"
+  exclude-dirs:
+    - vendor
+    - .git
+    - .github
+    - docs
+    - scripts
+  uniq-by-line: true
   exclude-rules:
     - path: _test\.go
       linters:
-        - gomnd
+        - mnd
         - funlen
         - gocyclo
         - errcheck
@@ -191,5 +187,5 @@ severity:
         - dupl
       severity: info
     - linters:
-        - gomnd
+        - mnd
       severity: info

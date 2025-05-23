@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/SharanRP/gh-notif/cmd/gh-notif"
+	ghnotif "github.com/SharanRP/gh-notif/cmd/gh-notif"
 	"github.com/SharanRP/gh-notif/internal/version"
 )
 

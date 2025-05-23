@@ -384,9 +384,34 @@ func (c *Client) GetThread(threadID string) (*github.Notification, *github.Respo
 
 // WithContext returns a new Client with the given context
 func (c *Client) WithContext(ctx context.Context) *Client {
-	newClient := *c
-	newClient.ctx = ctx
-	return &newClient
+	newClient := &Client{
+		client:        c.client,
+		ctx:           ctx,
+		rateLimiter:   c.rateLimiter,
+		retryClient:   c.retryClient,
+		cacheManager:  c.cacheManager,
+		configManager: c.configManager,
+		baseURL:       c.baseURL,
+		uploadURL:     c.uploadURL,
+		maxConcurrent: c.maxConcurrent,
+		retryCount:    c.retryCount,
+		retryDelay:    c.retryDelay,
+		timeout:       c.timeout,
+		cacheTTL:      c.cacheTTL,
+		debug:         c.debug,
+		// Initialize new object pools to avoid copying sync.Pool
+		notificationPool: sync.Pool{
+			New: func() interface{} {
+				return &github.Notification{}
+			},
+		},
+		responsePool: sync.Pool{
+			New: func() interface{} {
+				return &github.Response{}
+			},
+		},
+	}
+	return newClient
 }
 
 // Do performs an HTTP request and returns the API response
