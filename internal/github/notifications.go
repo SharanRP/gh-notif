@@ -245,12 +245,12 @@ func (c *Client) GetAllNotifications(opts NotificationOptions) ([]*github.Notifi
 
 	// Override per page if specified
 	if opts.PerPage > 0 {
-		listOptions.ListOptions.PerPage = opts.PerPage
+		listOptions.PerPage = opts.PerPage
 	}
 
 	// Set page if specified
 	if opts.Page > 0 {
-		listOptions.ListOptions.Page = opts.Page
+		listOptions.Page = opts.Page
 	}
 
 	// Determine max concurrent requests
@@ -300,7 +300,7 @@ func (c *Client) GetAllNotifications(opts NotificationOptions) ([]*github.Notifi
 		// If GitHub doesn't provide LastPage, estimate based on the number of notifications
 		// GitHub API doesn't provide a total count, so we'll estimate
 		estimatedTotal := len(notifications) * 2 // Assume there are at least twice as many
-		lastPage = (estimatedTotal + listOptions.ListOptions.PerPage - 1) / listOptions.ListOptions.PerPage
+		lastPage = (estimatedTotal + listOptions.PerPage - 1) / listOptions.PerPage
 	}
 
 	// Create a channel for results
@@ -324,7 +324,7 @@ func (c *Client) GetAllNotifications(opts NotificationOptions) ([]*github.Notifi
 
 			// Create a copy of the list options with the current page
 			pageOpts := *listOptions
-			pageOpts.ListOptions.Page = pageNum
+			pageOpts.Page = pageNum
 
 			// Fetch the page
 			pageNotifications, pageResp, pageErr := c.client.Activity.ListNotifications(ctx, &pageOpts)
@@ -544,7 +544,6 @@ func (c *Client) FetchNotificationDetails(notifications []*github.Notification) 
 			if err != nil {
 				errCh <- fmt.Errorf("error fetching details for %s: %w", subjectType, err)
 			}
-
 		}(notification)
 	}
 

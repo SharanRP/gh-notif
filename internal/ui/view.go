@@ -189,7 +189,7 @@ func (m Model) renderDetailedView(styles Styles, symbols Symbols) string {
 	sb.WriteString(status + "\n\n")
 
 	// Render updated time
-	updated := fmt.Sprintf("Updated: %s", n.GetUpdatedAt().Time.Format(time.RFC1123))
+	updated := fmt.Sprintf("Updated: %s", n.GetUpdatedAt().Format(time.RFC1123))
 	sb.WriteString(updated + "\n\n")
 
 	// Render URL

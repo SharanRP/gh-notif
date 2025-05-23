@@ -169,7 +169,7 @@ func MuteMultipleRepositories(ctx context.Context, repoNames []string, opts *Bat
 
 	// Add tasks to the processor
 	for _, repoName := range repoNames {
-		repoName := repoName // Capture for closure
+		// Capture for closure
 		processor.AddTask(func() (Action, error) {
 			result, err := MuteRepository(ctx, repoName)
 			if err != nil {

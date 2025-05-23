@@ -311,7 +311,7 @@ func (f *Formatter) formatCSV(notifications []*github.Notification) error {
 			case "title":
 				value = n.GetSubject().GetTitle()
 			case "updated":
-				value = n.GetUpdatedAt().Time.Format(time.RFC3339)
+				value = n.GetUpdatedAt().Format(time.RFC3339)
 			case "status":
 				if n.GetUnread() {
 					value = "Unread"

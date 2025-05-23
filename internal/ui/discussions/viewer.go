@@ -949,7 +949,7 @@ func (dv *DiscussionViewer) renderMetricsSection() string {
 		fmt.Sprintf("👍 Upvotes: %d", dv.discussion.UpvoteCount),
 		fmt.Sprintf("💬 Comments: %d", dv.discussion.CommentCount),
 		fmt.Sprintf("🔥 Reactions: %d", dv.discussion.ReactionCount),
-		fmt.Sprintf("👁️ Views: N/A"), // Not available in current API
+		"👁️ Views: N/A", // Not available in current API
 	}
 
 	metricsContent := lipgloss.JoinVertical(

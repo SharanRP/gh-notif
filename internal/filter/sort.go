@@ -212,7 +212,7 @@ func (s *Sorter) compare(a, b *github.Notification) bool {
 		case SortByTime:
 			if a.GetUpdatedAt().Time.Equal(b.GetUpdatedAt().Time) {
 				result = 0
-			} else if a.GetUpdatedAt().Time.Before(b.GetUpdatedAt().Time) {
+			} else if a.GetUpdatedAt().Before(b.GetUpdatedAt().Time) {
 				result = -1
 			} else {
 				result = 1

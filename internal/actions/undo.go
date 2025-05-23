@@ -148,7 +148,7 @@ func UndoMultipleActions(ctx context.Context, actions []Action, opts *BatchOptio
 
 	// Add tasks to the processor
 	for _, action := range actions {
-		action := action // Capture for closure
+		// Capture for closure
 		processor.AddTask(func() (Action, error) {
 			undoResult, err := UndoAction(ctx, action)
 			if err != nil {

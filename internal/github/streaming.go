@@ -100,7 +100,7 @@ func (s *NotificationStream) stream() {
 
 	// Override per page if specified
 	if s.options.PerPage > 0 {
-		listOptions.ListOptions.PerPage = s.options.PerPage
+		listOptions.PerPage = s.options.PerPage
 	}
 
 	// Determine max concurrent requests
@@ -140,7 +140,7 @@ func (s *NotificationStream) stream() {
 		// If GitHub doesn't provide LastPage, estimate based on the number of notifications
 		// GitHub API doesn't provide a total count, so we'll estimate
 		estimatedTotal := len(notifications) * 2 // Assume there are at least twice as many
-		lastPage = (estimatedTotal + listOptions.ListOptions.PerPage - 1) / listOptions.ListOptions.PerPage
+		lastPage = (estimatedTotal + listOptions.PerPage - 1) / listOptions.PerPage
 	}
 
 	// Use a semaphore to limit concurrent requests
@@ -165,7 +165,7 @@ func (s *NotificationStream) stream() {
 
 			// Create a copy of the list options with the current page
 			pageOpts := *listOptions
-			pageOpts.ListOptions.Page = pageNum
+			pageOpts.Page = pageNum
 
 			// Wait for rate limiter
 			if err := s.client.waitForRateLimit(s.ctx); err != nil {

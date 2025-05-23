@@ -210,7 +210,7 @@ func (m *Manager) StartWatching(ctx context.Context, options WatcherOptions) err
 	}
 
 	// Set default options
-	if options.Options.UseCache == false {
+	if !options.Options.UseCache {
 		options.Options = m.defaultOptions
 	}
 

@@ -55,7 +55,7 @@ func TestBatchProcessorWithErrorsDetailed(t *testing.T) {
 
 	// Add tasks with some errors
 	for i := 0; i < 10; i++ {
-		i := i // Capture for closure
+		// Capture for closure
 		processor.AddTask(func() (Action, error) {
 			if i%2 == 0 {
 				return Action{

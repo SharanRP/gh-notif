@@ -201,12 +201,13 @@ func TestGroupByOwner(t *testing.T) {
 	foundOwner1 := false
 	foundOwner2 := false
 	for _, group := range groups {
-		if group.Name == "owner1" {
+		switch group.Name {
+		case "owner1":
 			foundOwner1 = true
 			if group.Count != 2 {
 				t.Errorf("Expected 2 notifications in owner1 group, got %d", group.Count)
 			}
-		} else if group.Name == "owner2" {
+		case "owner2":
 			foundOwner2 = true
 			if group.Count != 1 {
 				t.Errorf("Expected 1 notification in owner2 group, got %d", group.Count)

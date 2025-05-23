@@ -138,7 +138,7 @@ func SubscribeToMultipleThreads(ctx context.Context, notificationIDs []string, o
 
 	// Add tasks to the processor
 	for _, id := range notificationIDs {
-		id := id // Capture for closure
+		// Capture for closure
 		processor.AddTask(func() (Action, error) {
 			result, err := SubscribeToThread(ctx, id)
 			if err != nil {
@@ -173,7 +173,7 @@ func UnsubscribeFromMultipleThreads(ctx context.Context, notificationIDs []strin
 
 	// Add tasks to the processor
 	for _, id := range notificationIDs {
-		id := id // Capture for closure
+		// Capture for closure
 		processor.AddTask(func() (Action, error) {
 			result, err := UnsubscribeFromThread(ctx, id)
 			if err != nil {

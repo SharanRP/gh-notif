@@ -164,7 +164,7 @@ func ArchiveMultipleNotifications(ctx context.Context, notificationIDs []string,
 
 	// Add tasks to the processor
 	for _, id := range notificationIDs {
-		id := id // Capture for closure
+		// Capture for closure
 		processor.AddTask(func() (Action, error) {
 			result, err := ArchiveNotification(ctx, id)
 			if err != nil {
@@ -199,7 +199,7 @@ func UnarchiveMultipleNotifications(ctx context.Context, notificationIDs []strin
 
 	// Add tasks to the processor
 	for _, id := range notificationIDs {
-		id := id // Capture for closure
+		// Capture for closure
 		processor.AddTask(func() (Action, error) {
 			result, err := UnarchiveNotification(ctx, id)
 			if err != nil {

@@ -274,7 +274,7 @@ func (c *Client) fetchPageBatch(
 	for page := startPage; page <= endPage; page++ {
 		// Create a copy of the options with the current page
 		pageOpts := *baseOptions
-		pageOpts.ListOptions.Page = page
+		pageOpts.Page = page
 
 		// Fetch the page
 		notifications, resp, err := c.client.Activity.ListNotifications(ctx, &pageOpts)

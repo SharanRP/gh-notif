@@ -91,9 +91,10 @@ func parseFilterString(filterStr string) (filter.Filter, error) {
 
 			switch key {
 			case "is":
-				if value == "read" {
+				switch value {
+				case "read":
 					filters = append(filters, &filter.ReadFilter{Read: true})
-				} else if value == "unread" {
+				case "unread":
 					filters = append(filters, &filter.ReadFilter{Read: false})
 				}
 			case "repo":

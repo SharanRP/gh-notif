@@ -202,7 +202,8 @@ func testPackageInstall(t *testing.T, test PackageTest) {
 	defer cancel()
 
 	// Special handling for package managers that need setup
-	if test.PackageType == "brew" {
+	switch test.PackageType {
+	case "brew":
 		// Add tap first
 		cmd := exec.CommandContext(ctx, "brew", "tap", "SharanRP/tap")
 		output, err := cmd.CombinedOutput()
@@ -210,7 +211,7 @@ func testPackageInstall(t *testing.T, test PackageTest) {
 			t.Logf("Tap add output: %s", output)
 			// Continue even if tap already exists
 		}
-	} else if test.PackageType == "scoop" {
+	case "scoop":
 		// Add bucket first
 		cmd := exec.CommandContext(ctx, "scoop", "bucket", "add", "SharanRP", "https://github.com/SharanRP/scoop-bucket")
 		output, err := cmd.CombinedOutput()

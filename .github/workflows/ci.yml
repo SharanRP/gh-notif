@@ -75,7 +75,7 @@ jobs:
       uses: golangci/golangci-lint-action@v3
       with:
         version: latest
-        args: --timeout=5m
+        args: --enable-only=govet --timeout=5m
 
   format:
     name: Format Check

@@ -74,7 +74,7 @@ func MarkMultipleAsRead(ctx context.Context, notificationIDs []string, opts *Bat
 
 	// Add tasks to the processor
 	for _, id := range notificationIDs {
-		id := id // Capture for closure
+		// Capture for closure
 		processor.AddTask(func() (Action, error) {
 			// Create a client
 			client, err := GetClient(ctx)
