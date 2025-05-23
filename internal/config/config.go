@@ -428,5 +428,3 @@ func contains(slice []string, str string) bool {
 	}
 	return false
 }
-
-

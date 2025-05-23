@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/google/go-github/v60/github"
 	"github.com/SharanRP/gh-notif/internal/ui"
 	"github.com/SharanRP/gh-notif/internal/ui/components"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/google/go-github/v60/github"
 )
 
 // DemoModel demonstrates the enhanced UI components
@@ -27,8 +27,8 @@ type DemoModel struct {
 	demos       []Demo
 
 	// Styling
-	theme       ui.EnhancedTheme
-	styles      ui.EnhancedStyles
+	theme  ui.EnhancedTheme
+	styles ui.EnhancedStyles
 }
 
 // Demo represents a UI component demonstration
@@ -308,11 +308,11 @@ func (m *DemoModel) setupStylingDemo() {
 
 %s`,
 		ui.CreateGradientText("Gradient Text Example", m.theme.PrimaryGradient),
-		m.styles.BadgePrimary.Render("PRIMARY") + " " +
-		m.styles.BadgeSecondary.Render("SECONDARY") + " " +
-		m.styles.BadgeSuccess.Render("SUCCESS") + " " +
-		m.styles.BadgeWarning.Render("WARNING") + " " +
-		m.styles.BadgeError.Render("ERROR"),
+		m.styles.BadgePrimary.Render("PRIMARY")+" "+
+			m.styles.BadgeSecondary.Render("SECONDARY")+" "+
+			m.styles.BadgeSuccess.Render("SUCCESS")+" "+
+			m.styles.BadgeWarning.Render("WARNING")+" "+
+			m.styles.BadgeError.Render("ERROR"),
 		ui.CreateProgressBar(40, 0.75, m.theme),
 		m.styles.Glow.Render("✨ Glowing Text Effect ✨"),
 		m.styles.PanelElevated.Width(50).Render("Elevated Panel with Border"),

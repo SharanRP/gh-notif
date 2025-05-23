@@ -49,7 +49,7 @@ func MuteRepository(ctx context.Context, repoFullName string) (*ActionResult, er
 		Ignored:    github.Bool(true),
 	}
 	_, resp, err := client.GetRawClient().Activity.SetRepositorySubscription(ctx, owner, repo, sub)
-	
+
 	if err != nil {
 		action.Success = false
 		action.Error = err
@@ -74,7 +74,7 @@ func MuteRepository(ctx context.Context, repoFullName string) (*ActionResult, er
 
 	// Record the successful action
 	action.Success = true
-	
+
 	// Add to history if available
 	if history := GetActionHistory(); history != nil {
 		history.Add(action)
@@ -117,7 +117,7 @@ func UnmuteRepository(ctx context.Context, repoFullName string) (*ActionResult, 
 		Ignored:    github.Bool(false),
 	}
 	_, resp, err := client.GetRawClient().Activity.SetRepositorySubscription(ctx, owner, repo, sub)
-	
+
 	if err != nil {
 		action.Success = false
 		action.Error = err
@@ -142,7 +142,7 @@ func UnmuteRepository(ctx context.Context, repoFullName string) (*ActionResult, 
 
 	// Record the successful action
 	action.Success = true
-	
+
 	// Add to history if available
 	if history := GetActionHistory(); history != nil {
 		history.Add(action)

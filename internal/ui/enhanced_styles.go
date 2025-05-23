@@ -18,17 +18,17 @@ type EnhancedTheme struct {
 	AccentGradient    []lipgloss.Color
 
 	// Animation colors
-	PulseColors       []lipgloss.Color
-	ShimmerColors     []lipgloss.Color
+	PulseColors   []lipgloss.Color
+	ShimmerColors []lipgloss.Color
 
 	// Special effects
-	GlowColor         lipgloss.Color
-	ShadowColor       lipgloss.Color
+	GlowColor   lipgloss.Color
+	ShadowColor lipgloss.Color
 
 	// Adaptive colors (based on terminal capabilities)
-	SupportsTrue      bool
-	Supports256       bool
-	SupportsBasic     bool
+	SupportsTrue  bool
+	Supports256   bool
+	SupportsBasic bool
 }
 
 // EnhancedStyles extends the basic styles with advanced effects
@@ -36,48 +36,48 @@ type EnhancedStyles struct {
 	Styles
 
 	// Gradient styles
-	HeaderGradient    lipgloss.Style
-	AccentGradient    lipgloss.Style
-	ProgressGradient  lipgloss.Style
+	HeaderGradient   lipgloss.Style
+	AccentGradient   lipgloss.Style
+	ProgressGradient lipgloss.Style
 
 	// Animation styles
-	Pulse             lipgloss.Style
-	Shimmer           lipgloss.Style
-	Glow              lipgloss.Style
+	Pulse   lipgloss.Style
+	Shimmer lipgloss.Style
+	Glow    lipgloss.Style
 
 	// Badge styles
-	BadgePrimary      lipgloss.Style
-	BadgeSecondary    lipgloss.Style
-	BadgeSuccess      lipgloss.Style
-	BadgeWarning      lipgloss.Style
-	BadgeError        lipgloss.Style
-	BadgeInfo         lipgloss.Style
+	BadgePrimary   lipgloss.Style
+	BadgeSecondary lipgloss.Style
+	BadgeSuccess   lipgloss.Style
+	BadgeWarning   lipgloss.Style
+	BadgeError     lipgloss.Style
+	BadgeInfo      lipgloss.Style
 
 	// Panel styles
-	PanelPrimary      lipgloss.Style
-	PanelSecondary    lipgloss.Style
-	PanelBordered     lipgloss.Style
-	PanelElevated     lipgloss.Style
+	PanelPrimary   lipgloss.Style
+	PanelSecondary lipgloss.Style
+	PanelBordered  lipgloss.Style
+	PanelElevated  lipgloss.Style
 
 	// Interactive styles
-	ButtonPrimary     lipgloss.Style
-	ButtonSecondary   lipgloss.Style
-	ButtonDisabled    lipgloss.Style
-	ButtonHover       lipgloss.Style
-	ButtonPressed     lipgloss.Style
+	ButtonPrimary   lipgloss.Style
+	ButtonSecondary lipgloss.Style
+	ButtonDisabled  lipgloss.Style
+	ButtonHover     lipgloss.Style
+	ButtonPressed   lipgloss.Style
 
 	// Form styles
-	InputFocused      lipgloss.Style
-	InputError        lipgloss.Style
-	InputSuccess      lipgloss.Style
-	Label             lipgloss.Style
-	Placeholder       lipgloss.Style
+	InputFocused lipgloss.Style
+	InputError   lipgloss.Style
+	InputSuccess lipgloss.Style
+	Label        lipgloss.Style
+	Placeholder  lipgloss.Style
 
 	// Layout styles
-	Container         lipgloss.Style
-	Sidebar           lipgloss.Style
-	MainContent       lipgloss.Style
-	Footer            lipgloss.Style
+	Container   lipgloss.Style
+	Sidebar     lipgloss.Style
+	MainContent lipgloss.Style
+	Footer      lipgloss.Style
 }
 
 // AnimationState tracks animation state
@@ -133,10 +133,10 @@ func NewEnhancedDarkTheme() EnhancedTheme {
 			lipgloss.Color("#45475A"),
 			lipgloss.Color("#313244"),
 		},
-		GlowColor:   lipgloss.Color("#89B4FA"),
-		ShadowColor: lipgloss.Color("#11111B"),
-		SupportsTrue: true,
-		Supports256:  true,
+		GlowColor:     lipgloss.Color("#89B4FA"),
+		ShadowColor:   lipgloss.Color("#11111B"),
+		SupportsTrue:  true,
+		Supports256:   true,
 		SupportsBasic: true,
 	}
 }
@@ -174,10 +174,10 @@ func NewEnhancedLightTheme() EnhancedTheme {
 			lipgloss.Color("#CCD0DA"),
 			lipgloss.Color("#DCE0E8"),
 		},
-		GlowColor:   lipgloss.Color("#1E66F5"),
-		ShadowColor: lipgloss.Color("#E6E9EF"),
-		SupportsTrue: true,
-		Supports256:  true,
+		GlowColor:     lipgloss.Color("#1E66F5"),
+		ShadowColor:   lipgloss.Color("#E6E9EF"),
+		SupportsTrue:  true,
+		Supports256:   true,
 		SupportsBasic: true,
 	}
 }
@@ -489,11 +489,11 @@ func AdaptThemeToTerminal(theme EnhancedTheme) EnhancedTheme {
 
 	if !trueColor && !color256 {
 		// Fallback to basic colors
-		theme.AccentColor = lipgloss.Color("4")      // Blue
-		theme.ErrorColor = lipgloss.Color("1")       // Red
-		theme.SuccessColor = lipgloss.Color("2")     // Green
-		theme.WarningColor = lipgloss.Color("3")     // Yellow
-		theme.InfoColor = lipgloss.Color("6")        // Cyan
+		theme.AccentColor = lipgloss.Color("4")  // Blue
+		theme.ErrorColor = lipgloss.Color("1")   // Red
+		theme.SuccessColor = lipgloss.Color("2") // Green
+		theme.WarningColor = lipgloss.Color("3") // Yellow
+		theme.InfoColor = lipgloss.Color("6")    // Cyan
 	}
 
 	return theme

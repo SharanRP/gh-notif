@@ -295,16 +295,16 @@ type SubscriptionList struct {
 
 // SubscriptionStats provides statistics about subscriptions
 type SubscriptionStats struct {
-	Total          int `json:"total"`
-	Active         int `json:"active"`
-	Inactive       int `json:"inactive"`
-	Patterns       int `json:"patterns"`
-	Repositories   int `json:"repositories"`
-	Critical       int `json:"critical"`
-	Normal         int `json:"normal"`
-	Low            int `json:"low"`
-	AccessErrors   int `json:"access_errors"`
-	LastUpdated    time.Time `json:"last_updated"`
+	Total        int       `json:"total"`
+	Active       int       `json:"active"`
+	Inactive     int       `json:"inactive"`
+	Patterns     int       `json:"patterns"`
+	Repositories int       `json:"repositories"`
+	Critical     int       `json:"critical"`
+	Normal       int       `json:"normal"`
+	Low          int       `json:"low"`
+	AccessErrors int       `json:"access_errors"`
+	LastUpdated  time.Time `json:"last_updated"`
 }
 
 // ValidationError represents a subscription validation error

@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/SharanRP/gh-notif/internal/ui/components"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/google/go-github/v60/github"
-	"github.com/SharanRP/gh-notif/internal/ui/components"
 )
 
 // EnhancedModel represents the enhanced UI model with modern components
@@ -18,36 +18,36 @@ type EnhancedModel struct {
 	notifications []*github.Notification
 
 	// Components
-	registry      *components.ComponentRegistry
-	layout        *components.Layout
-	virtualList   *components.VirtualList
-	statusPanel   *components.Panel
-	filterForm    *components.Form
-	progressBar   *components.Progress
-	markdown      *components.MarkdownRenderer
+	registry    *components.ComponentRegistry
+	layout      *components.Layout
+	virtualList *components.VirtualList
+	statusPanel *components.Panel
+	filterForm  *components.Form
+	progressBar *components.Progress
+	markdown    *components.MarkdownRenderer
 
 	// State
-	width         int
-	height        int
-	ready         bool
-	loading       bool
-	viewMode      EnhancedViewMode
-	showFilter    bool
-	showHelp      bool
-	animFrame     int
-	lastUpdate    time.Time
+	width      int
+	height     int
+	ready      bool
+	loading    bool
+	viewMode   EnhancedViewMode
+	showFilter bool
+	showHelp   bool
+	animFrame  int
+	lastUpdate time.Time
 
 	// Styling
-	theme         EnhancedTheme
-	styles        EnhancedStyles
-	symbols       Symbols
+	theme   EnhancedTheme
+	styles  EnhancedStyles
+	symbols Symbols
 
 	// Key bindings
-	keyMap        EnhancedKeyMap
+	keyMap EnhancedKeyMap
 
 	// Context
-	ctx           context.Context
-	cancelFunc    context.CancelFunc
+	ctx        context.Context
+	cancelFunc context.CancelFunc
 }
 
 // EnhancedViewMode represents different enhanced view modes
@@ -67,14 +67,14 @@ const (
 // EnhancedKeyMap defines enhanced key bindings
 type EnhancedKeyMap struct {
 	// Navigation
-	Up            key.Binding
-	Down          key.Binding
-	Left          key.Binding
-	Right         key.Binding
-	PageUp        key.Binding
-	PageDown      key.Binding
-	Home          key.Binding
-	End           key.Binding
+	Up       key.Binding
+	Down     key.Binding
+	Left     key.Binding
+	Right    key.Binding
+	PageUp   key.Binding
+	PageDown key.Binding
+	Home     key.Binding
+	End      key.Binding
 
 	// Actions
 	Select        key.Binding
@@ -92,8 +92,8 @@ type EnhancedKeyMap struct {
 	Refresh       key.Binding
 
 	// System
-	Quit          key.Binding
-	Cancel        key.Binding
+	Quit   key.Binding
+	Cancel key.Binding
 }
 
 // DefaultEnhancedKeyMap returns default enhanced key bindings

@@ -91,8 +91,8 @@ func (r *MarkdownRenderer) Render(markdown string) string {
 		}
 
 		// Handle lists
-		if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") || 
-		   regexp.MustCompile(`^\d+\.\s`).MatchString(line) {
+		if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") ||
+			regexp.MustCompile(`^\d+\.\s`).MatchString(line) {
 			if !inList {
 				inList = true
 			}
@@ -126,7 +126,7 @@ func (r *MarkdownRenderer) Render(markdown string) string {
 // renderHeader renders a markdown header
 func (r *MarkdownRenderer) renderHeader(text string, level int) string {
 	style := r.styles.DetailHeader.Copy()
-	
+
 	switch level {
 	case 1:
 		style = style.Bold(true).Underline(true).
@@ -142,7 +142,7 @@ func (r *MarkdownRenderer) renderHeader(text string, level int) string {
 	default:
 		style = style.Bold(true)
 	}
-	
+
 	return style.Render(text)
 }
 
@@ -154,7 +154,7 @@ func (r *MarkdownRenderer) renderQuote(text string) string {
 		Padding(0, 0, 0, 2).
 		Border(lipgloss.Border{Left: "│"}).
 		BorderForeground(lipgloss.Color("#6C7086"))
-	
+
 	return style.Render(text)
 }
 
@@ -163,7 +163,7 @@ func (r *MarkdownRenderer) renderListItem(text string) string {
 	// Extract the bullet or number
 	var bullet string
 	var content string
-	
+
 	if strings.HasPrefix(text, "- ") {
 		bullet = "•"
 		content = strings.TrimSpace(text[2:])
@@ -181,15 +181,15 @@ func (r *MarkdownRenderer) renderListItem(text string) string {
 			content = text
 		}
 	}
-	
+
 	bulletStyle := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("#89B4FA")).
 		Width(3).
 		Align(lipgloss.Right)
-	
+
 	contentStyle := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("#CDD6F4"))
-	
+
 	return lipgloss.JoinHorizontal(lipgloss.Top,
 		bulletStyle.Render(bullet),
 		" ",
@@ -201,7 +201,7 @@ func (r *MarkdownRenderer) renderListItem(text string) string {
 func (r *MarkdownRenderer) renderHorizontalRule() string {
 	style := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("#6C7086"))
-	
+
 	return style.Render(strings.Repeat("─", r.width-4))
 }
 
@@ -212,7 +212,7 @@ func (r *MarkdownRenderer) renderCodeLine(code, language string) string {
 		Foreground(lipgloss.Color("#F5E0DC")).
 		Background(lipgloss.Color("#313244")).
 		Padding(0, 1)
-	
+
 	// Apply basic syntax highlighting based on language
 	switch language {
 	case "go", "golang":
@@ -224,7 +224,7 @@ func (r *MarkdownRenderer) renderCodeLine(code, language string) string {
 	case "json":
 		code = r.highlightJSON(code)
 	}
-	
+
 	return style.Render(code)
 }
 
@@ -236,14 +236,14 @@ func (r *MarkdownRenderer) renderText(text string) string {
 		inner := boldPattern.FindStringSubmatch(match)[1]
 		return lipgloss.NewStyle().Bold(true).Render(inner)
 	})
-	
+
 	// Handle italic text
 	italicPattern := regexp.MustCompile(`\*(.+?)\*`)
 	text = italicPattern.ReplaceAllStringFunc(text, func(match string) string {
 		inner := italicPattern.FindStringSubmatch(match)[1]
 		return lipgloss.NewStyle().Italic(true).Render(inner)
 	})
-	
+
 	// Handle code spans
 	codePattern := regexp.MustCompile("`(.+?)`")
 	text = codePattern.ReplaceAllStringFunc(text, func(match string) string {
@@ -254,7 +254,7 @@ func (r *MarkdownRenderer) renderText(text string) string {
 			Padding(0, 1).
 			Render(inner)
 	})
-	
+
 	// Handle links
 	linkPattern := regexp.MustCompile(`\[(.+?)\]\((.+?)\)`)
 	text = linkPattern.ReplaceAllStringFunc(text, func(match string) string {
@@ -266,7 +266,7 @@ func (r *MarkdownRenderer) renderText(text string) string {
 			lipgloss.NewStyle().Foreground(lipgloss.Color("#6C7086")).Render(url),
 		)
 	})
-	
+
 	return text
 }
 
@@ -278,25 +278,25 @@ func (r *MarkdownRenderer) highlightGo(code string) string {
 		"map", "chan", "go", "defer", "if", "else", "switch", "case", "default",
 		"for", "range", "return", "break", "continue",
 	}
-	
+
 	for _, keyword := range keywords {
 		pattern := regexp.MustCompile(`\b` + keyword + `\b`)
-		code = pattern.ReplaceAllString(code, 
+		code = pattern.ReplaceAllString(code,
 			lipgloss.NewStyle().Foreground(lipgloss.Color("#CBA6F7")).Render(keyword))
 	}
-	
+
 	// Comments
 	commentPattern := regexp.MustCompile(`//.*$`)
 	code = commentPattern.ReplaceAllStringFunc(code, func(match string) string {
 		return lipgloss.NewStyle().Foreground(lipgloss.Color("#6C7086")).Render(match)
 	})
-	
+
 	// Strings
 	stringPattern := regexp.MustCompile(`"[^"]*"`)
 	code = stringPattern.ReplaceAllStringFunc(code, func(match string) string {
 		return lipgloss.NewStyle().Foreground(lipgloss.Color("#A6E3A1")).Render(match)
 	})
-	
+
 	return code
 }
 
@@ -308,25 +308,25 @@ func (r *MarkdownRenderer) highlightJavaScript(code string) string {
 		"default", "for", "while", "do", "break", "continue", "return",
 		"class", "new", "this", "super", "import", "export", "from", "as",
 	}
-	
+
 	for _, keyword := range keywords {
 		pattern := regexp.MustCompile(`\b` + keyword + `\b`)
-		code = pattern.ReplaceAllString(code, 
+		code = pattern.ReplaceAllString(code,
 			lipgloss.NewStyle().Foreground(lipgloss.Color("#CBA6F7")).Render(keyword))
 	}
-	
+
 	// Comments
 	commentPattern := regexp.MustCompile(`//.*$`)
 	code = commentPattern.ReplaceAllStringFunc(code, func(match string) string {
 		return lipgloss.NewStyle().Foreground(lipgloss.Color("#6C7086")).Render(match)
 	})
-	
+
 	// Strings
 	stringPattern := regexp.MustCompile(`["'].*?["']`)
 	code = stringPattern.ReplaceAllStringFunc(code, func(match string) string {
 		return lipgloss.NewStyle().Foreground(lipgloss.Color("#A6E3A1")).Render(match)
 	})
-	
+
 	return code
 }
 
@@ -338,25 +338,25 @@ func (r *MarkdownRenderer) highlightPython(code string) string {
 		"while", "break", "continue", "return", "try", "except", "finally",
 		"with", "lambda", "global", "nonlocal", "pass", "None", "True", "False",
 	}
-	
+
 	for _, keyword := range keywords {
 		pattern := regexp.MustCompile(`\b` + keyword + `\b`)
-		code = pattern.ReplaceAllString(code, 
+		code = pattern.ReplaceAllString(code,
 			lipgloss.NewStyle().Foreground(lipgloss.Color("#CBA6F7")).Render(keyword))
 	}
-	
+
 	// Comments
 	commentPattern := regexp.MustCompile(`#.*$`)
 	code = commentPattern.ReplaceAllStringFunc(code, func(match string) string {
 		return lipgloss.NewStyle().Foreground(lipgloss.Color("#6C7086")).Render(match)
 	})
-	
+
 	// Strings
 	stringPattern := regexp.MustCompile(`["'].*?["']`)
 	code = stringPattern.ReplaceAllStringFunc(code, func(match string) string {
 		return lipgloss.NewStyle().Foreground(lipgloss.Color("#A6E3A1")).Render(match)
 	})
-	
+
 	return code
 }
 
@@ -364,23 +364,23 @@ func (r *MarkdownRenderer) highlightPython(code string) string {
 func (r *MarkdownRenderer) highlightJSON(code string) string {
 	// Keys
 	keyPattern := regexp.MustCompile(`"([^"]+)"(\s*:)`)
-	code = keyPattern.ReplaceAllString(code, 
-		lipgloss.NewStyle().Foreground(lipgloss.Color("#89B4FA")).Render("\"$1\"") + "$2")
-	
+	code = keyPattern.ReplaceAllString(code,
+		lipgloss.NewStyle().Foreground(lipgloss.Color("#89B4FA")).Render("\"$1\"")+"$2")
+
 	// Strings
 	stringPattern := regexp.MustCompile(`:\s*"([^"]*)"`)
-	code = stringPattern.ReplaceAllString(code, 
-		": " + lipgloss.NewStyle().Foreground(lipgloss.Color("#A6E3A1")).Render("\"$1\""))
-	
+	code = stringPattern.ReplaceAllString(code,
+		": "+lipgloss.NewStyle().Foreground(lipgloss.Color("#A6E3A1")).Render("\"$1\""))
+
 	// Numbers
 	numberPattern := regexp.MustCompile(`:\s*(\d+)`)
-	code = numberPattern.ReplaceAllString(code, 
-		": " + lipgloss.NewStyle().Foreground(lipgloss.Color("#F9E2AF")).Render("$1"))
-	
+	code = numberPattern.ReplaceAllString(code,
+		": "+lipgloss.NewStyle().Foreground(lipgloss.Color("#F9E2AF")).Render("$1"))
+
 	// Booleans and null
 	boolPattern := regexp.MustCompile(`:\s*(true|false|null)`)
-	code = boolPattern.ReplaceAllString(code, 
-		": " + lipgloss.NewStyle().Foreground(lipgloss.Color("#CBA6F7")).Render("$1"))
-	
+	code = boolPattern.ReplaceAllString(code,
+		": "+lipgloss.NewStyle().Foreground(lipgloss.Color("#CBA6F7")).Render("$1"))
+
 	return code
 }

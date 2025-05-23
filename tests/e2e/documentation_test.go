@@ -19,11 +19,11 @@ import (
 
 // DocumentationTest represents a documentation test case
 type DocumentationTest struct {
-	Name        string
-	File        string
-	Commands    []string
-	Examples    []string
-	Sections    []string
+	Name     string
+	File     string
+	Commands []string
+	Examples []string
+	Sections []string
 }
 
 // TestDocumentationAccuracy tests that all documented features work as described
@@ -201,35 +201,35 @@ func testCodeExample(t *testing.T, binaryPath, example string) {
 func shouldSkipCommand(command string) bool {
 	skipPatterns := []string{
 		"auth login",
-		"list", // Requires authentication
-		"search", // Requires authentication
-		"read", // Requires authentication
-		"open", // Requires authentication
-		"subscribe", // Requires authentication
-		"watch", // Requires authentication and runs indefinitely
-		"curl", // External command
-		"brew", // External command
-		"scoop", // External command
-		"snap", // External command
-		"docker", // External command
-		"sudo", // Requires elevated permissions
-		"flatpak", // External command
-		"rpm", // External command
-		"dpkg", // External command
-		"git clone", // External command
-		"make", // External command
-		"source", // Shell builtin
-		"echo", // Shell command
-		"cd ", // Shell builtin
-		"GOOS=", // Environment variable setting
+		"list",                       // Requires authentication
+		"search",                     // Requires authentication
+		"read",                       // Requires authentication
+		"open",                       // Requires authentication
+		"subscribe",                  // Requires authentication
+		"watch",                      // Requires authentication and runs indefinitely
+		"curl",                       // External command
+		"brew",                       // External command
+		"scoop",                      // External command
+		"snap",                       // External command
+		"docker",                     // External command
+		"sudo",                       // Requires elevated permissions
+		"flatpak",                    // External command
+		"rpm",                        // External command
+		"dpkg",                       // External command
+		"git clone",                  // External command
+		"make",                       // External command
+		"source",                     // Shell builtin
+		"echo",                       // Shell command
+		"cd ",                        // Shell builtin
+		"GOOS=",                      // Environment variable setting
 		"go install github.com/user", // External repository
-		"go build", // Requires source files
-		"filter save", // Requires authentication
-		"filter get", // May require saved filters
-		"filter delete", // May require saved filters
-		"completion", // May have parsing issues
-		"tee", // External command
-		"|", // Pipe operations can be complex
+		"go build",                   // Requires source files
+		"filter save",                // Requires authentication
+		"filter get",                 // May require saved filters
+		"filter delete",              // May require saved filters
+		"completion",                 // May have parsing issues
+		"tee",                        // External command
+		"|",                          // Pipe operations can be complex
 	}
 
 	for _, pattern := range skipPatterns {
@@ -422,7 +422,7 @@ func testConfigurationDocumentation(t *testing.T, binaryPath string) {
 
 	// Test setting and getting config values
 	testConfigs := map[string]string{
-		"display.limit": "25",
+		"display.limit":  "25",
 		"display.format": "table",
 	}
 

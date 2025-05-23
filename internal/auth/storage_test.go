@@ -145,29 +145,29 @@ func TestEncryptDecrypt(t *testing.T) {
 func TestCreateStorage(t *testing.T) {
 	// Test cases
 	tests := []struct {
-		name        string
+		name         string
 		tokenStorage string
-		wantType    string
+		wantType     string
 	}{
 		{
-			name:        "Keyring storage",
+			name:         "Keyring storage",
 			tokenStorage: "keyring",
-			wantType:    "*auth.KeyringStorage",
+			wantType:     "*auth.KeyringStorage",
 		},
 		{
-			name:        "File storage",
+			name:         "File storage",
 			tokenStorage: "file",
-			wantType:    "*auth.FileStorage",
+			wantType:     "*auth.FileStorage",
 		},
 		{
-			name:        "Auto storage (fallback to file)",
+			name:         "Auto storage (fallback to file)",
 			tokenStorage: "auto",
-			wantType:    "*auth.FileStorage",
+			wantType:     "*auth.FileStorage",
 		},
 		{
-			name:        "Default storage",
+			name:         "Default storage",
 			tokenStorage: "unknown",
-			wantType:    "*auth.FileStorage",
+			wantType:     "*auth.FileStorage",
 		},
 	}
 

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/google/go-github/v60/github"
 	githubclient "github.com/SharanRP/gh-notif/internal/github"
+	"github.com/google/go-github/v60/github"
 )
 
 // mockClient is a mock implementation of the GitHub client

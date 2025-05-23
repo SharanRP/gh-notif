@@ -21,8 +21,8 @@ type AuthMiddleware struct {
 // NewAuthMiddleware creates a new AuthMiddleware
 func NewAuthMiddleware() *AuthMiddleware {
 	return &AuthMiddleware{
-		MaxRetries: 3,
-		RetryDelay: 1 * time.Second,
+		MaxRetries:  3,
+		RetryDelay:  1 * time.Second,
 		refreshFunc: RefreshToken,
 	}
 }

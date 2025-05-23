@@ -59,9 +59,9 @@ type GraphQLResponse struct {
 
 // GraphQLError represents a GraphQL error
 type GraphQLError struct {
-	Message   string                 `json:"message"`
-	Locations []GraphQLErrorLocation `json:"locations,omitempty"`
-	Path      []interface{}          `json:"path,omitempty"`
+	Message    string                 `json:"message"`
+	Locations  []GraphQLErrorLocation `json:"locations,omitempty"`
+	Path       []interface{}          `json:"path,omitempty"`
 	Extensions map[string]interface{} `json:"extensions,omitempty"`
 }
 
@@ -270,24 +270,24 @@ func (c *GraphQLClient) GetDiscussions(ctx context.Context, owner, repo string, 
 					EndCursor   string `json:"endCursor"`
 				} `json:"pageInfo"`
 				Nodes []struct {
-					ID          string    `json:"id"`
-					Number      int       `json:"number"`
-					Title       string    `json:"title"`
-					Body        string    `json:"body"`
-					BodyHTML    string    `json:"bodyHTML"`
-					BodyText    string    `json:"bodyText"`
-					URL         string    `json:"url"`
-					Locked      bool      `json:"locked"`
-					CreatedAt   time.Time `json:"createdAt"`
-					UpdatedAt   time.Time `json:"updatedAt"`
-					IsAnswered  bool      `json:"isAnswered"`
-					Repository  struct {
-						ID           string `json:"id"`
-						Name         string `json:"name"`
+					ID         string    `json:"id"`
+					Number     int       `json:"number"`
+					Title      string    `json:"title"`
+					Body       string    `json:"body"`
+					BodyHTML   string    `json:"bodyHTML"`
+					BodyText   string    `json:"bodyText"`
+					URL        string    `json:"url"`
+					Locked     bool      `json:"locked"`
+					CreatedAt  time.Time `json:"createdAt"`
+					UpdatedAt  time.Time `json:"updatedAt"`
+					IsAnswered bool      `json:"isAnswered"`
+					Repository struct {
+						ID            string `json:"id"`
+						Name          string `json:"name"`
 						NameWithOwner string `json:"nameWithOwner"`
-						URL          string `json:"url"`
-						IsPrivate    bool   `json:"isPrivate"`
-						Owner        struct {
+						URL           string `json:"url"`
+						IsPrivate     bool   `json:"isPrivate"`
+						Owner         struct {
 							Login     string `json:"login"`
 							AvatarURL string `json:"avatarUrl"`
 							URL       string `json:"url"`
@@ -321,7 +321,7 @@ func (c *GraphQLClient) GetDiscussions(ctx context.Context, owner, repo string, 
 							AvatarURL string `json:"avatarUrl"`
 							URL       string `json:"url"`
 						} `json:"author"`
-						IsAnswer    bool `json:"isAnswer"`
+						IsAnswer bool `json:"isAnswer"`
 					} `json:"answer"`
 					Comments struct {
 						TotalCount int `json:"totalCount"`
@@ -423,7 +423,7 @@ func (c *GraphQLClient) GetDiscussions(ctx context.Context, owner, repo string, 
 					AvatarURL: node.Answer.Author.AvatarURL,
 					URL:       node.Answer.Author.URL,
 				},
-				IsAnswer:    node.Answer.IsAnswer,
+				IsAnswer: node.Answer.IsAnswer,
 			}
 		}
 

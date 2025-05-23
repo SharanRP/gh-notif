@@ -29,7 +29,7 @@ func SubscribeToThread(ctx context.Context, notificationID string) (*ActionResul
 		Ignored:    github.Bool(false),
 	}
 	_, resp, err := client.GetRawClient().Activity.SetThreadSubscription(ctx, notificationID, sub)
-	
+
 	if err != nil {
 		action.Success = false
 		action.Error = err
@@ -54,7 +54,7 @@ func SubscribeToThread(ctx context.Context, notificationID string) (*ActionResul
 
 	// Record the successful action
 	action.Success = true
-	
+
 	// Add to history if available
 	if history := GetActionHistory(); history != nil {
 		history.Add(action)
@@ -86,7 +86,7 @@ func UnsubscribeFromThread(ctx context.Context, notificationID string) (*ActionR
 		Subscribed: github.Bool(false),
 	}
 	_, resp, err := client.GetRawClient().Activity.SetThreadSubscription(ctx, notificationID, sub)
-	
+
 	if err != nil {
 		action.Success = false
 		action.Error = err
@@ -111,7 +111,7 @@ func UnsubscribeFromThread(ctx context.Context, notificationID string) (*ActionR
 
 	// Record the successful action
 	action.Success = true
-	
+
 	// Add to history if available
 	if history := GetActionHistory(); history != nil {
 		history.Add(action)

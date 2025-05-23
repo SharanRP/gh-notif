@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
+	githubclient "github.com/SharanRP/gh-notif/internal/github"
+	"github.com/SharanRP/gh-notif/internal/grouping"
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/google/go-github/v60/github"
-	githubclient "github.com/SharanRP/gh-notif/internal/github"
-	"github.com/SharanRP/gh-notif/internal/grouping"
 )
 
 // GroupModel represents the group UI model

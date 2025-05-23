@@ -22,12 +22,12 @@ func TestStatus(t *testing.T) {
 	}()
 
 	tests := []struct {
-		name           string
-		setupTokenSource func()
-		setupStorage    func() Storage
+		name              string
+		setupTokenSource  func()
+		setupStorage      func() Storage
 		wantAuthenticated bool
-		wantToken       bool
-		wantErr         bool
+		wantToken         bool
+		wantErr           bool
 	}{
 		{
 			name: "Valid token in TokenSource",
@@ -43,8 +43,8 @@ func TestStatus(t *testing.T) {
 				}
 			},
 			wantAuthenticated: true,
-			wantToken:       true,
-			wantErr:         false,
+			wantToken:         true,
+			wantErr:           false,
 		},
 		{
 			name: "Expired token in TokenSource",
@@ -60,8 +60,8 @@ func TestStatus(t *testing.T) {
 				}
 			},
 			wantAuthenticated: false,
-			wantToken:       true,
-			wantErr:         false,
+			wantToken:         true,
+			wantErr:           false,
 		},
 		{
 			name: "Valid token in storage",
@@ -76,8 +76,8 @@ func TestStatus(t *testing.T) {
 				}
 			},
 			wantAuthenticated: true,
-			wantToken:       true,
-			wantErr:         false,
+			wantToken:         true,
+			wantErr:           false,
 		},
 		{
 			name: "Expired token in storage",
@@ -92,8 +92,8 @@ func TestStatus(t *testing.T) {
 				}
 			},
 			wantAuthenticated: false,
-			wantToken:       true,
-			wantErr:         false,
+			wantToken:         true,
+			wantErr:           false,
 		},
 		{
 			name: "No token",
@@ -108,8 +108,8 @@ func TestStatus(t *testing.T) {
 				}
 			},
 			wantAuthenticated: false,
-			wantToken:       false,
-			wantErr:         false,
+			wantToken:         false,
+			wantErr:           false,
 		},
 		{
 			name: "Storage error",
@@ -124,8 +124,8 @@ func TestStatus(t *testing.T) {
 				}
 			},
 			wantAuthenticated: false,
-			wantToken:       false,
-			wantErr:         true,
+			wantToken:         false,
+			wantErr:           true,
 		},
 	}
 
@@ -163,9 +163,9 @@ func TestLogout(t *testing.T) {
 	}()
 
 	tests := []struct {
-		name        string
+		name         string
 		setupStorage func() Storage
-		wantErr     bool
+		wantErr      bool
 	}{
 		{
 			name: "Successful logout",
@@ -222,10 +222,10 @@ func TestGetClient(t *testing.T) {
 	}()
 
 	tests := []struct {
-		name           string
+		name             string
 		setupTokenSource func()
-		setupStorage    func() Storage
-		wantErr         bool
+		setupStorage     func() Storage
+		wantErr          bool
 	}{
 		{
 			name: "Valid token in TokenSource",
@@ -295,8 +295,8 @@ func TestGetClient(t *testing.T) {
 
 // MockStorage is a mock implementation of the Storage interface for testing
 type MockStorage struct {
-	saveTokenFunc  func(token *oauth2.Token) error
-	loadTokenFunc  func() (*oauth2.Token, error)
+	saveTokenFunc   func(token *oauth2.Token) error
+	loadTokenFunc   func() (*oauth2.Token, error)
 	deleteTokenFunc func() error
 }
 
@@ -397,10 +397,10 @@ func TestRefreshToken(t *testing.T) {
 	}()
 
 	tests := []struct {
-		name           string
+		name             string
 		setupTokenSource func()
-		setupStorage    func() Storage
-		wantErr         bool
+		setupStorage     func() Storage
+		wantErr          bool
 	}{
 		{
 			name: "Valid refresh token",

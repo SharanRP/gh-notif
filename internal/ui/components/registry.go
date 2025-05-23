@@ -12,12 +12,12 @@ import (
 type ComponentType string
 
 const (
-	ListComponentType       ComponentType = "list"
-	FormComponentType       ComponentType = "form"
-	ProgressComponentType   ComponentType = "progress"
-	MarkdownComponentType   ComponentType = "markdown"
-	BadgeComponentType      ComponentType = "badge"
-	PanelComponentType      ComponentType = "panel"
+	ListComponentType        ComponentType = "list"
+	FormComponentType        ComponentType = "form"
+	ProgressComponentType    ComponentType = "progress"
+	MarkdownComponentType    ComponentType = "markdown"
+	BadgeComponentType       ComponentType = "badge"
+	PanelComponentType       ComponentType = "panel"
 	VirtualListComponentType ComponentType = "virtuallist"
 )
 
@@ -53,13 +53,13 @@ type Component interface {
 
 // ComponentStyles contains styling information for components
 type ComponentStyles struct {
-	Base      lipgloss.Style
-	Focused   lipgloss.Style
-	Disabled  lipgloss.Style
-	Error     lipgloss.Style
-	Success   lipgloss.Style
-	Warning   lipgloss.Style
-	Info      lipgloss.Style
+	Base     lipgloss.Style
+	Focused  lipgloss.Style
+	Disabled lipgloss.Style
+	Error    lipgloss.Style
+	Success  lipgloss.Style
+	Warning  lipgloss.Style
+	Info     lipgloss.Style
 }
 
 // ComponentRegistry manages UI components
@@ -74,12 +74,12 @@ type ComponentFactory func(config ComponentConfig) Component
 
 // ComponentConfig contains configuration for creating components
 type ComponentConfig struct {
-	Type     ComponentType
-	ID       string
-	Width    int
-	Height   int
-	Styles   ComponentStyles
-	Props    map[string]interface{}
+	Type   ComponentType
+	ID     string
+	Width  int
+	Height int
+	Styles ComponentStyles
+	Props  map[string]interface{}
 }
 
 // NewComponentRegistry creates a new component registry
@@ -198,6 +198,6 @@ const (
 // Common errors
 var (
 	ErrComponentTypeNotRegistered = fmt.Errorf("component type not registered")
-	ErrComponentNotFound         = fmt.Errorf("component not found")
-	ErrInvalidComponentConfig    = fmt.Errorf("invalid component configuration")
+	ErrComponentNotFound          = fmt.Errorf("component not found")
+	ErrInvalidComponentConfig     = fmt.Errorf("invalid component configuration")
 )

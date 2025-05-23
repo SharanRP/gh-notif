@@ -42,14 +42,14 @@ type TutorialOptions struct {
 // DefaultTutorialOptions returns the default tutorial options
 func DefaultTutorialOptions() *TutorialOptions {
 	return &TutorialOptions{
-		Interactive: true,
-		SkipAuth:    false,
-		SkipBasics:  false,
+		Interactive:  true,
+		SkipAuth:     false,
+		SkipBasics:   false,
 		SkipAdvanced: false,
-		Theme:       "dark",
-		NoColor:     false,
-		Width:       80,
-		Height:      20,
+		Theme:        "dark",
+		NoColor:      false,
+		Width:        80,
+		Height:       20,
 	}
 }
 

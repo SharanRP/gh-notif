@@ -26,7 +26,7 @@ type Manager struct {
 
 	// Configuration
 	defaultOptions DiscussionOptions
-	debug         bool
+	debug          bool
 }
 
 // ManagerOptions contains configuration for the discussion manager

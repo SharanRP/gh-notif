@@ -188,7 +188,7 @@ func (m FilterModel) renderFilterPreview() string {
 
 		// Join all parts
 		line := lipgloss.JoinHorizontal(lipgloss.Left,
-			m.styles.ListItem.Render(repo + ": "),
+			m.styles.ListItem.Render(repo+": "),
 			m.styles.ListItem.Render(title),
 		)
 
@@ -224,8 +224,8 @@ func (m *FilterModel) filterNotifications(filter string) {
 		typeName := strings.ToLower(n.GetSubject().GetType())
 
 		if strings.Contains(repoName, filter) ||
-		   strings.Contains(title, filter) ||
-		   strings.Contains(typeName, filter) {
+			strings.Contains(title, filter) ||
+			strings.Contains(typeName, filter) {
 			filtered = append(filtered, n)
 		}
 	}

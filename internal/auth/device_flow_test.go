@@ -71,10 +71,10 @@ func TestInitiateDeviceFlow(t *testing.T) {
 
 	// Test cases
 	tests := []struct {
-		name      string
-		clientID  string
-		scopes    []string
-		wantErr   bool
+		name     string
+		clientID string
+		scopes   []string
+		wantErr  bool
 	}{
 		{
 			name:     "Valid request",
@@ -204,7 +204,7 @@ func TestPollForToken(t *testing.T) {
 			name:       "Valid polling",
 			clientID:   "test-client-id",
 			deviceCode: "test-device-code",
-			interval:   1, // Use a short interval for testing
+			interval:   1,                      // Use a short interval for testing
 			timeout:    100 * time.Millisecond, // Very short timeout for testing
 			wantErr:    false,
 		},

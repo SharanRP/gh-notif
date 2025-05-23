@@ -6,13 +6,13 @@ import (
 	"strings"
 	"time"
 
+	githubclient "github.com/SharanRP/gh-notif/internal/github"
+	"github.com/SharanRP/gh-notif/internal/search"
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/table"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/google/go-github/v60/github"
-	githubclient "github.com/SharanRP/gh-notif/internal/github"
-	"github.com/SharanRP/gh-notif/internal/search"
 )
 
 // SearchModel represents the search UI model

@@ -5,12 +5,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/bubbles/viewport"
-	"github.com/charmbracelet/bubbles/key"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/SharanRP/gh-notif/internal/discussions"
 	"github.com/SharanRP/gh-notif/internal/ui"
+	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/viewport"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 // DiscussionViewer provides a terminal UI for viewing discussions
@@ -31,9 +31,9 @@ type DiscussionViewer struct {
 	lastUpdate     time.Time
 
 	// Interactive state
-	focused        bool
-	selectedTab    int
-	scrollOffset   int
+	focused      bool
+	selectedTab  int
+	scrollOffset int
 }
 
 // ViewMode represents different viewing modes
@@ -51,17 +51,17 @@ type tickMsg struct{}
 
 // DiscussionKeyMap defines key bindings for the discussion viewer
 type DiscussionKeyMap struct {
-	Up          key.Binding
-	Down        key.Binding
-	Left        key.Binding
-	Right       key.Binding
-	Tab         key.Binding
-	Enter       key.Binding
-	Escape      key.Binding
-	Help        key.Binding
-	Quit        key.Binding
-	ToggleView  key.Binding
-	Refresh     key.Binding
+	Up         key.Binding
+	Down       key.Binding
+	Left       key.Binding
+	Right      key.Binding
+	Tab        key.Binding
+	Enter      key.Binding
+	Escape     key.Binding
+	Help       key.Binding
+	Quit       key.Binding
+	ToggleView key.Binding
+	Refresh    key.Binding
 }
 
 // DefaultDiscussionKeyMap returns default key bindings
@@ -117,50 +117,50 @@ func DefaultDiscussionKeyMap() DiscussionKeyMap {
 // EnhancedDiscussionStyles contains enhanced styling for the discussion viewer
 type EnhancedDiscussionStyles struct {
 	// Base styles
-	App            lipgloss.Style
-	Container      lipgloss.Style
-	Header         lipgloss.Style
-	Footer         lipgloss.Style
+	App       lipgloss.Style
+	Container lipgloss.Style
+	Header    lipgloss.Style
+	Footer    lipgloss.Style
 
 	// Content styles
-	Title          lipgloss.Style
-	TitleGradient  lipgloss.Style
-	Subtitle       lipgloss.Style
-	Author         lipgloss.Style
-	AuthorBadge    lipgloss.Style
-	Metadata       lipgloss.Style
-	Body           lipgloss.Style
-	BodyQuote      lipgloss.Style
+	Title         lipgloss.Style
+	TitleGradient lipgloss.Style
+	Subtitle      lipgloss.Style
+	Author        lipgloss.Style
+	AuthorBadge   lipgloss.Style
+	Metadata      lipgloss.Style
+	Body          lipgloss.Style
+	BodyQuote     lipgloss.Style
 
 	// Comment styles
-	Comment        lipgloss.Style
-	CommentHeader  lipgloss.Style
-	CommentBody    lipgloss.Style
-	CommentMeta    lipgloss.Style
-	CommentThread  lipgloss.Style
+	Comment       lipgloss.Style
+	CommentHeader lipgloss.Style
+	CommentBody   lipgloss.Style
+	CommentMeta   lipgloss.Style
+	CommentThread lipgloss.Style
 
 	// Special elements
-	Answer         lipgloss.Style
-	AnswerBadge    lipgloss.Style
-	Category       lipgloss.Style
-	CategoryBadge  lipgloss.Style
-	Label          lipgloss.Style
-	Reaction       lipgloss.Style
-	ReactionCount  lipgloss.Style
+	Answer        lipgloss.Style
+	AnswerBadge   lipgloss.Style
+	Category      lipgloss.Style
+	CategoryBadge lipgloss.Style
+	Label         lipgloss.Style
+	Reaction      lipgloss.Style
+	ReactionCount lipgloss.Style
 
 	// Interactive elements
-	Tab            lipgloss.Style
-	TabActive      lipgloss.Style
-	TabInactive    lipgloss.Style
-	Button         lipgloss.Style
-	ButtonHover    lipgloss.Style
+	Tab         lipgloss.Style
+	TabActive   lipgloss.Style
+	TabInactive lipgloss.Style
+	Button      lipgloss.Style
+	ButtonHover lipgloss.Style
 
 	// Layout styles
-	Border         lipgloss.Style
-	BorderActive   lipgloss.Style
-	Panel          lipgloss.Style
-	PanelElevated  lipgloss.Style
-	Separator      lipgloss.Style
+	Border        lipgloss.Style
+	BorderActive  lipgloss.Style
+	Panel         lipgloss.Style
+	PanelElevated lipgloss.Style
+	Separator     lipgloss.Style
 
 	// Status styles
 	StatusOpen     lipgloss.Style
@@ -168,14 +168,14 @@ type EnhancedDiscussionStyles struct {
 	StatusAnswered lipgloss.Style
 
 	// Animation styles
-	Pulse          lipgloss.Style
-	Shimmer        lipgloss.Style
-	Glow           lipgloss.Style
+	Pulse   lipgloss.Style
+	Shimmer lipgloss.Style
+	Glow    lipgloss.Style
 
 	// Highlight styles
-	Highlight      lipgloss.Style
-	HighlightText  lipgloss.Style
-	Selection      lipgloss.Style
+	Highlight     lipgloss.Style
+	HighlightText lipgloss.Style
+	Selection     lipgloss.Style
 }
 
 // NewDiscussionViewer creates a new discussion viewer
@@ -497,7 +497,7 @@ func (dv *DiscussionViewer) Update(msg tea.Msg) (*DiscussionViewer, tea.Cmd) {
 			dv.animationFrame = 0
 		}
 		dv.lastUpdate = time.Now()
-		return dv, tea.Tick(time.Millisecond * 100, func(t time.Time) tea.Msg {
+		return dv, tea.Tick(time.Millisecond*100, func(t time.Time) tea.Msg {
 			return tickMsg{}
 		})
 	}
@@ -523,7 +523,7 @@ func (dv *DiscussionViewer) View() string {
 	if dv.discussion == nil {
 		return dv.styles.Container.Render(
 			dv.styles.Title.Render("🚫 No Discussion Available") + "\n\n" +
-			dv.styles.Metadata.Render("No discussion data to display."),
+				dv.styles.Metadata.Render("No discussion data to display."),
 		)
 	}
 
@@ -836,7 +836,7 @@ func (dv *DiscussionViewer) renderEnhancedCommentsContent() string {
 	if len(dv.comments) == 0 {
 		return dv.styles.Panel.Render(
 			dv.styles.Subtitle.Render("💭 No Comments Yet") + "\n\n" +
-			dv.styles.Metadata.Render("Be the first to comment on this discussion!"),
+				dv.styles.Metadata.Render("Be the first to comment on this discussion!"),
 		)
 	}
 
@@ -966,8 +966,8 @@ func (dv *DiscussionViewer) renderMetricsSection() string {
 func (dv *DiscussionViewer) renderEngagementSection() string {
 	// Calculate engagement score
 	engagementScore := float64(dv.discussion.UpvoteCount)*0.3 +
-					  float64(dv.discussion.CommentCount)*0.5 +
-					  float64(dv.discussion.ReactionCount)*0.2
+		float64(dv.discussion.CommentCount)*0.5 +
+		float64(dv.discussion.ReactionCount)*0.2
 
 	var engagementLevel string
 	var engagementColor lipgloss.Style

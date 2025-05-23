@@ -305,8 +305,8 @@ func createTestNotifications(count int) []*github.Notification {
 
 		// Create notification
 		notifications[i] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("%d", i+1)),
-			Unread:  github.Bool(unread),
+			ID:     github.String(fmt.Sprintf("%d", i+1)),
+			Unread: github.Bool(unread),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("%s %d", typ, i+1)),
 				Type:  github.String(typ),

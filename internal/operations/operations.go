@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/go-github/v60/github"
 	"github.com/SharanRP/gh-notif/internal/common"
 	githubclient "github.com/SharanRP/gh-notif/internal/github"
+	"github.com/google/go-github/v60/github"
 )
 
 // MarkMultipleAsRead marks multiple notifications as read
@@ -168,16 +168,16 @@ func GetNotifications(ctx context.Context, options NotificationOptions) ([]*gith
 
 // NotificationOptions contains options for fetching notifications
 type NotificationOptions struct {
-	All           bool      // Include all notifications, not just unread ones
-	Unread        bool      // Only include unread notifications
-	RepoName      string    // Filter by repository name
-	OrgName       string    // Filter by organization name
-	Since         time.Time // Only show notifications updated after this time
-	Before        time.Time // Only show notifications updated before this time
-	Participating bool      // Only show notifications in which the user is participating or mentioned
-	PerPage       int       // Number of results per page
-	Page          int       // Page number
-	UseCache      bool      // Whether to use cached results if available
+	All           bool          // Include all notifications, not just unread ones
+	Unread        bool          // Only include unread notifications
+	RepoName      string        // Filter by repository name
+	OrgName       string        // Filter by organization name
+	Since         time.Time     // Only show notifications updated after this time
+	Before        time.Time     // Only show notifications updated before this time
+	Participating bool          // Only show notifications in which the user is participating or mentioned
+	PerPage       int           // Number of results per page
+	Page          int           // Page number
+	UseCache      bool          // Whether to use cached results if available
 	CacheTTL      time.Duration // How long to cache results
-	MaxConcurrent int       // Maximum number of concurrent requests
+	MaxConcurrent int           // Maximum number of concurrent requests
 }

@@ -9,17 +9,17 @@ import (
 // ListComponent wraps the bubbles list component
 type ListComponent struct {
 	// Configuration
-	width   int
-	height  int
+	width  int
+	height int
 
 	// List model
-	list    list.Model
+	list list.Model
 
 	// State
 	focused bool
 
 	// Styling
-	styles  ComponentStyles
+	styles ComponentStyles
 }
 
 // NewListComponent creates a new list component
@@ -160,16 +160,16 @@ type Layout struct {
 	order      []string
 
 	// Layout-specific configuration
-	splits     []int // For split layouts
-	padding    int
-	margin     int
+	splits  []int // For split layouts
+	padding int
+	margin  int
 
 	// State
 	focused    bool
 	focusIndex int
 
 	// Styling
-	styles     ComponentStyles
+	styles ComponentStyles
 }
 
 // LayoutType represents different layout types

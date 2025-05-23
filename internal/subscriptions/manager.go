@@ -309,7 +309,7 @@ func (m *Manager) validateSubscription(subscription RepositorySubscription) Vali
 
 // SubscriptionUpdates represents updates to a subscription
 type SubscriptionUpdates struct {
-	Priority *Priority            `json:"priority,omitempty"`
-	Config   *SubscriptionConfig  `json:"config,omitempty"`
-	Active   *bool                `json:"active,omitempty"`
+	Priority *Priority           `json:"priority,omitempty"`
+	Config   *SubscriptionConfig `json:"config,omitempty"`
+	Active   *bool               `json:"active,omitempty"`
 }

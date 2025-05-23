@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/go-github/v60/github"
-	"github.com/hashicorp/go-retryablehttp"
 	"github.com/SharanRP/gh-notif/internal/auth"
 	"github.com/SharanRP/gh-notif/internal/config"
+	"github.com/google/go-github/v60/github"
+	"github.com/hashicorp/go-retryablehttp"
 	"golang.org/x/time/rate"
 )
 

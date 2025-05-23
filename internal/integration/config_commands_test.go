@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/spf13/cobra"
 	"github.com/SharanRP/gh-notif/cmd/gh-notif/config"
 	"github.com/SharanRP/gh-notif/internal/testutil"
+	"github.com/spf13/cobra"
 )
 
 // setupConfigTest sets up a test environment for config commands

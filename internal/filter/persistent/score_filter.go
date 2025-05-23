@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/google/go-github/v60/github"
 	"github.com/SharanRP/gh-notif/internal/filter"
 	"github.com/SharanRP/gh-notif/internal/scoring"
+	"github.com/google/go-github/v60/github"
 )
 
 // ScoreFilter filters notifications by score

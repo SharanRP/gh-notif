@@ -7,44 +7,44 @@ import (
 // EnhancedStyles contains enhanced styling for components
 type EnhancedStyles struct {
 	// Base styles
-	App            lipgloss.Style
-	Header         lipgloss.Style
-	StatusBar      lipgloss.Style
-	HelpBar        lipgloss.Style
-	Spinner        lipgloss.Style
-	Error          lipgloss.Style
-	FilterPrompt   lipgloss.Style
-	FilterInput    lipgloss.Style
+	App          lipgloss.Style
+	Header       lipgloss.Style
+	StatusBar    lipgloss.Style
+	HelpBar      lipgloss.Style
+	Spinner      lipgloss.Style
+	Error        lipgloss.Style
+	FilterPrompt lipgloss.Style
+	FilterInput  lipgloss.Style
 
 	// List styles
-	List           lipgloss.Style
-	ListItem       lipgloss.Style
-	SelectedItem   lipgloss.Style
-	UnreadItem     lipgloss.Style
-	ReadItem       lipgloss.Style
+	List         lipgloss.Style
+	ListItem     lipgloss.Style
+	SelectedItem lipgloss.Style
+	UnreadItem   lipgloss.Style
+	ReadItem     lipgloss.Style
 
 	// Gradient styles
-	HeaderGradient    lipgloss.Style
-	AccentGradient    lipgloss.Style
-	ProgressGradient  lipgloss.Style
+	HeaderGradient   lipgloss.Style
+	AccentGradient   lipgloss.Style
+	ProgressGradient lipgloss.Style
 
 	// Badge styles
-	BadgePrimary      lipgloss.Style
-	BadgeSecondary    lipgloss.Style
-	BadgeSuccess      lipgloss.Style
-	BadgeWarning      lipgloss.Style
-	BadgeError        lipgloss.Style
-	BadgeInfo         lipgloss.Style
+	BadgePrimary   lipgloss.Style
+	BadgeSecondary lipgloss.Style
+	BadgeSuccess   lipgloss.Style
+	BadgeWarning   lipgloss.Style
+	BadgeError     lipgloss.Style
+	BadgeInfo      lipgloss.Style
 
 	// Panel styles
-	PanelPrimary      lipgloss.Style
-	PanelSecondary    lipgloss.Style
-	PanelBordered     lipgloss.Style
-	PanelElevated     lipgloss.Style
+	PanelPrimary   lipgloss.Style
+	PanelSecondary lipgloss.Style
+	PanelBordered  lipgloss.Style
+	PanelElevated  lipgloss.Style
 
 	// Indicator styles
-	UnreadIndicator   lipgloss.Style
-	ReadIndicator     lipgloss.Style
+	UnreadIndicator lipgloss.Style
+	ReadIndicator   lipgloss.Style
 }
 
 // Symbols contains Unicode symbols used in the UI
@@ -81,15 +81,15 @@ func DefaultSymbols() Symbols {
 		Commit:          "📝",  // Memo for commits
 		Check:           "✅",  // Green check mark
 		Cross:           "❌",  // Red X
-		Warning:         "⚠️",   // Warning sign
-		Info:            "ℹ️",   // Information
-		ArrowRight:      "▶️",   // Play button right
-		ArrowLeft:       "◀️",   // Play button left
+		Warning:         "⚠️", // Warning sign
+		Info:            "ℹ️", // Information
+		ArrowRight:      "▶️", // Play button right
+		ArrowLeft:       "◀️", // Play button left
 		ArrowUp:         "🔼",  // Up triangle
 		ArrowDown:       "🔽",  // Down triangle
-		Ellipsis:        "⋯",   // Horizontal ellipsis
+		Ellipsis:        "⋯",  // Horizontal ellipsis
 		Star:            "⭐",  // Star
-		Dot:             "•",   // Bullet point
+		Dot:             "•",  // Bullet point
 	}
 }
 

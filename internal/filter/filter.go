@@ -219,9 +219,9 @@ func (f *StatusFilter) Description() string {
 
 // TimeFilter filters notifications by time
 type TimeFilter struct {
-	Since    time.Time
-	Before   time.Time
-	UsesSince bool
+	Since      time.Time
+	Before     time.Time
+	UsesSince  bool
 	UsesBefore bool
 }
 

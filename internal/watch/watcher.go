@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/go-github/v60/github"
 	"github.com/SharanRP/gh-notif/internal/filter"
 	githubclient "github.com/SharanRP/gh-notif/internal/github"
+	"github.com/google/go-github/v60/github"
 )
 
 // NotificationEvent represents a notification event
@@ -62,11 +62,11 @@ type WatchOptions struct {
 // DefaultWatchOptions returns the default watch options
 func DefaultWatchOptions() *WatchOptions {
 	return &WatchOptions{
-		RefreshInterval:     30 * time.Second,
-		MaxRefreshInterval:  5 * time.Minute,
-		BackoffFactor:       1.5,
-		BackoffThreshold:    3,
-		ShowDesktopNotifications: false,
+		RefreshInterval:            30 * time.Second,
+		MaxRefreshInterval:         5 * time.Minute,
+		BackoffFactor:              1.5,
+		BackoffThreshold:           3,
+		ShowDesktopNotifications:   false,
 		DesktopNotificationCommand: getDefaultNotificationCommand(),
 		DesktopNotificationArgs:    getDefaultNotificationArgs(),
 	}
@@ -154,7 +154,7 @@ func NewWatcher(client GitHubClient, options *WatchOptions) *Watcher {
 		Notifications:   make([]*github.Notification, 0),
 		NotificationMap: make(map[string]*github.Notification),
 		Stats: WatchStats{
-			StartTime:             time.Now(),
+			StartTime:              time.Now(),
 			CurrentRefreshInterval: options.RefreshInterval,
 		},
 	}
@@ -223,7 +223,7 @@ func (w *Watcher) refresh() {
 
 	// Fetch notifications
 	notifications, err := w.Client.GetUnreadNotifications(githubclient.NotificationOptions{
-		All:     true,
+		All:      true,
 		UseCache: false,
 	})
 

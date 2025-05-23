@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-github/v60/github"
 	githubclient "github.com/SharanRP/gh-notif/internal/github"
+	"github.com/google/go-github/v60/github"
 )
 
 // MockClient is a mock GitHub client for testing

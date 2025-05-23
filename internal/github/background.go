@@ -28,12 +28,12 @@ type BackgroundRefresher struct {
 func NewBackgroundRefresher(client *Client, interval time.Duration, options NotificationOptions) *BackgroundRefresher {
 	ctx, cancel := context.WithCancel(context.Background())
 	return &BackgroundRefresher{
-		client:    client,
-		interval:  interval,
-		ctx:       ctx,
-		cancel:    cancel,
-		options:   options,
-		running:   false,
+		client:   client,
+		interval: interval,
+		ctx:      ctx,
+		cancel:   cancel,
+		options:  options,
+		running:  false,
 	}
 }
 
@@ -154,7 +154,7 @@ func (b *BackgroundRefresher) refresh() {
 	// Update the notifications
 	b.mu.Lock()
 	b.notifications = notifications
-	
+
 	// Call the callback if set
 	onUpdate := b.onUpdate
 	b.mu.Unlock()

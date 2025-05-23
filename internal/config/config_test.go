@@ -127,11 +127,11 @@ func TestConfigManagerLoadWithEnvVars(t *testing.T) {
 
 	// Set environment variables
 	envVars := map[string]string{
-		"GH_NOTIF_AUTH_CLIENT_ID":                "env-client-id",
-		"GH_NOTIF_DISPLAY_THEME":                 "light",
-		"GH_NOTIF_NOTIFICATIONS_DEFAULT_FILTER":  "participating",
-		"GH_NOTIF_API_TIMEOUT":                   "90",
-		"GH_NOTIF_ADVANCED_DEBUG":                "true",
+		"GH_NOTIF_AUTH_CLIENT_ID":               "env-client-id",
+		"GH_NOTIF_DISPLAY_THEME":                "light",
+		"GH_NOTIF_NOTIFICATIONS_DEFAULT_FILTER": "participating",
+		"GH_NOTIF_API_TIMEOUT":                  "90",
+		"GH_NOTIF_ADVANCED_DEBUG":               "true",
 	}
 	cleanup2 := testutil.SetEnvVars(t, envVars)
 	defer cleanup2()
@@ -174,58 +174,58 @@ func TestConfigManagerValidateConfig(t *testing.T) {
 
 	// Test cases
 	tests := []struct {
-		name   string
-		modify func(*Config)
+		name    string
+		modify  func(*Config)
 		wantErr bool
 	}{
 		{
-			name:   "Valid config",
-			modify: func(c *Config) {},
+			name:    "Valid config",
+			modify:  func(c *Config) {},
 			wantErr: false,
 		},
 		{
-			name:   "Invalid theme",
-			modify: func(c *Config) { c.Display.Theme = "invalid" },
+			name:    "Invalid theme",
+			modify:  func(c *Config) { c.Display.Theme = "invalid" },
 			wantErr: true,
 		},
 		{
-			name:   "Invalid date format",
-			modify: func(c *Config) { c.Display.DateFormat = "invalid" },
+			name:    "Invalid date format",
+			modify:  func(c *Config) { c.Display.DateFormat = "invalid" },
 			wantErr: true,
 		},
 		{
-			name:   "Invalid output format",
-			modify: func(c *Config) { c.Display.OutputFormat = "invalid" },
+			name:    "Invalid output format",
+			modify:  func(c *Config) { c.Display.OutputFormat = "invalid" },
 			wantErr: true,
 		},
 		{
-			name:   "Invalid default filter",
-			modify: func(c *Config) { c.Notifications.DefaultFilter = "invalid" },
+			name:    "Invalid default filter",
+			modify:  func(c *Config) { c.Notifications.DefaultFilter = "invalid" },
 			wantErr: true,
 		},
 		{
-			name:   "Negative refresh interval",
-			modify: func(c *Config) { c.Notifications.RefreshInterval = -1 },
+			name:    "Negative refresh interval",
+			modify:  func(c *Config) { c.Notifications.RefreshInterval = -1 },
 			wantErr: true,
 		},
 		{
-			name:   "Zero timeout",
-			modify: func(c *Config) { c.API.Timeout = 0 },
+			name:    "Zero timeout",
+			modify:  func(c *Config) { c.API.Timeout = 0 },
 			wantErr: true,
 		},
 		{
-			name:   "Negative retry count",
-			modify: func(c *Config) { c.API.RetryCount = -1 },
+			name:    "Negative retry count",
+			modify:  func(c *Config) { c.API.RetryCount = -1 },
 			wantErr: true,
 		},
 		{
-			name:   "Zero max concurrent",
-			modify: func(c *Config) { c.Advanced.MaxConcurrent = 0 },
+			name:    "Zero max concurrent",
+			modify:  func(c *Config) { c.Advanced.MaxConcurrent = 0 },
 			wantErr: true,
 		},
 		{
-			name:   "Negative cache TTL",
-			modify: func(c *Config) { c.Advanced.CacheTTL = -1 },
+			name:    "Negative cache TTL",
+			modify:  func(c *Config) { c.Advanced.CacheTTL = -1 },
 			wantErr: true,
 		},
 	}

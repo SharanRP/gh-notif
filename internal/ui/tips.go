@@ -3,10 +3,10 @@ package ui
 import (
 	"fmt"
 
+	"github.com/SharanRP/gh-notif/internal/discovery"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/SharanRP/gh-notif/internal/discovery"
 )
 
 // TipModel represents a feature tip

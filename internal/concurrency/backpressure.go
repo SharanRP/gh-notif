@@ -60,12 +60,12 @@ func NewBackpressureController(maxConcurrent, maxQueueSize int) *BackpressureCon
 	}
 
 	return &BackpressureController{
-		maxConcurrent:         int32(maxConcurrent),
-		maxQueueSize:          int32(maxQueueSize),
-		lastAdjustment:        time.Now(),
-		adjustmentInterval:    5 * time.Second,
-		dynamicAdjustment:     true,
-		minConcurrent:         1,
+		maxConcurrent:          int32(maxConcurrent),
+		maxQueueSize:           int32(maxQueueSize),
+		lastAdjustment:         time.Now(),
+		adjustmentInterval:     5 * time.Second,
+		dynamicAdjustment:      true,
+		minConcurrent:          1,
 		maxConcurrentHardLimit: int32(maxConcurrent * 2),
 	}
 }

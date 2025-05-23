@@ -233,8 +233,8 @@ func createTestNotifications() []*github.Notification {
 
 	return []*github.Notification{
 		{
-			ID:      github.String("1"),
-			Unread:  github.Bool(true),
+			ID:     github.String("1"),
+			Unread: github.Bool(true),
 			Subject: &github.NotificationSubject{
 				Title: github.String("Test Issue"),
 				Type:  github.String("Issue"),
@@ -246,8 +246,8 @@ func createTestNotifications() []*github.Notification {
 			UpdatedAt: &github.Timestamp{Time: now},
 		},
 		{
-			ID:      github.String("2"),
-			Unread:  github.Bool(true),
+			ID:     github.String("2"),
+			Unread: github.Bool(true),
 			Subject: &github.NotificationSubject{
 				Title: github.String("Test Pull Request"),
 				Type:  github.String("PullRequest"),
@@ -259,8 +259,8 @@ func createTestNotifications() []*github.Notification {
 			UpdatedAt: &github.Timestamp{Time: now.Add(-1 * time.Hour)},
 		},
 		{
-			ID:      github.String("3"),
-			Unread:  github.Bool(false),
+			ID:     github.String("3"),
+			Unread: github.Bool(false),
 			Subject: &github.NotificationSubject{
 				Title: github.String("Test Release"),
 				Type:  github.String("Release"),

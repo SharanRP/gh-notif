@@ -200,7 +200,7 @@ func (ni *NotificationItem) renderDetailed(style lipgloss.Style) string {
 
 	// Apply enhanced container styling with rounded borders
 	containerStyle := ni.styles.PanelElevated.Copy().
-		Width(ni.width - 8).
+		Width(ni.width-8).
 		Padding(2, 3).
 		Margin(1, 2)
 

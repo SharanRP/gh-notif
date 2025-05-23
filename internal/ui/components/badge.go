@@ -30,15 +30,15 @@ type Badge struct {
 	// Configuration
 	text      string
 	badgeType BadgeType
-	
+
 	// Custom styling (for BadgeCustom type)
 	customStyle lipgloss.Style
-	
+
 	// State
-	focused   bool
-	
+	focused bool
+
 	// Styling
-	styles    ComponentStyles
+	styles ComponentStyles
 }
 
 // NewBadge creates a new badge component
@@ -55,19 +55,19 @@ func NewBadgeComponentFactory(config ComponentConfig) Component {
 	if !ok {
 		text = "Badge"
 	}
-	
+
 	badgeType, ok := config.Props["type"].(BadgeType)
 	if !ok {
 		badgeType = BadgePrimary
 	}
-	
+
 	badge := NewBadge(text, badgeType)
 	badge.SetStyles(config.Styles)
-	
+
 	if customStyle, ok := config.Props["customStyle"].(lipgloss.Style); ok {
 		badge.SetCustomStyle(customStyle)
 	}
-	
+
 	return badge
 }
 
@@ -116,14 +116,14 @@ func (b *Badge) Update(msg tea.Msg) (Component, tea.Cmd) {
 			}
 		}
 	}
-	
+
 	return b, nil
 }
 
 // View renders the badge
 func (b *Badge) View() string {
 	var style lipgloss.Style
-	
+
 	switch b.badgeType {
 	case BadgePrimary:
 		style = lipgloss.NewStyle().
@@ -165,7 +165,7 @@ func (b *Badge) View() string {
 	default:
 		style = b.styles.Base
 	}
-	
+
 	return style.Render(b.text)
 }
 
@@ -208,12 +208,12 @@ type Panel struct {
 	title     string
 	content   string
 	panelType PanelType
-	
+
 	// State
-	focused   bool
-	
+	focused bool
+
 	// Styling
-	styles    ComponentStyles
+	styles ComponentStyles
 }
 
 // PanelType represents different types of panels
@@ -246,20 +246,20 @@ func NewPanelComponentFactory(config ComponentConfig) Component {
 	if !ok {
 		title = ""
 	}
-	
+
 	panelType, ok := config.Props["type"].(PanelType)
 	if !ok {
 		panelType = PanelDefault
 	}
-	
+
 	panel := NewPanel(title, panelType)
 	panel.SetSize(config.Width, config.Height)
 	panel.SetStyles(config.Styles)
-	
+
 	if content, ok := config.Props["content"].(string); ok {
 		panel.SetContent(content)
 	}
-	
+
 	return panel
 }
 
@@ -321,14 +321,14 @@ func (p *Panel) Update(msg tea.Msg) (Component, tea.Cmd) {
 			}
 		}
 	}
-	
+
 	return p, nil
 }
 
 // View renders the panel
 func (p *Panel) View() string {
 	var style lipgloss.Style
-	
+
 	switch p.panelType {
 	case PanelDefault:
 		style = lipgloss.NewStyle().
@@ -356,12 +356,12 @@ func (p *Panel) View() string {
 			BorderStyle(lipgloss.DoubleBorder()).
 			BorderForeground(lipgloss.Color("8"))
 	}
-	
+
 	// Apply focus styling
 	if p.focused {
 		style = style.BorderForeground(lipgloss.Color("6"))
 	}
-	
+
 	// Set dimensions
 	if p.width > 0 {
 		style = style.Width(p.width - 4) // Account for border and padding
@@ -369,26 +369,26 @@ func (p *Panel) View() string {
 	if p.height > 0 {
 		style = style.Height(p.height - 4) // Account for border and padding
 	}
-	
+
 	// Build content
 	var parts []string
-	
+
 	if p.title != "" {
 		titleStyle := lipgloss.NewStyle().Bold(true)
 		if p.focused {
 			titleStyle = titleStyle.Foreground(lipgloss.Color("6"))
 		}
 		parts = append(parts, titleStyle.Render(p.title))
-		
+
 		if p.content != "" {
 			parts = append(parts, "")
 		}
 	}
-	
+
 	if p.content != "" {
 		parts = append(parts, p.content)
 	}
-	
+
 	content := lipgloss.JoinVertical(lipgloss.Left, parts...)
 	return style.Render(content)
 }

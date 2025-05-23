@@ -57,11 +57,11 @@ type BatchOptions struct {
 // DefaultBatchOptions returns the default batch options
 func DefaultBatchOptions() *BatchOptions {
 	return &BatchOptions{
-		Concurrency:     5,
+		Concurrency:      5,
 		ProgressCallback: nil,
 		ErrorCallback:    nil,
-		ContinueOnError: true,
-		Timeout:         30 * time.Second,
+		ContinueOnError:  true,
+		Timeout:          30 * time.Second,
 	}
 }
 

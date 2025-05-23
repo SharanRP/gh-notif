@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/SharanRP/gh-notif/internal/common"
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -12,7 +13,6 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/google/go-github/v60/github"
-	"github.com/SharanRP/gh-notif/internal/common"
 )
 
 // ActionMode represents different action modes
@@ -37,21 +37,21 @@ type ActionModel struct {
 	selectedCount int
 
 	// UI Components
-	list        list.Model
-	help        help.Model
-	spinner     spinner.Model
-	viewport    viewport.Model
-	keyMap      actionKeyMap
-	statusBar   StatusBar
+	list      list.Model
+	help      help.Model
+	spinner   spinner.Model
+	viewport  viewport.Model
+	keyMap    actionKeyMap
+	statusBar StatusBar
 
 	// State
-	width       int
-	height      int
-	ready       bool
-	loading     bool
-	mode        ActionMode
-	error       error
-	result      *common.BatchResult
+	width   int
+	height  int
+	ready   bool
+	loading bool
+	mode    ActionMode
+	error   error
+	result  *common.BatchResult
 
 	// Context
 	ctx        context.Context
@@ -60,24 +60,24 @@ type ActionModel struct {
 
 // actionKeyMap defines the keybindings for the action UI
 type actionKeyMap struct {
-	Up             key.Binding
-	Down           key.Binding
-	Left           key.Binding
-	Right          key.Binding
-	Help           key.Binding
-	Quit           key.Binding
-	Select         key.Binding
-	ToggleSelect   key.Binding
-	SelectAll      key.Binding
-	DeselectAll    key.Binding
-	MarkAsRead     key.Binding
-	Archive        key.Binding
-	Subscribe      key.Binding
-	Unsubscribe    key.Binding
-	Mute           key.Binding
-	Open           key.Binding
-	Cancel         key.Binding
-	Back           key.Binding
+	Up           key.Binding
+	Down         key.Binding
+	Left         key.Binding
+	Right        key.Binding
+	Help         key.Binding
+	Quit         key.Binding
+	Select       key.Binding
+	ToggleSelect key.Binding
+	SelectAll    key.Binding
+	DeselectAll  key.Binding
+	MarkAsRead   key.Binding
+	Archive      key.Binding
+	Subscribe    key.Binding
+	Unsubscribe  key.Binding
+	Mute         key.Binding
+	Open         key.Binding
+	Cancel       key.Binding
+	Back         key.Binding
 }
 
 // ShortHelp returns keybindings to be shown in the mini help view.

@@ -13,13 +13,13 @@ import (
 type VirtualListItem interface {
 	// Render renders the item with the given width and style
 	Render(width int, style lipgloss.Style) string
-	
+
 	// GetHeight returns the height of the item when rendered
 	GetHeight() int
-	
+
 	// GetID returns a unique identifier for the item
 	GetID() string
-	
+
 	// IsSelectable returns whether the item can be selected
 	IsSelectable() bool
 }
@@ -27,38 +27,38 @@ type VirtualListItem interface {
 // VirtualList implements a high-performance virtualized list component
 type VirtualList struct {
 	// Configuration
-	width         int
-	height        int
-	items         []VirtualListItem
-	itemHeight    int // Fixed height per item for simplicity
-	
+	width      int
+	height     int
+	items      []VirtualListItem
+	itemHeight int // Fixed height per item for simplicity
+
 	// State
-	focused       bool
-	selected      int
-	offset        int
-	visibleStart  int
-	visibleEnd    int
-	
+	focused      bool
+	selected     int
+	offset       int
+	visibleStart int
+	visibleEnd   int
+
 	// Styling
-	styles        ComponentStyles
-	
+	styles ComponentStyles
+
 	// Key bindings
-	keyMap        VirtualListKeyMap
-	
+	keyMap VirtualListKeyMap
+
 	// Performance tracking
-	renderCache   map[string]string
-	cacheEnabled  bool
+	renderCache  map[string]string
+	cacheEnabled bool
 }
 
 // VirtualListKeyMap defines key bindings for the virtual list
 type VirtualListKeyMap struct {
-	Up         key.Binding
-	Down       key.Binding
-	PageUp     key.Binding
-	PageDown   key.Binding
-	Home       key.Binding
-	End        key.Binding
-	Select     key.Binding
+	Up       key.Binding
+	Down     key.Binding
+	PageUp   key.Binding
+	PageDown key.Binding
+	Home     key.Binding
+	End      key.Binding
+	Select   key.Binding
 }
 
 // DefaultVirtualListKeyMap returns the default key bindings
@@ -114,16 +114,16 @@ func NewVirtualListComponentFactory(config ComponentConfig) Component {
 	if !ok {
 		items = []VirtualListItem{}
 	}
-	
+
 	itemHeight, ok := config.Props["itemHeight"].(int)
 	if !ok {
 		itemHeight = 1
 	}
-	
+
 	vl := NewVirtualList(items, itemHeight)
 	vl.SetSize(config.Width, config.Height)
 	vl.SetStyles(config.Styles)
-	
+
 	return vl
 }
 
@@ -140,7 +140,7 @@ func (vl *VirtualList) Update(msg tea.Msg) (Component, tea.Cmd) {
 		if !vl.focused {
 			return vl, nil
 		}
-		
+
 		switch {
 		case key.Matches(msg, vl.keyMap.Up):
 			vl.moveUp()
@@ -157,9 +157,9 @@ func (vl *VirtualList) Update(msg tea.Msg) (Component, tea.Cmd) {
 		case key.Matches(msg, vl.keyMap.Select):
 			return vl, vl.selectItem()
 		}
-		
+
 		vl.updateVisibleRange()
-		
+
 	case ComponentMessage:
 		switch msg.Type {
 		case ComponentResizeMsg:
@@ -170,7 +170,7 @@ func (vl *VirtualList) Update(msg tea.Msg) (Component, tea.Cmd) {
 			vl.clearCache()
 		}
 	}
-	
+
 	return vl, nil
 }
 
@@ -179,13 +179,13 @@ func (vl *VirtualList) View() string {
 	if len(vl.items) == 0 {
 		return vl.styles.Base.Render("No items")
 	}
-	
+
 	var content []string
-	
+
 	// Render only visible items for performance
 	for i := vl.visibleStart; i <= vl.visibleEnd && i < len(vl.items); i++ {
 		item := vl.items[i]
-		
+
 		// Check cache first
 		cacheKey := fmt.Sprintf("%s_%d_%t", item.GetID(), vl.width, i == vl.selected)
 		if vl.cacheEnabled {
@@ -194,7 +194,7 @@ func (vl *VirtualList) View() string {
 				continue
 			}
 		}
-		
+
 		// Determine style
 		var style lipgloss.Style
 		if i == vl.selected && vl.focused {
@@ -202,27 +202,27 @@ func (vl *VirtualList) View() string {
 		} else {
 			style = vl.styles.Base
 		}
-		
+
 		// Render item
 		rendered := item.Render(vl.width, style)
-		
+
 		// Cache the result
 		if vl.cacheEnabled {
 			vl.renderCache[cacheKey] = rendered
 		}
-		
+
 		content = append(content, rendered)
 	}
-	
+
 	// Join all content
 	result := lipgloss.JoinVertical(lipgloss.Left, content...)
-	
+
 	// Apply container style
 	containerStyle := vl.styles.Base
 	if vl.focused {
 		containerStyle = vl.styles.Focused
 	}
-	
+
 	return containerStyle.Width(vl.width).Height(vl.height).Render(result)
 }
 
@@ -337,13 +337,13 @@ func (vl *VirtualList) goToBottom() {
 // ensureVisible ensures the selected item is visible
 func (vl *VirtualList) ensureVisible() {
 	visibleItems := vl.height / vl.itemHeight
-	
+
 	if vl.selected < vl.offset {
 		vl.offset = vl.selected
 	} else if vl.selected >= vl.offset+visibleItems {
 		vl.offset = vl.selected - visibleItems + 1
 	}
-	
+
 	// Ensure offset is within bounds
 	maxOffset := int(math.Max(0, float64(len(vl.items)-visibleItems)))
 	vl.offset = int(math.Min(float64(maxOffset), math.Max(0, float64(vl.offset))))
@@ -354,7 +354,7 @@ func (vl *VirtualList) updateVisibleRange() {
 	if vl.height == 0 || vl.itemHeight == 0 {
 		return
 	}
-	
+
 	visibleItems := vl.height / vl.itemHeight
 	vl.visibleStart = vl.offset
 	vl.visibleEnd = int(math.Min(float64(vl.offset+visibleItems-1), float64(len(vl.items)-1)))

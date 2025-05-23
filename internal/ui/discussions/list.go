@@ -6,29 +6,29 @@ import (
 	"strings"
 	"time"
 
+	"github.com/SharanRP/gh-notif/internal/discussions"
+	"github.com/SharanRP/gh-notif/internal/ui"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/SharanRP/gh-notif/internal/discussions"
-	"github.com/SharanRP/gh-notif/internal/ui"
 )
 
 // DiscussionList provides an enhanced list view for discussions
 type DiscussionList struct {
-	list         list.Model
-	discussions  []discussions.Discussion
-	width        int
-	height       int
-	styles       EnhancedDiscussionStyles
-	theme        ui.EnhancedTheme
-	keyMap       DiscussionListKeyMap
+	list        list.Model
+	discussions []discussions.Discussion
+	width       int
+	height      int
+	styles      EnhancedDiscussionStyles
+	theme       ui.EnhancedTheme
+	keyMap      DiscussionListKeyMap
 
 	// State
-	focused      bool
-	loading      bool
-	searchMode   bool
-	searchQuery  string
+	focused     bool
+	loading     bool
+	searchMode  bool
+	searchQuery string
 
 	// Animation
 	animationFrame int
@@ -37,14 +37,14 @@ type DiscussionList struct {
 
 // DiscussionListKeyMap defines key bindings for the discussion list
 type DiscussionListKeyMap struct {
-	Up       key.Binding
-	Down     key.Binding
-	Enter    key.Binding
-	Search   key.Binding
-	Filter   key.Binding
-	Refresh  key.Binding
-	Help     key.Binding
-	Quit     key.Binding
+	Up      key.Binding
+	Down    key.Binding
+	Enter   key.Binding
+	Search  key.Binding
+	Filter  key.Binding
+	Refresh key.Binding
+	Help    key.Binding
+	Quit    key.Binding
 }
 
 // DefaultDiscussionListKeyMap returns default key bindings for the list

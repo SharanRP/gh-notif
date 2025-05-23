@@ -248,8 +248,8 @@ func TestErrorHandling(t *testing.T) {
 		// Should contain usage information or error about missing arguments
 		assert.True(t,
 			strings.Contains(outputStr, "Usage:") ||
-			strings.Contains(outputStr, "required") ||
-			strings.Contains(outputStr, "argument"),
+				strings.Contains(outputStr, "required") ||
+				strings.Contains(outputStr, "argument"),
 			"Should indicate missing arguments or show usage")
 	})
 }
@@ -271,9 +271,9 @@ func TestCLIIntegration(t *testing.T) {
 
 		// Set multiple config values
 		configs := map[string]string{
-			"display.theme":    "dark",
-			"api.timeout":      "60",
-			"advanced.debug":   "true",
+			"display.theme":  "dark",
+			"api.timeout":    "60",
+			"advanced.debug": "true",
 		}
 
 		for key, value := range configs {

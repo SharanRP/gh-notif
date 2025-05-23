@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/google/go-github/v60/github"
 	"github.com/SharanRP/gh-notif/internal/ui/examples"
+	"github.com/google/go-github/v60/github"
 )
 
 func main() {
@@ -45,7 +45,7 @@ func main() {
 	case "notif":
 		fmt.Println("🔔 Testing Enhanced UI with Sample Notifications...")
 		notifications := createSampleNotifications(50)
-		
+
 		// Import the enhanced UI function
 		// Note: This would normally be imported from internal/ui
 		fmt.Printf("Created %d sample notifications\n", len(notifications))
@@ -55,8 +55,8 @@ func main() {
 		// For now, just show that we have the notifications
 		fmt.Println("Enhanced notification UI would launch here with:")
 		for i, notif := range notifications[:5] { // Show first 5
-			fmt.Printf("  %d. %s - %s (%s)\n", 
-				i+1, 
+			fmt.Printf("  %d. %s - %s (%s)\n",
+				i+1,
 				notif.GetRepository().GetFullName(),
 				notif.GetSubject().GetTitle(),
 				notif.GetSubject().GetType())
@@ -106,10 +106,10 @@ func main() {
 // createSampleNotifications creates sample GitHub notifications for testing
 func createSampleNotifications(count int) []*github.Notification {
 	notifications := make([]*github.Notification, count)
-	
+
 	repos := []string{
 		"microsoft/vscode",
-		"golang/go", 
+		"golang/go",
 		"kubernetes/kubernetes",
 		"facebook/react",
 		"torvalds/linux",
@@ -119,10 +119,10 @@ func createSampleNotifications(count int) []*github.Notification {
 		"tensorflow/tensorflow",
 		"docker/docker",
 	}
-	
+
 	types := []string{"PullRequest", "Issue", "Release", "Discussion", "Commit"}
 	reasons := []string{"assign", "author", "comment", "mention", "review_requested", "subscribed"}
-	
+
 	titles := []string{
 		"Fix critical security vulnerability in authentication",
 		"Add support for new API endpoints",
@@ -140,14 +140,14 @@ func createSampleNotifications(count int) []*github.Notification {
 		"Add dark mode support to UI components",
 		"Improve error handling and logging",
 	}
-	
+
 	for i := 0; i < count; i++ {
 		repo := repos[i%len(repos)]
 		notifType := types[i%len(types)]
 		reason := reasons[i%len(reasons)]
 		title := titles[i%len(titles)]
 		unread := i%3 == 0 // Every third notification is unread
-		
+
 		notification := &github.Notification{
 			ID: github.String(fmt.Sprintf("notification_%d", i)),
 			Repository: &github.Repository{
@@ -162,9 +162,9 @@ func createSampleNotifications(count int) []*github.Notification {
 			Unread:    github.Bool(unread),
 			UpdatedAt: &github.Timestamp{Time: time.Now().Add(-time.Duration(i) * time.Hour)},
 		}
-		
+
 		notifications[i] = notification
 	}
-	
+
 	return notifications
 }

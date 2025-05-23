@@ -139,8 +139,8 @@ func TestTimeFilter(t *testing.T) {
 	// Create 5 recent notifications (within last 24 hours)
 	for i := 0; i < 5; i++ {
 		notifications[i] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("%d", i+1)),
-			Unread:  github.Bool(true),
+			ID:     github.String(fmt.Sprintf("%d", i+1)),
+			Unread: github.Bool(true),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("Recent Notification %d", i+1)),
 				Type:  github.String("Issue"),
@@ -155,8 +155,8 @@ func TestTimeFilter(t *testing.T) {
 	// Create 5 older notifications (older than 48 hours)
 	for i := 0; i < 5; i++ {
 		notifications[i+5] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("%d", i+6)),
-			Unread:  github.Bool(false),
+			ID:     github.String(fmt.Sprintf("%d", i+6)),
+			Unread: github.Bool(false),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("Old Notification %d", i+1)),
 				Type:  github.String("PullRequest"),
@@ -191,8 +191,8 @@ func TestTimeFilter(t *testing.T) {
 	// Create 4 notifications older than 48 hours
 	for i := 0; i < 4; i++ {
 		olderNotifications[i] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("older-%d", i+1)),
-			Unread:  github.Bool(true),
+			ID:     github.String(fmt.Sprintf("older-%d", i+1)),
+			Unread: github.Bool(true),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("Older than 48 hours %d", i+1)),
 				Type:  github.String("Issue"),
@@ -208,8 +208,8 @@ func TestTimeFilter(t *testing.T) {
 	// Create 6 notifications newer than 48 hours
 	for i := 0; i < 6; i++ {
 		olderNotifications[i+4] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("newer-%d", i+1)),
-			Unread:  github.Bool(true),
+			ID:     github.String(fmt.Sprintf("newer-%d", i+1)),
+			Unread: github.Bool(true),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("Newer than 48 hours %d", i+1)),
 				Type:  github.String("Issue"),
@@ -247,8 +247,8 @@ func TestTimeFilter(t *testing.T) {
 	// Create 4 notifications between 48 and 72 hours old
 	for i := 0; i < 4; i++ {
 		specificNotifications[i] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("between-%d", i+1)),
-			Unread:  github.Bool(true),
+			ID:     github.String(fmt.Sprintf("between-%d", i+1)),
+			Unread: github.Bool(true),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("Between 48-72 hours %d", i+1)),
 				Type:  github.String("Issue"),
@@ -264,8 +264,8 @@ func TestTimeFilter(t *testing.T) {
 	// Create 3 notifications newer than 48 hours
 	for i := 0; i < 3; i++ {
 		specificNotifications[i+4] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("newer-%d", i+1)),
-			Unread:  github.Bool(true),
+			ID:     github.String(fmt.Sprintf("newer-%d", i+1)),
+			Unread: github.Bool(true),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("Newer than 48 hours %d", i+1)),
 				Type:  github.String("Issue"),
@@ -281,8 +281,8 @@ func TestTimeFilter(t *testing.T) {
 	// Create 3 notifications older than 72 hours
 	for i := 0; i < 3; i++ {
 		specificNotifications[i+7] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("older-%d", i+1)),
-			Unread:  github.Bool(true),
+			ID:     github.String(fmt.Sprintf("older-%d", i+1)),
+			Unread: github.Bool(true),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("Older than 72 hours %d", i+1)),
 				Type:  github.String("Issue"),
@@ -457,8 +457,8 @@ func TestFilterEngine(t *testing.T) {
 	// Create notifications for repo1 - exactly 2 Issue type
 	for i := 0; i < 2; i++ {
 		notifications[i] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("repo1-issue-%d", i+1)),
-			Unread:  github.Bool(i%2 == 0),
+			ID:     github.String(fmt.Sprintf("repo1-issue-%d", i+1)),
+			Unread: github.Bool(i%2 == 0),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("Issue %d", i+1)),
 				Type:  github.String("Issue"),
@@ -473,8 +473,8 @@ func TestFilterEngine(t *testing.T) {
 	// Create notifications for repo1 - PullRequest type
 	for i := 0; i < 20; i++ {
 		notifications[i+2] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("repo1-pr-%d", i+1)),
-			Unread:  github.Bool(i%2 == 0),
+			ID:     github.String(fmt.Sprintf("repo1-pr-%d", i+1)),
+			Unread: github.Bool(i%2 == 0),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("PullRequest %d", i+1)),
 				Type:  github.String("PullRequest"),
@@ -494,8 +494,8 @@ func TestFilterEngine(t *testing.T) {
 		}
 
 		notifications[i+22] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("repo2-%d", i+1)),
-			Unread:  github.Bool(i%2 == 0),
+			ID:     github.String(fmt.Sprintf("repo2-%d", i+1)),
+			Unread: github.Bool(i%2 == 0),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("%s %d", notifType, i+1)),
 				Type:  github.String(notifType),
@@ -510,8 +510,8 @@ func TestFilterEngine(t *testing.T) {
 	// Fill the rest with dummy notifications
 	for i := 44; i < 100; i++ {
 		notifications[i] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("dummy-%d", i+1)),
-			Unread:  github.Bool(i%2 == 0),
+			ID:     github.String(fmt.Sprintf("dummy-%d", i+1)),
+			Unread: github.Bool(i%2 == 0),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("Dummy %d", i+1)),
 				Type:  github.String("Discussion"),
@@ -691,8 +691,8 @@ func createTestNotifications(count int) []*github.Notification {
 
 		// Create notification
 		notifications[i] = &github.Notification{
-			ID:      github.String(fmt.Sprintf("%d", i+1)),
-			Unread:  github.Bool(unread),
+			ID:     github.String(fmt.Sprintf("%d", i+1)),
+			Unread: github.Bool(unread),
 			Subject: &github.NotificationSubject{
 				Title: github.String(fmt.Sprintf("%s %d", typ, i+1)),
 				Type:  github.String(typ),

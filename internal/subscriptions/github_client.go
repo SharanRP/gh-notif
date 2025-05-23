@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/google/go-github/v60/github"
 	"github.com/SharanRP/gh-notif/internal/auth"
+	"github.com/google/go-github/v60/github"
 )
 
 // GitHubClientImpl implements GitHubClient using go-github

@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/SharanRP/gh-notif/internal/config"
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/SharanRP/gh-notif/internal/config"
 )
 
 // WizardOptions contains options for the setup wizard

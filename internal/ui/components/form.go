@@ -185,33 +185,33 @@ func (f *TextInputField) Blur() {
 // Form represents an interactive form component
 type Form struct {
 	// Configuration
-	width   int
-	height  int
-	title   string
+	width  int
+	height int
+	title  string
 
 	// Fields
 	fields       []FormField
 	currentField int
 
 	// State
-	focused      bool
-	submitted    bool
-	cancelled    bool
+	focused   bool
+	submitted bool
+	cancelled bool
 
 	// Styling
-	styles       ComponentStyles
+	styles ComponentStyles
 
 	// Key bindings
-	keyMap       FormKeyMap
+	keyMap FormKeyMap
 }
 
 // FormKeyMap defines key bindings for forms
 type FormKeyMap struct {
-	NextField     key.Binding
-	PrevField     key.Binding
-	Submit        key.Binding
-	Cancel        key.Binding
-	Help          key.Binding
+	NextField key.Binding
+	PrevField key.Binding
+	Submit    key.Binding
+	Cancel    key.Binding
+	Help      key.Binding
 }
 
 // DefaultFormKeyMap returns default form key bindings

@@ -75,18 +75,18 @@ func NewFilterStore(configManager *config.ConfigManager) (*FilterStore, error) {
 // setupDefaultShortcuts sets up default shortcuts for common filters
 func (s *FilterStore) setupDefaultShortcuts() {
 	s.shortcuts = map[string]string{
-		"unread":     "is:unread",
-		"read":       "is:read",
-		"prs":        "type:PullRequest",
-		"issues":     "type:Issue",
-		"mentions":   "reason:mention",
-		"assigned":   "reason:assign",
-		"reviews":    "reason:review_requested",
-		"today":      "updated:>24h",
-		"week":       "updated:>7d",
-		"high":       "score:>75",
-		"medium":     "score:>50 score:<75",
-		"low":        "score:<50",
+		"unread":   "is:unread",
+		"read":     "is:read",
+		"prs":      "type:PullRequest",
+		"issues":   "type:Issue",
+		"mentions": "reason:mention",
+		"assigned": "reason:assign",
+		"reviews":  "reason:review_requested",
+		"today":    "updated:>24h",
+		"week":     "updated:>7d",
+		"high":     "score:>75",
+		"medium":   "score:>50 score:<75",
+		"low":      "score:<50",
 	}
 }
 

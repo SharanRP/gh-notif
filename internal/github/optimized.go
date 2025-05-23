@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/google/go-github/v60/github"
 	"github.com/SharanRP/gh-notif/internal/cache"
+	"github.com/google/go-github/v60/github"
 )
 
 // OptimizedGetAllNotifications is an optimized version of GetAllNotifications

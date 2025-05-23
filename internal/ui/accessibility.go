@@ -113,25 +113,25 @@ type EnhancedAccessibilitySettings struct {
 	AnnounceChanges     bool
 
 	// Keyboard navigation
-	TabNavigation       bool
-	ArrowKeyNavigation  bool
-	VimKeyBindings      bool
-	CustomKeyBindings   map[string]string
+	TabNavigation      bool
+	ArrowKeyNavigation bool
+	VimKeyBindings     bool
+	CustomKeyBindings  map[string]string
 
 	// Visual accessibility
-	HighContrastMode    bool
-	LargeText           bool
-	ReducedMotion       bool
-	ColorBlindFriendly  bool
+	HighContrastMode   bool
+	LargeText          bool
+	ReducedMotion      bool
+	ColorBlindFriendly bool
 
 	// Audio feedback
-	SoundEffects        bool
-	VoiceFeedback       bool
+	SoundEffects  bool
+	VoiceFeedback bool
 
 	// Timing and interaction
-	SlowAnimations      bool
-	ExtendedTimeouts    bool
-	ConfirmActions      bool
+	SlowAnimations   bool
+	ExtendedTimeouts bool
+	ConfirmActions   bool
 }
 
 // DefaultEnhancedAccessibilitySettings returns default enhanced accessibility settings

@@ -162,9 +162,3 @@ func (p *BatchProcessor) Process() *BatchResult {
 		Errors:       errors,
 	}
 }
-
-
-
-
-
-

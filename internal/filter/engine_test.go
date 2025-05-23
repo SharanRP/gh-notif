@@ -60,70 +60,70 @@ func TestEngine(t *testing.T) {
 
 	// Test cases
 	testCases := []struct {
-		name           string
-		filter         Filter
-		expectedCount  int
-		expectedIDs    []string
+		name          string
+		filter        Filter
+		expectedCount int
+		expectedIDs   []string
 	}{
 		{
-			name:           "No filter (all notifications)",
-			filter:         &AllFilter{},
-			expectedCount:  3,
-			expectedIDs:    []string{"1", "2", "3"},
+			name:          "No filter (all notifications)",
+			filter:        &AllFilter{},
+			expectedCount: 3,
+			expectedIDs:   []string{"1", "2", "3"},
 		},
 		{
-			name:           "Filter by unread",
-			filter:         &ReadFilter{Read: false}, // unread
-			expectedCount:  2,
-			expectedIDs:    []string{"1", "2"},
+			name:          "Filter by unread",
+			filter:        &ReadFilter{Read: false}, // unread
+			expectedCount: 2,
+			expectedIDs:   []string{"1", "2"},
 		},
 		{
-			name:           "Filter by type",
-			filter:         NewTypeFilter("PullRequest"),
-			expectedCount:  2,
-			expectedIDs:    []string{"1", "3"},
+			name:          "Filter by type",
+			filter:        NewTypeFilter("PullRequest"),
+			expectedCount: 2,
+			expectedIDs:   []string{"1", "3"},
 		},
 		{
-			name:           "Filter by reason",
-			filter:         &ReasonFilter{Reason: "mention"},
-			expectedCount:  1,
-			expectedIDs:    []string{"1"},
+			name:          "Filter by reason",
+			filter:        &ReasonFilter{Reason: "mention"},
+			expectedCount: 1,
+			expectedIDs:   []string{"1"},
 		},
 		{
-			name:           "Filter by repository",
-			filter:         &RepoFilter{Repo: "owner/api"},
-			expectedCount:  1,
-			expectedIDs:    []string{"1"},
+			name:          "Filter by repository",
+			filter:        &RepoFilter{Repo: "owner/api"},
+			expectedCount: 1,
+			expectedIDs:   []string{"1"},
 		},
 		{
-			name:           "Filter by organization",
-			filter:         &OrgFilter{Org: "owner"},
-			expectedCount:  2,
-			expectedIDs:    []string{"1", "2"},
+			name:          "Filter by organization",
+			filter:        &OrgFilter{Org: "owner"},
+			expectedCount: 2,
+			expectedIDs:   []string{"1", "2"},
 		},
 		{
-			name:           "Filter by text",
-			filter:         &TextFilter{Text: "bug"},
-			expectedCount:  1,
-			expectedIDs:    []string{"1"},
+			name:          "Filter by text",
+			filter:        &TextFilter{Text: "bug"},
+			expectedCount: 1,
+			expectedIDs:   []string{"1"},
 		},
 		{
-			name:           "Complex filter: unread AND PullRequest",
-			filter:         &AndFilter{Filters: []Filter{&ReadFilter{Read: false}, NewTypeFilter("PullRequest")}},
-			expectedCount:  1,
-			expectedIDs:    []string{"1"},
+			name:          "Complex filter: unread AND PullRequest",
+			filter:        &AndFilter{Filters: []Filter{&ReadFilter{Read: false}, NewTypeFilter("PullRequest")}},
+			expectedCount: 1,
+			expectedIDs:   []string{"1"},
 		},
 		{
-			name:           "Complex filter: PullRequest OR Issue",
-			filter:         &OrFilter{Filters: []Filter{NewTypeFilter("PullRequest"), NewTypeFilter("Issue")}},
-			expectedCount:  3,
-			expectedIDs:    []string{"1", "2", "3"},
+			name:          "Complex filter: PullRequest OR Issue",
+			filter:        &OrFilter{Filters: []Filter{NewTypeFilter("PullRequest"), NewTypeFilter("Issue")}},
+			expectedCount: 3,
+			expectedIDs:   []string{"1", "2", "3"},
 		},
 		{
-			name:           "Complex filter: NOT PullRequest",
-			filter:         &NotFilter{Filter: NewTypeFilter("PullRequest")},
-			expectedCount:  1,
-			expectedIDs:    []string{"2"},
+			name:          "Complex filter: NOT PullRequest",
+			filter:        &NotFilter{Filter: NewTypeFilter("PullRequest")},
+			expectedCount: 1,
+			expectedIDs:   []string{"2"},
 		},
 	}
 

@@ -164,7 +164,7 @@ func setupGoEnvironment(t *testing.T) string {
 	// Check if Go is available
 	_, err := exec.LookPath("go")
 	require.NoError(t, err, "Go must be installed for this test")
-	
+
 	return setupTempDir(t)
 }
 
@@ -172,7 +172,7 @@ func setupDockerEnvironment(t *testing.T) string {
 	// Check if Docker is available
 	_, err := exec.LookPath("docker")
 	require.NoError(t, err, "Docker must be installed for this test")
-	
+
 	return setupTempDir(t)
 }
 
@@ -180,7 +180,7 @@ func setupBrewEnvironment(t *testing.T) string {
 	// Check if Homebrew is available
 	_, err := exec.LookPath("brew")
 	require.NoError(t, err, "Homebrew must be installed for this test")
-	
+
 	return setupTempDir(t)
 }
 
@@ -188,7 +188,7 @@ func setupScoopEnvironment(t *testing.T) string {
 	// Check if Scoop is available
 	_, err := exec.LookPath("scoop")
 	require.NoError(t, err, "Scoop must be installed for this test")
-	
+
 	return setupTempDir(t)
 }
 
@@ -196,7 +196,7 @@ func setupSnapEnvironment(t *testing.T) string {
 	// Check if Snap is available
 	_, err := exec.LookPath("snap")
 	require.NoError(t, err, "Snap must be installed for this test")
-	
+
 	return setupTempDir(t)
 }
 
@@ -204,7 +204,7 @@ func setupDebEnvironment(t *testing.T) string {
 	// Check if dpkg is available
 	_, err := exec.LookPath("dpkg")
 	require.NoError(t, err, "dpkg must be installed for this test")
-	
+
 	return setupTempDir(t)
 }
 
@@ -240,12 +240,12 @@ func installFromBinary(t *testing.T, workdir string) error {
 
 	// Extract
 	if platform == "windows" {
-		cmd = exec.CommandContext(ctx, "powershell", "-Command", 
+		cmd = exec.CommandContext(ctx, "powershell", "-Command",
 			fmt.Sprintf("Expand-Archive -Path '%s' -DestinationPath '%s'", downloadPath, workdir))
 	} else {
 		cmd = exec.CommandContext(ctx, "tar", "-xzf", downloadPath, "-C", workdir)
 	}
-	
+
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("failed to extract binary: %w", err)
 	}
@@ -259,10 +259,10 @@ func installFromGo(t *testing.T, workdir string) error {
 
 	// Set GOPATH to workdir
 	env := append(os.Environ(), fmt.Sprintf("GOPATH=%s", workdir))
-	
+
 	cmd := exec.CommandContext(ctx, "go", "install", "github.com/SharanRP/gh-notif@latest")
 	cmd.Env = env
-	
+
 	return cmd.Run()
 }
 
@@ -318,7 +318,7 @@ func installFromDeb(t *testing.T, workdir string) error {
 	// Download DEB package
 	downloadURL := "https://github.com/SharanRP/gh-notif/releases/latest/download/gh-notif_amd64.deb"
 	debPath := filepath.Join(workdir, "gh-notif.deb")
-	
+
 	cmd := exec.CommandContext(ctx, "curl", "-L", "-o", debPath, downloadURL)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("failed to download DEB package: %w", err)
@@ -342,7 +342,7 @@ func verifyBinaryInstallation(t *testing.T, workdir string) error {
 		}
 		return nil
 	})
-	
+
 	if err != nil || binaryPath == "" {
 		return fmt.Errorf("binary not found in %s", workdir)
 	}

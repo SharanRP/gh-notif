@@ -12,60 +12,60 @@ import (
 // MarkdownRenderer renders markdown content with styling
 type MarkdownRenderer struct {
 	// Configuration
-	width       int
-	height      int
-	content     string
-	
+	width   int
+	height  int
+	content string
+
 	// Viewport for scrolling
-	viewport    viewport.Model
-	
+	viewport viewport.Model
+
 	// State
-	focused     bool
-	
+	focused bool
+
 	// Styling
-	styles      ComponentStyles
-	mdStyles    MarkdownStyles
+	styles   ComponentStyles
+	mdStyles MarkdownStyles
 }
 
 // MarkdownStyles defines styles for different markdown elements
 type MarkdownStyles struct {
 	// Text styles
-	Normal      lipgloss.Style
-	Bold        lipgloss.Style
-	Italic      lipgloss.Style
-	Code        lipgloss.Style
-	Link        lipgloss.Style
-	
+	Normal lipgloss.Style
+	Bold   lipgloss.Style
+	Italic lipgloss.Style
+	Code   lipgloss.Style
+	Link   lipgloss.Style
+
 	// Block styles
-	Heading1    lipgloss.Style
-	Heading2    lipgloss.Style
-	Heading3    lipgloss.Style
-	Heading4    lipgloss.Style
-	Heading5    lipgloss.Style
-	Heading6    lipgloss.Style
-	
+	Heading1 lipgloss.Style
+	Heading2 lipgloss.Style
+	Heading3 lipgloss.Style
+	Heading4 lipgloss.Style
+	Heading5 lipgloss.Style
+	Heading6 lipgloss.Style
+
 	// List styles
-	ListItem    lipgloss.Style
-	ListBullet  lipgloss.Style
-	
+	ListItem   lipgloss.Style
+	ListBullet lipgloss.Style
+
 	// Block elements
-	Blockquote  lipgloss.Style
-	CodeBlock   lipgloss.Style
-	
+	Blockquote lipgloss.Style
+	CodeBlock  lipgloss.Style
+
 	// Table styles
 	Table       lipgloss.Style
 	TableHeader lipgloss.Style
 	TableCell   lipgloss.Style
-	
+
 	// Horizontal rule
-	HRule       lipgloss.Style
+	HRule lipgloss.Style
 }
 
 // DefaultMarkdownStyles returns default markdown styles
 func DefaultMarkdownStyles() MarkdownStyles {
 	return MarkdownStyles{
 		Normal: lipgloss.NewStyle(),
-		Bold: lipgloss.NewStyle().Bold(true),
+		Bold:   lipgloss.NewStyle().Bold(true),
 		Italic: lipgloss.NewStyle().Italic(true),
 		Code: lipgloss.NewStyle().
 			Foreground(lipgloss.Color("6")).
@@ -74,7 +74,7 @@ func DefaultMarkdownStyles() MarkdownStyles {
 		Link: lipgloss.NewStyle().
 			Foreground(lipgloss.Color("4")).
 			Underline(true),
-		
+
 		Heading1: lipgloss.NewStyle().
 			Foreground(lipgloss.Color("5")).
 			Bold(true).
@@ -95,12 +95,12 @@ func DefaultMarkdownStyles() MarkdownStyles {
 		Heading6: lipgloss.NewStyle().
 			Foreground(lipgloss.Color("8")).
 			Bold(true),
-		
+
 		ListItem: lipgloss.NewStyle().
 			Padding(0, 0, 0, 2),
 		ListBullet: lipgloss.NewStyle().
 			Foreground(lipgloss.Color("4")),
-		
+
 		Blockquote: lipgloss.NewStyle().
 			Foreground(lipgloss.Color("8")).
 			Italic(true).
@@ -108,14 +108,14 @@ func DefaultMarkdownStyles() MarkdownStyles {
 			BorderLeft(true).
 			BorderForeground(lipgloss.Color("8")).
 			Padding(0, 0, 0, 1),
-		
+
 		CodeBlock: lipgloss.NewStyle().
 			Foreground(lipgloss.Color("6")).
 			Background(lipgloss.Color("0")).
 			Padding(1, 2).
 			BorderStyle(lipgloss.RoundedBorder()).
 			BorderForeground(lipgloss.Color("8")),
-		
+
 		Table: lipgloss.NewStyle().
 			BorderStyle(lipgloss.NormalBorder()).
 			BorderForeground(lipgloss.Color("8")),
@@ -125,7 +125,7 @@ func DefaultMarkdownStyles() MarkdownStyles {
 			Padding(0, 1),
 		TableCell: lipgloss.NewStyle().
 			Padding(0, 1),
-		
+
 		HRule: lipgloss.NewStyle().
 			Foreground(lipgloss.Color("8")).
 			Padding(1, 0),
@@ -135,7 +135,7 @@ func DefaultMarkdownStyles() MarkdownStyles {
 // NewMarkdownRenderer creates a new markdown renderer
 func NewMarkdownRenderer(content string) *MarkdownRenderer {
 	vp := viewport.New(0, 0)
-	
+
 	return &MarkdownRenderer{
 		content:  content,
 		viewport: vp,
@@ -149,11 +149,11 @@ func NewMarkdownComponentFactory(config ComponentConfig) Component {
 	if !ok {
 		content = ""
 	}
-	
+
 	md := NewMarkdownRenderer(content)
 	md.SetSize(config.Width, config.Height)
 	md.SetStyles(config.Styles)
-	
+
 	return md
 }
 
@@ -177,13 +177,13 @@ func (md *MarkdownRenderer) Init() tea.Cmd {
 // Update handles messages and updates the markdown renderer state
 func (md *MarkdownRenderer) Update(msg tea.Msg) (Component, tea.Cmd) {
 	var cmd tea.Cmd
-	
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		if md.focused {
 			md.viewport, cmd = md.viewport.Update(msg)
 		}
-		
+
 	case ComponentMessage:
 		switch msg.Type {
 		case ComponentResizeMsg:
@@ -196,7 +196,7 @@ func (md *MarkdownRenderer) Update(msg tea.Msg) (Component, tea.Cmd) {
 			}
 		}
 	}
-	
+
 	return md, cmd
 }
 
@@ -205,10 +205,10 @@ func (md *MarkdownRenderer) View() string {
 	if md.content == "" {
 		return md.styles.Base.Render("No content")
 	}
-	
+
 	rendered := md.renderMarkdown(md.content)
 	md.viewport.SetContent(rendered)
-	
+
 	return md.viewport.View()
 }
 
@@ -216,10 +216,10 @@ func (md *MarkdownRenderer) View() string {
 func (md *MarkdownRenderer) renderMarkdown(content string) string {
 	lines := strings.Split(content, "\n")
 	var rendered []string
-	
+
 	inCodeBlock := false
 	var codeBlockLines []string
-	
+
 	for _, line := range lines {
 		// Handle code blocks
 		if strings.HasPrefix(line, "```") {
@@ -235,16 +235,16 @@ func (md *MarkdownRenderer) renderMarkdown(content string) string {
 			}
 			continue
 		}
-		
+
 		if inCodeBlock {
 			codeBlockLines = append(codeBlockLines, line)
 			continue
 		}
-		
+
 		// Process regular lines
 		rendered = append(rendered, md.processLine(line))
 	}
-	
+
 	return strings.Join(rendered, "\n")
 }
 
@@ -269,20 +269,20 @@ func (md *MarkdownRenderer) processLine(line string) string {
 	if strings.HasPrefix(line, "###### ") {
 		return md.mdStyles.Heading6.Render(strings.TrimPrefix(line, "###### "))
 	}
-	
+
 	// Handle blockquotes
 	if strings.HasPrefix(line, "> ") {
 		content := strings.TrimPrefix(line, "> ")
 		return md.mdStyles.Blockquote.Render(content)
 	}
-	
+
 	// Handle list items
 	if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") || strings.HasPrefix(line, "+ ") {
 		bullet := md.mdStyles.ListBullet.Render("•")
 		content := strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(line, "- "), "* "), "+ ")
 		return md.mdStyles.ListItem.Render(bullet + " " + md.processInlineMarkdown(content))
 	}
-	
+
 	// Handle numbered lists
 	if matched, _ := regexp.MatchString(`^\d+\. `, line); matched {
 		re := regexp.MustCompile(`^(\d+)\. (.*)`)
@@ -293,18 +293,18 @@ func (md *MarkdownRenderer) processLine(line string) string {
 			return md.mdStyles.ListItem.Render(number + " " + md.processInlineMarkdown(content))
 		}
 	}
-	
+
 	// Handle horizontal rules
 	if strings.TrimSpace(line) == "---" || strings.TrimSpace(line) == "***" {
 		rule := strings.Repeat("─", md.width-4)
 		return md.mdStyles.HRule.Render(rule)
 	}
-	
+
 	// Handle empty lines
 	if strings.TrimSpace(line) == "" {
 		return ""
 	}
-	
+
 	// Process inline markdown for regular text
 	return md.processInlineMarkdown(line)
 }
@@ -317,21 +317,21 @@ func (md *MarkdownRenderer) processInlineMarkdown(text string) string {
 		content := strings.Trim(strings.Trim(match, "*"), "_")
 		return md.mdStyles.Bold.Render(content)
 	})
-	
+
 	// Handle italic text (*text* or _text_)
 	italicRegex := regexp.MustCompile(`\*(.*?)\*|_(.*?)_`)
 	text = italicRegex.ReplaceAllStringFunc(text, func(match string) string {
 		content := strings.Trim(strings.Trim(match, "*"), "_")
 		return md.mdStyles.Italic.Render(content)
 	})
-	
+
 	// Handle inline code (`code`)
 	codeRegex := regexp.MustCompile("`([^`]+)`")
 	text = codeRegex.ReplaceAllStringFunc(text, func(match string) string {
 		content := strings.Trim(match, "`")
 		return md.mdStyles.Code.Render(content)
 	})
-	
+
 	// Handle links ([text](url))
 	linkRegex := regexp.MustCompile(`\[([^\]]+)\]\(([^)]+)\)`)
 	text = linkRegex.ReplaceAllStringFunc(text, func(match string) string {
@@ -342,7 +342,7 @@ func (md *MarkdownRenderer) processInlineMarkdown(text string) string {
 		}
 		return match
 	})
-	
+
 	return text
 }
 
@@ -371,7 +371,7 @@ func (md *MarkdownRenderer) GetSize() (width, height int) {
 // SetStyles sets the component styles
 func (md *MarkdownRenderer) SetStyles(styles ComponentStyles) {
 	md.styles = styles
-	
+
 	// Update markdown styles based on component styles
 	md.mdStyles.Normal = styles.Base
 	md.mdStyles.Bold = styles.Base.Bold(true)

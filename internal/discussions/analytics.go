@@ -24,15 +24,15 @@ func NewAnalyticsEngine(client *Client) *AnalyticsEngine {
 func (ae *AnalyticsEngine) GenerateAnalytics(ctx context.Context, repositories []string, timeRange TimeRange) (*DiscussionAnalytics, error) {
 	// Fetch all discussions in the time range
 	filter := DiscussionFilter{
-		CreatedAfter: &timeRange.Start,
+		CreatedAfter:  &timeRange.Start,
 		CreatedBefore: &timeRange.End,
-		State: "all",
+		State:         "all",
 	}
 
 	options := DiscussionOptions{
-		IncludeComments: true,
+		IncludeComments:  true,
 		IncludeReactions: true,
-		UseCache: true,
+		UseCache:         true,
 	}
 
 	discussions, err := ae.client.GetDiscussions(ctx, repositories, filter, options)
@@ -42,7 +42,7 @@ func (ae *AnalyticsEngine) GenerateAnalytics(ctx context.Context, repositories [
 
 	// Generate analytics
 	analytics := &DiscussionAnalytics{
-		TimeRange: timeRange,
+		TimeRange:     timeRange,
 		CategoryStats: make(map[string]CategoryStats),
 	}
 
@@ -52,8 +52,8 @@ func (ae *AnalyticsEngine) GenerateAnalytics(ctx context.Context, repositories [
 		repoKey := discussion.Repository.FullName
 		if _, exists := repoStats[repoKey]; !exists {
 			repoStats[repoKey] = &DiscussionAnalytics{
-				Repository: discussion.Repository,
-				TimeRange: timeRange,
+				Repository:    discussion.Repository,
+				TimeRange:     timeRange,
 				CategoryStats: make(map[string]CategoryStats),
 			}
 		}
@@ -88,15 +88,15 @@ func (ae *AnalyticsEngine) GetTrendingDiscussions(ctx context.Context, repositor
 	// Fetch recent discussions
 	filter := DiscussionFilter{
 		CreatedAfter: &timeRange.Start,
-		State: "open",
-		Sort: "updated",
-		Direction: "desc",
+		State:        "open",
+		Sort:         "updated",
+		Direction:    "desc",
 	}
 
 	options := DiscussionOptions{
-		IncludeComments: true,
+		IncludeComments:  true,
 		IncludeReactions: true,
-		UseCache: true,
+		UseCache:         true,
 	}
 
 	discussions, err := ae.client.GetDiscussions(ctx, repositories, filter, options)
@@ -144,8 +144,8 @@ func (ae *AnalyticsEngine) GetUnansweredQuestions(ctx context.Context, repositor
 
 	filter := DiscussionFilter{
 		CreatedBefore: &threshold,
-		State: "open",
-		Answered: boolPtr(false),
+		State:         "open",
+		Answered:      boolPtr(false),
 	}
 
 	options := DiscussionOptions{
@@ -181,15 +181,15 @@ func (ae *AnalyticsEngine) GetEngagementMetrics(ctx context.Context, repositorie
 	}
 
 	metrics := map[string]float64{
-		"total_discussions": float64(analytics.TotalDiscussions),
-		"open_discussions": float64(analytics.OpenDiscussions),
-		"closed_discussions": float64(analytics.ClosedDiscussions),
+		"total_discussions":    float64(analytics.TotalDiscussions),
+		"open_discussions":     float64(analytics.OpenDiscussions),
+		"closed_discussions":   float64(analytics.ClosedDiscussions),
 		"answered_discussions": float64(analytics.AnsweredDiscussions),
-		"answer_rate": 0,
-		"average_comments": analytics.AverageComments,
-		"average_reactions": analytics.AverageReactions,
-		"average_upvotes": analytics.AverageUpvotes,
-		"engagement_score": 0,
+		"answer_rate":          0,
+		"average_comments":     analytics.AverageComments,
+		"average_reactions":    analytics.AverageReactions,
+		"average_upvotes":      analytics.AverageUpvotes,
+		"engagement_score":     0,
 	}
 
 	// Calculate answer rate
@@ -208,7 +208,7 @@ func (ae *AnalyticsEngine) GetEngagementMetrics(ctx context.Context, repositorie
 func (ae *AnalyticsEngine) processDiscussionForAnalytics(analytics *DiscussionAnalytics, discussion Discussion) {
 	// Update basic counts
 	analytics.TotalDiscussions++
-	
+
 	switch discussion.State {
 	case "OPEN":
 		analytics.OpenDiscussions++
@@ -237,10 +237,10 @@ func (ae *AnalyticsEngine) processDiscussionForAnalytics(analytics *DiscussionAn
 		analytics.CategoryStats[categoryKey] = stats
 	} else {
 		analytics.CategoryStats[categoryKey] = CategoryStats{
-			Category: discussion.Category,
+			Category:        discussion.Category,
 			DiscussionCount: 1,
-			CommentCount: discussion.CommentCount,
-			ReactionCount: discussion.ReactionCount,
+			CommentCount:    discussion.CommentCount,
+			ReactionCount:   discussion.ReactionCount,
 		}
 	}
 }
@@ -295,9 +295,9 @@ func (ae *AnalyticsEngine) calculateTrendScore(discussion Discussion, timeRange 
 	score += ageFactor * 0.3
 
 	// Engagement factor
-	engagementScore := float64(discussion.UpvoteCount)*0.5 + 
-					  float64(discussion.CommentCount)*0.3 + 
-					  float64(discussion.ReactionCount)*0.2
+	engagementScore := float64(discussion.UpvoteCount)*0.5 +
+		float64(discussion.CommentCount)*0.3 +
+		float64(discussion.ReactionCount)*0.2
 	score += engagementScore * 0.4
 
 	// Activity factor (recent updates)
@@ -314,9 +314,9 @@ func (ae *AnalyticsEngine) calculateEngagementScore(analytics *DiscussionAnalyti
 	}
 
 	// Weighted engagement score
-	score := analytics.AverageComments*0.4 + 
-			 analytics.AverageReactions*0.3 + 
-			 analytics.AverageUpvotes*0.3
+	score := analytics.AverageComments*0.4 +
+		analytics.AverageReactions*0.3 +
+		analytics.AverageUpvotes*0.3
 
 	return score
 }
@@ -324,7 +324,7 @@ func (ae *AnalyticsEngine) calculateEngagementScore(analytics *DiscussionAnalyti
 func (ae *AnalyticsEngine) extractTrendingTopics(discussions []Discussion) []TopicStats {
 	// Extract keywords from titles and bodies
 	topicCounts := make(map[string]int)
-	
+
 	for _, discussion := range discussions {
 		// Simple keyword extraction (could be enhanced with NLP)
 		words := strings.Fields(strings.ToLower(discussion.Title))
@@ -339,9 +339,9 @@ func (ae *AnalyticsEngine) extractTrendingTopics(discussions []Discussion) []Top
 	var topics []TopicStats
 	for topic, count := range topicCounts {
 		topics = append(topics, TopicStats{
-			Topic: topic,
+			Topic:           topic,
 			DiscussionCount: count,
-			TrendScore: float64(count), // Simple trend score
+			TrendScore:      float64(count), // Simple trend score
 		})
 	}
 
@@ -367,9 +367,9 @@ func (ae *AnalyticsEngine) getTopAuthors(discussions []Discussion) []UserStats {
 			stats.UpvoteCount += discussion.UpvoteCount
 		} else {
 			userStats[key] = &UserStats{
-				User: discussion.Author,
+				User:            discussion.Author,
 				DiscussionCount: 1,
-				UpvoteCount: discussion.UpvoteCount,
+				UpvoteCount:     discussion.UpvoteCount,
 			}
 		}
 	}

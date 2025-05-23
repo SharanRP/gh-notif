@@ -16,13 +16,13 @@ import (
 
 // PackageTest represents a package distribution test
 type PackageTest struct {
-	Name        string
-	Platform    string
-	PackageType string
-	InstallCmd  []string
-	VerifyCmd   []string
-	UpdateCmd   []string
-	UninstallCmd []string
+	Name          string
+	Platform      string
+	PackageType   string
+	InstallCmd    []string
+	VerifyCmd     []string
+	UpdateCmd     []string
+	UninstallCmd  []string
 	Prerequisites []string
 }
 
@@ -54,23 +54,23 @@ func TestPackageDistribution(t *testing.T) {
 func getPackageTests() []PackageTest {
 	tests := []PackageTest{
 		{
-			Name:        "Docker",
-			Platform:    "all",
-			PackageType: "docker",
-			InstallCmd:  []string{"docker", "pull", "ghcr.io/sharanrp/gh-notif:latest"},
-			VerifyCmd:   []string{"docker", "run", "--rm", "ghcr.io/sharanrp/gh-notif:latest", "--version"},
-			UpdateCmd:   []string{"docker", "pull", "ghcr.io/sharanrp/gh-notif:latest"},
-			UninstallCmd: []string{"docker", "rmi", "ghcr.io/sharanrp/gh-notif:latest"},
+			Name:          "Docker",
+			Platform:      "all",
+			PackageType:   "docker",
+			InstallCmd:    []string{"docker", "pull", "ghcr.io/sharanrp/gh-notif:latest"},
+			VerifyCmd:     []string{"docker", "run", "--rm", "ghcr.io/sharanrp/gh-notif:latest", "--version"},
+			UpdateCmd:     []string{"docker", "pull", "ghcr.io/sharanrp/gh-notif:latest"},
+			UninstallCmd:  []string{"docker", "rmi", "ghcr.io/sharanrp/gh-notif:latest"},
 			Prerequisites: []string{"docker"},
 		},
 		{
-			Name:        "Go Install",
-			Platform:    "all",
-			PackageType: "go",
-			InstallCmd:  []string{"go", "install", "github.com/SharanRP/gh-notif@latest"},
-			VerifyCmd:   []string{"gh-notif", "--version"},
-			UpdateCmd:   []string{"go", "install", "github.com/SharanRP/gh-notif@latest"},
-			UninstallCmd: []string{"rm", "-f", "$(go env GOPATH)/bin/gh-notif"},
+			Name:          "Go Install",
+			Platform:      "all",
+			PackageType:   "go",
+			InstallCmd:    []string{"go", "install", "github.com/SharanRP/gh-notif@latest"},
+			VerifyCmd:     []string{"gh-notif", "--version"},
+			UpdateCmd:     []string{"go", "install", "github.com/SharanRP/gh-notif@latest"},
+			UninstallCmd:  []string{"rm", "-f", "$(go env GOPATH)/bin/gh-notif"},
 			Prerequisites: []string{"go"},
 		},
 	}
@@ -79,46 +79,46 @@ func getPackageTests() []PackageTest {
 	switch runtime.GOOS {
 	case "darwin":
 		tests = append(tests, PackageTest{
-			Name:        "Homebrew",
-			Platform:    "darwin",
-			PackageType: "brew",
-			InstallCmd:  []string{"brew", "install", "SharanRP/tap/gh-notif"},
-			VerifyCmd:   []string{"gh-notif", "--version"},
-			UpdateCmd:   []string{"brew", "upgrade", "gh-notif"},
-			UninstallCmd: []string{"brew", "uninstall", "gh-notif"},
+			Name:          "Homebrew",
+			Platform:      "darwin",
+			PackageType:   "brew",
+			InstallCmd:    []string{"brew", "install", "SharanRP/tap/gh-notif"},
+			VerifyCmd:     []string{"gh-notif", "--version"},
+			UpdateCmd:     []string{"brew", "upgrade", "gh-notif"},
+			UninstallCmd:  []string{"brew", "uninstall", "gh-notif"},
 			Prerequisites: []string{"brew"},
 		})
 	case "windows":
 		tests = append(tests, PackageTest{
-			Name:        "Scoop",
-			Platform:    "windows",
-			PackageType: "scoop",
-			InstallCmd:  []string{"scoop", "install", "gh-notif"},
-			VerifyCmd:   []string{"gh-notif", "--version"},
-			UpdateCmd:   []string{"scoop", "update", "gh-notif"},
-			UninstallCmd: []string{"scoop", "uninstall", "gh-notif"},
+			Name:          "Scoop",
+			Platform:      "windows",
+			PackageType:   "scoop",
+			InstallCmd:    []string{"scoop", "install", "gh-notif"},
+			VerifyCmd:     []string{"gh-notif", "--version"},
+			UpdateCmd:     []string{"scoop", "update", "gh-notif"},
+			UninstallCmd:  []string{"scoop", "uninstall", "gh-notif"},
 			Prerequisites: []string{"scoop"},
 		})
 	case "linux":
 		tests = append(tests, []PackageTest{
 			{
-				Name:        "Snap",
-				Platform:    "linux",
-				PackageType: "snap",
-				InstallCmd:  []string{"sudo", "snap", "install", "gh-notif"},
-				VerifyCmd:   []string{"gh-notif", "--version"},
-				UpdateCmd:   []string{"sudo", "snap", "refresh", "gh-notif"},
-				UninstallCmd: []string{"sudo", "snap", "remove", "gh-notif"},
+				Name:          "Snap",
+				Platform:      "linux",
+				PackageType:   "snap",
+				InstallCmd:    []string{"sudo", "snap", "install", "gh-notif"},
+				VerifyCmd:     []string{"gh-notif", "--version"},
+				UpdateCmd:     []string{"sudo", "snap", "refresh", "gh-notif"},
+				UninstallCmd:  []string{"sudo", "snap", "remove", "gh-notif"},
 				Prerequisites: []string{"snap"},
 			},
 			{
-				Name:        "DEB Package",
-				Platform:    "linux",
-				PackageType: "deb",
-				InstallCmd:  []string{"sudo", "dpkg", "-i", "gh-notif_amd64.deb"},
-				VerifyCmd:   []string{"gh-notif", "--version"},
-				UpdateCmd:   []string{"sudo", "dpkg", "-i", "gh-notif_amd64.deb"},
-				UninstallCmd: []string{"sudo", "dpkg", "-r", "gh-notif"},
+				Name:          "DEB Package",
+				Platform:      "linux",
+				PackageType:   "deb",
+				InstallCmd:    []string{"sudo", "dpkg", "-i", "gh-notif_amd64.deb"},
+				VerifyCmd:     []string{"gh-notif", "--version"},
+				UpdateCmd:     []string{"sudo", "dpkg", "-i", "gh-notif_amd64.deb"},
+				UninstallCmd:  []string{"sudo", "dpkg", "-r", "gh-notif"},
 				Prerequisites: []string{"dpkg"},
 			},
 		}...)
@@ -382,8 +382,8 @@ func testUpdateCheck(t *testing.T, binaryPath string) {
 		// If successful, should contain update information
 		assert.True(t,
 			strings.Contains(string(output), "latest") ||
-			strings.Contains(string(output), "update") ||
-			strings.Contains(string(output), "current"),
+				strings.Contains(string(output), "update") ||
+				strings.Contains(string(output), "current"),
 			"Update check should provide version information")
 	}
 }

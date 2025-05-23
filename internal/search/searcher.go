@@ -39,12 +39,12 @@ type SearchOptions struct {
 // DefaultSearchOptions returns the default search options
 func DefaultSearchOptions() *SearchOptions {
 	return &SearchOptions{
-		Fields:          []string{"title", "repository", "type", "reason"},
-		CaseSensitive:   false,
-		UseRegex:        false,
-		MaxResults:      100,
-		Concurrency:     5,
-		Timeout:         5 * time.Second,
+		Fields:           []string{"title", "repository", "type", "reason"},
+		CaseSensitive:    false,
+		UseRegex:         false,
+		MaxResults:       100,
+		Concurrency:      5,
+		Timeout:          5 * time.Second,
 		HighlightMatches: true,
 		HighlightPrefix:  "\033[1;33m", // Yellow bold
 		HighlightSuffix:  "\033[0m",    // Reset

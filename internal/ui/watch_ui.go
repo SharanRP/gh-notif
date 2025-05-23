@@ -6,13 +6,13 @@ import (
 	"strings"
 	"time"
 
+	githubclient "github.com/SharanRP/gh-notif/internal/github"
+	"github.com/SharanRP/gh-notif/internal/watch"
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/google/go-github/v60/github"
-	githubclient "github.com/SharanRP/gh-notif/internal/github"
-	"github.com/SharanRP/gh-notif/internal/watch"
 )
 
 // WatchModel represents the watch UI model

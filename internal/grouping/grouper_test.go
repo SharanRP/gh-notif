@@ -11,7 +11,7 @@ import (
 func TestGrouper(t *testing.T) {
 	// Create a test grouper
 	options := DefaultGroupOptions()
-	options.MinGroupSize = 1  // Set to 1 for testing
+	options.MinGroupSize = 1 // Set to 1 for testing
 	grouper := NewGrouper(options)
 
 	// Create test notifications
@@ -157,7 +157,7 @@ func TestGroupByOwner(t *testing.T) {
 	// Create a test grouper
 	options := DefaultGroupOptions()
 	options.PrimaryGrouping = GroupByOwner
-	options.MinGroupSize = 1  // Set to 1 for testing
+	options.MinGroupSize = 1 // Set to 1 for testing
 	grouper := NewGrouper(options)
 
 	// Create test notifications

@@ -92,13 +92,13 @@ func buildTestBinary(t *testing.T, tmpDir string) string {
 	}
 
 	binaryPath := filepath.Join(tmpDir, binaryName)
-	
+
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "go", "build", "-o", binaryPath, ".")
 	cmd.Dir = "../../" // Assuming we're in tests/system
-	
+
 	output, err := cmd.CombinedOutput()
 	require.NoError(t, err, "Failed to build binary: %s", output)
 
@@ -350,7 +350,7 @@ func testPathHandling(t *testing.T, binaryPath, tmpDir string) {
 
 	// Test with different path separators
 	configPath := filepath.Join(tmpDir, "test-config.yaml")
-	
+
 	cmd := exec.CommandContext(ctx, binaryPath, "config", "set", "display.limit", "10", "--config", configPath)
 	output, err := cmd.CombinedOutput()
 	require.NoError(t, err, "Path handling should work: %s", output)
@@ -366,7 +366,7 @@ func testFilePermissions(t *testing.T, binaryPath, tmpDir string) {
 
 	// Test config file permissions
 	configPath := filepath.Join(tmpDir, "permissions-test.yaml")
-	
+
 	cmd := exec.CommandContext(ctx, binaryPath, "config", "set", "test.value", "test", "--config", configPath)
 	output, err := cmd.CombinedOutput()
 	require.NoError(t, err, "Should create config file: %s", output)
@@ -375,7 +375,7 @@ func testFilePermissions(t *testing.T, binaryPath, tmpDir string) {
 	if strings.Contains(os.Getenv("OS"), "Windows") == false {
 		info, err := os.Stat(configPath)
 		require.NoError(t, err, "Should stat config file")
-		
+
 		mode := info.Mode()
 		assert.Equal(t, os.FileMode(0600), mode&0777, "Config file should have restrictive permissions")
 	}
@@ -387,10 +387,10 @@ func testEnvironmentVariables(t *testing.T, binaryPath, tmpDir string) {
 
 	// Test with environment variable override
 	customConfig := filepath.Join(tmpDir, "env-config.yaml")
-	
+
 	cmd := exec.CommandContext(ctx, binaryPath, "config", "set", "env.test", "value")
 	cmd.Env = append(os.Environ(), fmt.Sprintf("GH_NOTIF_CONFIG=%s", customConfig))
-	
+
 	output, err := cmd.CombinedOutput()
 	require.NoError(t, err, "Environment variable should work: %s", output)
 

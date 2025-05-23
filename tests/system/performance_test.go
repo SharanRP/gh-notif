@@ -33,7 +33,7 @@ func DefaultBenchmarks() PerformanceBenchmarks {
 		ListResponseTime:   5 * time.Second,
 		FilterResponseTime: 3 * time.Second,
 		SearchResponseTime: 4 * time.Second,
-		MemoryUsage:        100, // 100MB
+		MemoryUsage:        100,  // 100MB
 		CPUUsage:           80.0, // 80%
 	}
 }
@@ -99,19 +99,19 @@ func authenticateForTesting(t *testing.T, binaryPath, token string) {
 func testStartupPerformance(t *testing.T, binaryPath string, benchmarks PerformanceBenchmarks) {
 	// Test cold start performance
 	measurements := make([]time.Duration, 5)
-	
+
 	for i := 0; i < 5; i++ {
 		start := time.Now()
-		
+
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		cmd := exec.CommandContext(ctx, binaryPath, "--version")
-		
+
 		err := cmd.Run()
 		cancel()
-		
+
 		elapsed := time.Since(start)
 		measurements[i] = elapsed
-		
+
 		require.NoError(t, err, "Version command should succeed")
 	}
 
@@ -123,25 +123,25 @@ func testStartupPerformance(t *testing.T, binaryPath string, benchmarks Performa
 	avgStartupTime := total / time.Duration(len(measurements))
 
 	t.Logf("Average startup time: %v", avgStartupTime)
-	assert.LessOrEqual(t, avgStartupTime, benchmarks.StartupTime, 
+	assert.LessOrEqual(t, avgStartupTime, benchmarks.StartupTime,
 		"Startup time should be less than %v, got %v", benchmarks.StartupTime, avgStartupTime)
 }
 
 func testListPerformance(t *testing.T, binaryPath string, benchmarks PerformanceBenchmarks) {
 	measurements := make([]time.Duration, 3)
-	
+
 	for i := 0; i < 3; i++ {
 		start := time.Now()
-		
+
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		cmd := exec.CommandContext(ctx, binaryPath, "list", "--limit", "100")
-		
+
 		err := cmd.Run()
 		cancel()
-		
+
 		elapsed := time.Since(start)
 		measurements[i] = elapsed
-		
+
 		require.NoError(t, err, "List command should succeed")
 	}
 
@@ -168,17 +168,17 @@ func testFilterPerformance(t *testing.T, binaryPath string, benchmarks Performan
 	for _, filter := range filters {
 		t.Run(fmt.Sprintf("Filter_%s", strings.ReplaceAll(filter, " ", "_")), func(t *testing.T) {
 			start := time.Now()
-			
+
 			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 			cmd := exec.CommandContext(ctx, binaryPath, "list", "--filter", filter, "--limit", "50")
-			
+
 			err := cmd.Run()
 			cancel()
-			
+
 			elapsed := time.Since(start)
-			
+
 			require.NoError(t, err, "Filter command should succeed")
-			
+
 			t.Logf("Filter '%s' response time: %v", filter, elapsed)
 			assert.LessOrEqual(t, elapsed, benchmarks.FilterResponseTime,
 				"Filter response time should be less than %v, got %v", benchmarks.FilterResponseTime, elapsed)
@@ -197,17 +197,17 @@ func testSearchPerformance(t *testing.T, binaryPath string, benchmarks Performan
 	for _, term := range searchTerms {
 		t.Run(fmt.Sprintf("Search_%s", term), func(t *testing.T) {
 			start := time.Now()
-			
+
 			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 			cmd := exec.CommandContext(ctx, binaryPath, "search", term, "--limit", "20")
-			
+
 			err := cmd.Run()
 			cancel()
-			
+
 			elapsed := time.Since(start)
-			
+
 			require.NoError(t, err, "Search command should succeed")
-			
+
 			t.Logf("Search '%s' response time: %v", term, elapsed)
 			assert.LessOrEqual(t, elapsed, benchmarks.SearchResponseTime,
 				"Search response time should be less than %v, got %v", benchmarks.SearchResponseTime, elapsed)
@@ -222,7 +222,7 @@ func testMemoryUsage(t *testing.T, binaryPath string, benchmarks PerformanceBenc
 
 	cmd := exec.CommandContext(ctx, binaryPath, "profile", "--memory", "--duration", "30")
 	output, err := cmd.CombinedOutput()
-	
+
 	if err != nil {
 		t.Logf("Memory profiling not available: %s", output)
 		t.Skip("Memory profiling not available")
@@ -231,7 +231,7 @@ func testMemoryUsage(t *testing.T, binaryPath string, benchmarks PerformanceBenc
 	// Parse memory usage from output
 	lines := strings.Split(string(output), "\n")
 	var memoryUsage int64
-	
+
 	for _, line := range lines {
 		if strings.Contains(line, "Memory usage:") {
 			parts := strings.Fields(line)
@@ -259,12 +259,12 @@ func testConcurrentOperations(t *testing.T, binaryPath string, benchmarks Perfor
 	results := make(chan error, concurrency)
 
 	start := time.Now()
-	
+
 	for i := 0; i < concurrency; i++ {
 		go func(id int) {
 			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 			defer cancel()
-			
+
 			cmd := exec.CommandContext(ctx, binaryPath, "list", "--limit", "10")
 			err := cmd.Run()
 			results <- err
@@ -279,7 +279,7 @@ func testConcurrentOperations(t *testing.T, binaryPath string, benchmarks Perfor
 
 	elapsed := time.Since(start)
 	t.Logf("Concurrent operations completed in: %v", elapsed)
-	
+
 	// Should complete within reasonable time even with concurrency
 	assert.LessOrEqual(t, elapsed, benchmarks.ListResponseTime*2,
 		"Concurrent operations should complete within %v, got %v", benchmarks.ListResponseTime*2, elapsed)
@@ -288,34 +288,34 @@ func testConcurrentOperations(t *testing.T, binaryPath string, benchmarks Perfor
 func testLargeDatasetPerformance(t *testing.T, binaryPath string, benchmarks PerformanceBenchmarks) {
 	// Test with larger datasets
 	limits := []int{100, 500, 1000}
-	
+
 	for _, limit := range limits {
 		t.Run(fmt.Sprintf("Limit_%d", limit), func(t *testing.T) {
 			start := time.Now()
-			
+
 			ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 			cmd := exec.CommandContext(ctx, binaryPath, "list", "--limit", strconv.Itoa(limit), "--format", "json")
-			
+
 			output, err := cmd.CombinedOutput()
 			cancel()
-			
+
 			elapsed := time.Since(start)
-			
+
 			require.NoError(t, err, "Large dataset command should succeed")
-			
+
 			// Verify we got JSON output
 			var notifications []map[string]interface{}
 			err = json.Unmarshal(output, &notifications)
 			assert.NoError(t, err, "Output should be valid JSON")
-			
+
 			t.Logf("Processed %d notifications in %v", len(notifications), elapsed)
-			
+
 			// Performance should scale reasonably
 			expectedTime := benchmarks.ListResponseTime * time.Duration(limit/100)
 			if expectedTime > 30*time.Second {
 				expectedTime = 30 * time.Second
 			}
-			
+
 			assert.LessOrEqual(t, elapsed, expectedTime,
 				"Large dataset processing should complete within %v, got %v", expectedTime, elapsed)
 		})
@@ -360,7 +360,7 @@ func testCachePerformance(t *testing.T, binaryPath string) {
 	err := cmd.Run()
 	cancel()
 	coldTime := time.Since(start)
-	
+
 	require.NoError(t, err, "Cold cache run should succeed")
 
 	// Second run (warm cache)
@@ -370,11 +370,11 @@ func testCachePerformance(t *testing.T, binaryPath string) {
 	err = cmd.Run()
 	cancel()
 	warmTime := time.Since(start)
-	
+
 	require.NoError(t, err, "Warm cache run should succeed")
 
 	t.Logf("Cold cache time: %v, Warm cache time: %v", coldTime, warmTime)
-	
+
 	// Warm cache should be significantly faster
 	assert.Less(t, warmTime, coldTime, "Warm cache should be faster than cold cache")
 	assert.Less(t, warmTime, coldTime/2, "Warm cache should be at least 50%% faster")
@@ -383,23 +383,23 @@ func testCachePerformance(t *testing.T, binaryPath string) {
 func testNetworkEfficiency(t *testing.T, binaryPath string) {
 	// Test with different page sizes to verify efficient API usage
 	pageSizes := []int{10, 50, 100}
-	
+
 	for _, size := range pageSizes {
 		t.Run(fmt.Sprintf("PageSize_%d", size), func(t *testing.T) {
 			start := time.Now()
-			
+
 			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 			cmd := exec.CommandContext(ctx, binaryPath, "list", "--limit", strconv.Itoa(size))
-			
+
 			err := cmd.Run()
 			cancel()
-			
+
 			elapsed := time.Since(start)
-			
+
 			require.NoError(t, err, "Network request should succeed")
-			
+
 			t.Logf("Page size %d completed in %v", size, elapsed)
-			
+
 			// Larger page sizes should not be proportionally slower
 			// (indicating efficient batching)
 			maxExpectedTime := 10 * time.Second
@@ -415,26 +415,26 @@ func testFileIOPerformance(t *testing.T, binaryPath string) {
 	defer os.RemoveAll(tmpDir)
 
 	outputFile := filepath.Join(tmpDir, "output.json")
-	
+
 	start := time.Now()
-	
+
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	cmd := exec.CommandContext(ctx, binaryPath, "list", "--limit", "100", "--format", "json", "--output", outputFile)
-	
+
 	err = cmd.Run()
 	cancel()
-	
+
 	elapsed := time.Since(start)
-	
+
 	require.NoError(t, err, "File output should succeed")
-	
+
 	// Verify file was created and has content
 	info, err := os.Stat(outputFile)
 	require.NoError(t, err, "Output file should exist")
 	assert.Greater(t, info.Size(), int64(0), "Output file should have content")
-	
+
 	t.Logf("File I/O completed in %v, file size: %d bytes", elapsed, info.Size())
-	
+
 	// File I/O should be reasonably fast
 	assert.LessOrEqual(t, elapsed, 10*time.Second,
 		"File I/O should complete within 10 seconds, got %v", elapsed)

@@ -15,50 +15,50 @@ type DiscussionWatcher struct {
 	analytics     *AnalyticsEngine
 	searchEngine  *SearchEngine
 	configManager *config.ConfigManager
-	
+
 	// Watching state
-	isWatching    bool
-	stopChan      chan struct{}
-	eventChan     chan DiscussionEvent
-	errorChan     chan error
-	
+	isWatching bool
+	stopChan   chan struct{}
+	eventChan  chan DiscussionEvent
+	errorChan  chan error
+
 	// Configuration
-	repositories  []string
-	interval      time.Duration
-	filters       DiscussionFilter
-	options       DiscussionOptions
-	
+	repositories []string
+	interval     time.Duration
+	filters      DiscussionFilter
+	options      DiscussionOptions
+
 	// Callbacks
 	eventCallback func(DiscussionEvent)
 	errorCallback func(error)
-	
+
 	// Internal state
-	mu            sync.RWMutex
-	lastCheck     time.Time
+	mu               sync.RWMutex
+	lastCheck        time.Time
 	knownDiscussions map[string]*Discussion
-	debug         bool
+	debug            bool
 }
 
 // WatcherOptions contains configuration for the discussion watcher
 type WatcherOptions struct {
 	// Repositories to watch
 	Repositories []string `json:"repositories"`
-	
+
 	// Check interval
 	Interval time.Duration `json:"interval"`
-	
+
 	// Filters to apply
 	Filters DiscussionFilter `json:"filters"`
-	
+
 	// Discussion options
 	Options DiscussionOptions `json:"options"`
-	
+
 	// Event callback
 	EventCallback func(DiscussionEvent) `json:"-"`
-	
+
 	// Error callback
 	ErrorCallback func(error) `json:"-"`
-	
+
 	// Enable debug logging
 	Debug bool `json:"debug"`
 }
@@ -265,12 +265,12 @@ func (dw *DiscussionWatcher) initializeKnownDiscussions(ctx context.Context) err
 func (dw *DiscussionWatcher) hasDiscussionChanged(old, new *Discussion) bool {
 	// Check basic fields
 	if old.Title != new.Title ||
-	   old.Body != new.Body ||
-	   old.State != new.State ||
-	   old.Locked != new.Locked ||
-	   old.UpvoteCount != new.UpvoteCount ||
-	   old.CommentCount != new.CommentCount ||
-	   old.ReactionCount != new.ReactionCount {
+		old.Body != new.Body ||
+		old.State != new.State ||
+		old.Locked != new.Locked ||
+		old.UpvoteCount != new.UpvoteCount ||
+		old.CommentCount != new.CommentCount ||
+		old.ReactionCount != new.ReactionCount {
 		return true
 	}
 
@@ -341,7 +341,7 @@ func (dw *DiscussionWatcher) handleDiscussionUpdate(old, new *Discussion) {
 
 	if old.State != new.State {
 		changes["state"] = map[string]string{"old": old.State, "new": new.State}
-		
+
 		// Send specific state change events
 		if new.State == "CLOSED" {
 			dw.sendEvent(DiscussionEvent{
@@ -368,7 +368,7 @@ func (dw *DiscussionWatcher) handleDiscussionUpdate(old, new *Discussion) {
 
 	if old.Locked != new.Locked {
 		changes["locked"] = map[string]bool{"old": old.Locked, "new": new.Locked}
-		
+
 		if new.Locked {
 			dw.sendEvent(DiscussionEvent{
 				Type:       EventDiscussionLocked,
@@ -416,7 +416,7 @@ func (dw *DiscussionWatcher) handleDiscussionUpdate(old, new *Discussion) {
 		dw.sendEvent(event)
 
 		if dw.debug {
-			fmt.Printf("Updated discussion: %s #%d (%d changes)\n", 
+			fmt.Printf("Updated discussion: %s #%d (%d changes)\n",
 				new.Repository.FullName, new.Number, len(changes))
 		}
 	}

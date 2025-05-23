@@ -10,30 +10,30 @@ import (
 
 // NotificationStream provides a streaming interface for notifications
 type NotificationStream struct {
-	client        *Client
-	options       NotificationOptions
-	ctx           context.Context
-	cancel        context.CancelFunc
+	client         *Client
+	options        NotificationOptions
+	ctx            context.Context
+	cancel         context.CancelFunc
 	notificationCh chan *github.Notification
-	errorCh       chan error
-	doneCh        chan struct{}
-	wg            sync.WaitGroup
-	mu            sync.Mutex
-	started       bool
+	errorCh        chan error
+	doneCh         chan struct{}
+	wg             sync.WaitGroup
+	mu             sync.Mutex
+	started        bool
 }
 
 // NewNotificationStream creates a new notification stream
 func NewNotificationStream(client *Client, options NotificationOptions) *NotificationStream {
 	ctx, cancel := context.WithCancel(context.Background())
 	return &NotificationStream{
-		client:        client,
-		options:       options,
-		ctx:           ctx,
-		cancel:        cancel,
+		client:         client,
+		options:        options,
+		ctx:            ctx,
+		cancel:         cancel,
 		notificationCh: make(chan *github.Notification, 100),
-		errorCh:       make(chan error, 10),
-		doneCh:        make(chan struct{}),
-		started:       false,
+		errorCh:        make(chan error, 10),
+		doneCh:         make(chan struct{}),
+		started:        false,
 	}
 }
 

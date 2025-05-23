@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/spf13/cobra"
 	"github.com/SharanRP/gh-notif/cmd/gh-notif/auth"
 	"github.com/SharanRP/gh-notif/internal/testutil"
+	"github.com/spf13/cobra"
 )
 
 // setupAuthTest sets up a test environment for auth commands

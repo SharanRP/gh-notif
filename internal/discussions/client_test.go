@@ -12,9 +12,9 @@ func TestDiscussionFilter(t *testing.T) {
 		want   bool
 	}{
 		{
-			name: "empty filter",
+			name:   "empty filter",
 			filter: DiscussionFilter{},
-			want: true,
+			want:   true,
 		},
 		{
 			name: "repository filter",
@@ -40,11 +40,11 @@ func TestDiscussionFilter(t *testing.T) {
 		{
 			name: "complex filter",
 			filter: DiscussionFilter{
-				Repository: "owner/repo",
-				Category:   "Q&A",
-				State:      "open",
-				Author:     "username",
-				MinUpvotes: 5,
+				Repository:  "owner/repo",
+				Category:    "Q&A",
+				State:       "open",
+				Author:      "username",
+				MinUpvotes:  5,
 				MinComments: 2,
 			},
 			want: true,
@@ -72,9 +72,9 @@ func TestDiscussionOptions(t *testing.T) {
 		want    bool
 	}{
 		{
-			name: "default options",
+			name:    "default options",
 			options: DiscussionOptions{},
-			want: true,
+			want:    true,
 		},
 		{
 			name: "with comments",
@@ -119,11 +119,11 @@ func TestDiscussionOptions(t *testing.T) {
 func TestDiscussionTypes(t *testing.T) {
 	// Test Discussion struct
 	discussion := Discussion{
-		ID:       "test-id",
-		Number:   123,
-		Title:    "Test Discussion",
-		Body:     "This is a test discussion",
-		State:    "OPEN",
+		ID:     "test-id",
+		Number: 123,
+		Title:  "Test Discussion",
+		Body:   "This is a test discussion",
+		State:  "OPEN",
 		Category: Category{
 			ID:   "cat-id",
 			Name: "Q&A",
@@ -156,9 +156,9 @@ func TestDiscussionTypes(t *testing.T) {
 
 	// Test Comment struct
 	comment := Comment{
-		ID:       "comment-id",
-		Body:     "This is a test comment",
-		Author:   discussion.Author,
+		ID:        "comment-id",
+		Body:      "This is a test comment",
+		Author:    discussion.Author,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}

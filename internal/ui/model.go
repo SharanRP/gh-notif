@@ -48,12 +48,12 @@ type Model struct {
 	filteredItems []*github.Notification
 
 	// UI Components
-	viewport    viewport.Model
-	help        help.Model
-	spinner     spinner.Model
-	keyMap      keyMap
-	statusBar   StatusBar
-	
+	viewport  viewport.Model
+	help      help.Model
+	spinner   spinner.Model
+	keyMap    keyMap
+	statusBar StatusBar
+
 	// State
 	width       int
 	height      int
@@ -73,20 +73,20 @@ type StatusBar struct {
 
 // keyMap defines the keybindings for the UI
 type keyMap struct {
-	Up             key.Binding
-	Down           key.Binding
-	Left           key.Binding
-	Right          key.Binding
-	Help           key.Binding
-	Quit           key.Binding
-	Select         key.Binding
-	MarkAsRead     key.Binding
-	MarkAllAsRead  key.Binding
-	Filter         key.Binding
-	ViewMode       key.Binding
-	ColorScheme    key.Binding
-	OpenInBrowser  key.Binding
-	Refresh        key.Binding
+	Up            key.Binding
+	Down          key.Binding
+	Left          key.Binding
+	Right         key.Binding
+	Help          key.Binding
+	Quit          key.Binding
+	Select        key.Binding
+	MarkAsRead    key.Binding
+	MarkAllAsRead key.Binding
+	Filter        key.Binding
+	ViewMode      key.Binding
+	ColorScheme   key.Binding
+	OpenInBrowser key.Binding
+	Refresh       key.Binding
 }
 
 // defaultKeyMap returns the default key bindings
@@ -222,9 +222,9 @@ func (m *Model) filterNotifications() {
 		// Search in type
 		typeName := strings.ToLower(n.GetSubject().GetType())
 
-		if strings.Contains(repoName, filter) || 
-		   strings.Contains(title, filter) || 
-		   strings.Contains(typeName, filter) {
+		if strings.Contains(repoName, filter) ||
+			strings.Contains(title, filter) ||
+			strings.Contains(typeName, filter) {
 			filtered = append(filtered, n)
 		}
 	}
@@ -249,12 +249,12 @@ func (m Model) getNotificationURL() string {
 	if n == nil {
 		return ""
 	}
-	
+
 	// Try to get the HTML URL first
 	if n.GetSubject().GetURL() != "" {
 		return n.GetSubject().GetURL()
 	}
-	
+
 	// Fall back to the API URL
 	return n.GetURL()
 }

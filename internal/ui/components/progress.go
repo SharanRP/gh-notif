@@ -53,38 +53,38 @@ const (
 // Progress represents a progress indicator component
 type Progress struct {
 	// Configuration
-	width       int
-	height      int
+	width        int
+	height       int
 	progressType ProgressType
-	
+
 	// Progress state
-	value       float64 // 0.0 to 1.0
-	total       int64
-	current     int64
-	
+	value   float64 // 0.0 to 1.0
+	total   int64
+	current int64
+
 	// Text
 	title       string
 	description string
-	
+
 	// Steps (for step-based progress)
 	steps       []ProgressStep
 	currentStep int
-	
+
 	// Animation
-	spinner     spinner.Model
-	animFrame   int
-	lastUpdate  time.Time
-	
+	spinner    spinner.Model
+	animFrame  int
+	lastUpdate time.Time
+
 	// State
-	focused     bool
-	completed   bool
-	failed      bool
-	
+	focused   bool
+	completed bool
+	failed    bool
+
 	// Styling
-	styles      ComponentStyles
-	
+	styles ComponentStyles
+
 	// Colors for different states
-	colors      ProgressColors
+	colors ProgressColors
 }
 
 // ProgressColors defines colors for different progress states
@@ -100,12 +100,12 @@ type ProgressColors struct {
 // DefaultProgressColors returns default progress colors
 func DefaultProgressColors() ProgressColors {
 	return ProgressColors{
-		Pending:    lipgloss.Color("8"),   // Gray
-		InProgress: lipgloss.Color("4"),   // Blue
-		Completed:  lipgloss.Color("2"),   // Green
-		Failed:     lipgloss.Color("1"),   // Red
-		Skipped:    lipgloss.Color("3"),   // Yellow
-		Background: lipgloss.Color("0"),   // Black
+		Pending:    lipgloss.Color("8"), // Gray
+		InProgress: lipgloss.Color("4"), // Blue
+		Completed:  lipgloss.Color("2"), // Green
+		Failed:     lipgloss.Color("1"), // Red
+		Skipped:    lipgloss.Color("3"), // Yellow
+		Background: lipgloss.Color("0"), // Black
 	}
 }
 
@@ -114,7 +114,7 @@ func NewProgress(progressType ProgressType) *Progress {
 	s := spinner.New()
 	s.Spinner = spinner.Dot
 	s.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("4"))
-	
+
 	return &Progress{
 		progressType: progressType,
 		spinner:      s,
@@ -129,19 +129,19 @@ func NewProgressComponentFactory(config ComponentConfig) Component {
 	if !ok {
 		progressType = ProgressBar
 	}
-	
+
 	progress := NewProgress(progressType)
 	progress.SetSize(config.Width, config.Height)
 	progress.SetStyles(config.Styles)
-	
+
 	if title, ok := config.Props["title"].(string); ok {
 		progress.SetTitle(title)
 	}
-	
+
 	if description, ok := config.Props["description"].(string); ok {
 		progress.SetDescription(description)
 	}
-	
+
 	return progress
 }
 
@@ -181,7 +181,7 @@ func (p *Progress) UpdateStep(id string, status ProgressStepStatus, err error) {
 		if step.ID == id {
 			p.steps[i].Status = status
 			p.steps[i].Error = err
-			
+
 			if status == StepInProgress {
 				p.currentStep = i
 			}
@@ -203,20 +203,20 @@ func (p *Progress) Init() tea.Cmd {
 // Update handles messages and updates the progress state
 func (p *Progress) Update(msg tea.Msg) (Component, tea.Cmd) {
 	var cmds []tea.Cmd
-	
+
 	switch msg := msg.(type) {
 	case spinner.TickMsg:
 		var cmd tea.Cmd
 		p.spinner, cmd = p.spinner.Update(msg)
 		cmds = append(cmds, cmd)
-		
+
 		// Update animation frame
 		now := time.Now()
 		if now.Sub(p.lastUpdate) > 100*time.Millisecond {
 			p.animFrame++
 			p.lastUpdate = now
 		}
-		
+
 	case ComponentMessage:
 		switch msg.Type {
 		case ComponentResizeMsg:
@@ -248,7 +248,7 @@ func (p *Progress) Update(msg tea.Msg) (Component, tea.Cmd) {
 			}
 		}
 	}
-	
+
 	return p, tea.Batch(cmds...)
 }
 
@@ -271,23 +271,23 @@ func (p *Progress) View() string {
 // renderProgressBar renders a traditional progress bar
 func (p *Progress) renderProgressBar() string {
 	var parts []string
-	
+
 	// Title
 	if p.title != "" {
 		titleStyle := p.styles.Focused.Bold(true)
 		parts = append(parts, titleStyle.Render(p.title))
 	}
-	
+
 	// Progress bar
 	barWidth := p.width - 4
 	if barWidth < 10 {
 		barWidth = 10
 	}
-	
+
 	filled := int(p.value * float64(barWidth))
-	
+
 	var bar strings.Builder
-	
+
 	// Filled portion
 	filledStyle := lipgloss.NewStyle().Foreground(p.colors.InProgress)
 	if p.completed {
@@ -295,47 +295,47 @@ func (p *Progress) renderProgressBar() string {
 	} else if p.failed {
 		filledStyle = lipgloss.NewStyle().Foreground(p.colors.Failed)
 	}
-	
+
 	for i := 0; i < filled; i++ {
 		bar.WriteString(filledStyle.Render("█"))
 	}
-	
+
 	// Empty portion
 	emptyStyle := lipgloss.NewStyle().Foreground(p.colors.Background)
 	for i := filled; i < barWidth; i++ {
 		bar.WriteString(emptyStyle.Render("░"))
 	}
-	
+
 	// Add percentage
 	percentage := fmt.Sprintf(" %.1f%%", p.value*100)
 	barLine := bar.String() + percentage
-	
+
 	// Add current/total if available
 	if p.total > 0 {
 		barLine += fmt.Sprintf(" (%d/%d)", p.current, p.total)
 	}
-	
+
 	parts = append(parts, barLine)
-	
+
 	// Description
 	if p.description != "" {
 		descStyle := p.styles.Base.Foreground(lipgloss.Color("8"))
 		parts = append(parts, descStyle.Render(p.description))
 	}
-	
+
 	return lipgloss.JoinVertical(lipgloss.Left, parts...)
 }
 
 // renderProgressSpinner renders a spinner with text
 func (p *Progress) renderProgressSpinner() string {
 	var parts []string
-	
+
 	// Spinner with title
 	spinnerLine := p.spinner.View()
 	if p.title != "" {
 		spinnerLine += " " + p.title
 	}
-	
+
 	if p.completed {
 		checkStyle := lipgloss.NewStyle().Foreground(p.colors.Completed)
 		spinnerLine = checkStyle.Render("✓") + " " + p.title
@@ -343,15 +343,15 @@ func (p *Progress) renderProgressSpinner() string {
 		crossStyle := lipgloss.NewStyle().Foreground(p.colors.Failed)
 		spinnerLine = crossStyle.Render("✗") + " " + p.title
 	}
-	
+
 	parts = append(parts, spinnerLine)
-	
+
 	// Description
 	if p.description != "" {
 		descStyle := p.styles.Base.Foreground(lipgloss.Color("8"))
 		parts = append(parts, "  "+descStyle.Render(p.description))
 	}
-	
+
 	return lipgloss.JoinVertical(lipgloss.Left, parts...)
 }
 
@@ -360,15 +360,15 @@ func (p *Progress) renderProgressCircular() string {
 	// Simplified circular progress using Unicode characters
 	segments := []string{"◜", "◝", "◞", "◟"}
 	segment := segments[p.animFrame%len(segments)]
-	
+
 	if p.completed {
 		segment = "●"
 	} else if p.failed {
 		segment = "✗"
 	}
-	
+
 	var parts []string
-	
+
 	// Circular indicator with title
 	indicatorStyle := lipgloss.NewStyle().Foreground(p.colors.InProgress)
 	if p.completed {
@@ -376,44 +376,44 @@ func (p *Progress) renderProgressCircular() string {
 	} else if p.failed {
 		indicatorStyle = lipgloss.NewStyle().Foreground(p.colors.Failed)
 	}
-	
+
 	line := indicatorStyle.Render(segment)
 	if p.title != "" {
 		line += " " + p.title
 	}
-	
+
 	// Add percentage
 	if p.value > 0 {
 		line += fmt.Sprintf(" (%.1f%%)", p.value*100)
 	}
-	
+
 	parts = append(parts, line)
-	
+
 	// Description
 	if p.description != "" {
 		descStyle := p.styles.Base.Foreground(lipgloss.Color("8"))
 		parts = append(parts, "  "+descStyle.Render(p.description))
 	}
-	
+
 	return lipgloss.JoinVertical(lipgloss.Left, parts...)
 }
 
 // renderProgressSteps renders step-by-step progress
 func (p *Progress) renderProgressSteps() string {
 	var parts []string
-	
+
 	// Title
 	if p.title != "" {
 		titleStyle := p.styles.Focused.Bold(true)
 		parts = append(parts, titleStyle.Render(p.title))
 		parts = append(parts, "")
 	}
-	
+
 	// Steps
 	for i, step := range p.steps {
 		var icon string
 		var style lipgloss.Style
-		
+
 		switch step.Status {
 		case StepPending:
 			icon = "○"
@@ -431,27 +431,27 @@ func (p *Progress) renderProgressSteps() string {
 			icon = "⊘"
 			style = lipgloss.NewStyle().Foreground(p.colors.Skipped)
 		}
-		
+
 		line := style.Render(icon) + " " + step.Title
 		parts = append(parts, line)
-		
+
 		// Add description if available
 		if step.Description != "" {
 			descStyle := p.styles.Base.Foreground(lipgloss.Color("8"))
 			parts = append(parts, "  "+descStyle.Render(step.Description))
 		}
-		
+
 		// Add error if failed
 		if step.Status == StepFailed && step.Error != nil {
 			errorStyle := lipgloss.NewStyle().Foreground(p.colors.Failed)
 			parts = append(parts, "  "+errorStyle.Render("Error: "+step.Error.Error()))
 		}
-		
+
 		if i < len(p.steps)-1 {
 			parts = append(parts, "")
 		}
 	}
-	
+
 	return lipgloss.JoinVertical(lipgloss.Left, parts...)
 }
 

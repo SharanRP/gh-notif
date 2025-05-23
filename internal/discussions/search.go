@@ -49,26 +49,26 @@ type SearchResult struct {
 // SearchOptions contains options for search operations
 type SearchOptions struct {
 	// Search parameters
-	Query       string   `json:"query"`
+	Query        string   `json:"query"`
 	Repositories []string `json:"repositories,omitempty"`
-	Categories  []string `json:"categories,omitempty"`
-	Authors     []string `json:"authors,omitempty"`
-	
+	Categories   []string `json:"categories,omitempty"`
+	Authors      []string `json:"authors,omitempty"`
+
 	// Filters
-	MinScore    float64   `json:"min_score,omitempty"`
-	MaxResults  int       `json:"max_results,omitempty"`
-	Since       *time.Time `json:"since,omitempty"`
-	Before      *time.Time `json:"before,omitempty"`
-	
+	MinScore   float64    `json:"min_score,omitempty"`
+	MaxResults int        `json:"max_results,omitempty"`
+	Since      *time.Time `json:"since,omitempty"`
+	Before     *time.Time `json:"before,omitempty"`
+
 	// Search behavior
-	FuzzyMatch  bool `json:"fuzzy_match,omitempty"`
+	FuzzyMatch    bool `json:"fuzzy_match,omitempty"`
 	CaseSensitive bool `json:"case_sensitive,omitempty"`
-	WholeWords  bool `json:"whole_words,omitempty"`
-	
+	WholeWords    bool `json:"whole_words,omitempty"`
+
 	// Performance
-	UseCache    bool          `json:"use_cache,omitempty"`
-	CacheTTL    time.Duration `json:"cache_ttl,omitempty"`
-	Timeout     time.Duration `json:"timeout,omitempty"`
+	UseCache bool          `json:"use_cache,omitempty"`
+	CacheTTL time.Duration `json:"cache_ttl,omitempty"`
+	Timeout  time.Duration `json:"timeout,omitempty"`
 }
 
 // NewSearchEngine creates a new search engine
@@ -291,7 +291,7 @@ func (se *SearchEngine) performSearch(options SearchOptions) []SearchResult {
 			found := false
 			for _, category := range options.Categories {
 				if strings.EqualFold(discussion.Category.Name, category) ||
-				   strings.EqualFold(discussion.Category.Slug, category) {
+					strings.EqualFold(discussion.Category.Slug, category) {
 					found = true
 					break
 				}
@@ -440,9 +440,9 @@ func (se *SearchEngine) calculateRelevanceScore(discussion Discussion) float64 {
 	score += ageFactor * 0.2
 
 	// Engagement factor
-	engagementScore := float64(discussion.UpvoteCount)*0.3 + 
-					  float64(discussion.CommentCount)*0.5 + 
-					  float64(discussion.ReactionCount)*0.2
+	engagementScore := float64(discussion.UpvoteCount)*0.3 +
+		float64(discussion.CommentCount)*0.5 +
+		float64(discussion.ReactionCount)*0.2
 	score += engagementScore * 0.3
 
 	// State factor (open discussions are more relevant)
@@ -459,7 +459,7 @@ func (se *SearchEngine) calculateRelevanceScore(discussion Discussion) float64 {
 
 	// Category factor (Q&A might be more important)
 	if strings.Contains(strings.ToLower(discussion.Category.Name), "q&a") ||
-	   strings.Contains(strings.ToLower(discussion.Category.Name), "question") {
+		strings.Contains(strings.ToLower(discussion.Category.Name), "question") {
 		score += 0.2
 	}
 

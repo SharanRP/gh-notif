@@ -4,16 +4,16 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/google/go-github/v60/github"
 	"github.com/SharanRP/gh-notif/internal/filter"
+	"github.com/google/go-github/v60/github"
 )
 
 func TestParseFilterString(t *testing.T) {
 	// Test cases
 	testCases := []struct {
-		name       string
-		filterStr  string
-		testNotif  *github.Notification
+		name        string
+		filterStr   string
+		testNotif   *github.Notification
 		shouldMatch bool
 	}{
 		{
@@ -212,15 +212,15 @@ func TestParseFilterStringTypes(t *testing.T) {
 func TestParseFilterStringWithInvalidInput(t *testing.T) {
 	// This test is just to ensure that the function doesn't panic with invalid input
 	// Since our implementation is simplified, it should return an AllFilter for any input
-	
+
 	// Test cases with potentially problematic input
 	testCases := []string{
-		":",                  // Empty key-value
-		"invalid:",           // Missing value
-		":invalid",           // Missing key
-		"is:invalid",         // Invalid value for is
-		"repo:",              // Missing repo name
-		"type:InvalidType",   // Invalid type
+		":",                    // Empty key-value
+		"invalid:",             // Missing value
+		":invalid",             // Missing key
+		"is:invalid",           // Invalid value for is
+		"repo:",                // Missing repo name
+		"type:InvalidType",     // Invalid type
 		"reason:InvalidReason", // Invalid reason
 	}
 
@@ -228,7 +228,7 @@ func TestParseFilterStringWithInvalidInput(t *testing.T) {
 		t.Run(tc, func(t *testing.T) {
 			// Parse the filter string
 			_, err := parseFilterString(tc)
-			
+
 			// We don't expect errors in our simplified implementation
 			if err != nil {
 				t.Fatalf("Unexpected error: %v", err)

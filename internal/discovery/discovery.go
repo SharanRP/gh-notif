@@ -85,9 +85,9 @@ func NewDiscoveryManager() (*DiscoveryManager, error) {
 			UsageCount:        0,
 			FirstRun:          time.Now(),
 		},
-		StatePath:                  statePath,
-		EnableDiscovery:            true,
-		EnableTips:                 true,
+		StatePath:                   statePath,
+		EnableDiscovery:             true,
+		EnableTips:                  true,
 		EnableProgressiveDisclosure: true,
 	}
 
