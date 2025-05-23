@@ -6,7 +6,7 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/user/gh-notif/internal/discovery"
+	"github.com/SharanRP/gh-notif/internal/discovery"
 )
 
 // TipModel represents a feature tip

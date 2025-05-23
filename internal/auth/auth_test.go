@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/user/gh-notif/internal/testutil"
+	"github.com/SharanRP/gh-notif/internal/testutil"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 )

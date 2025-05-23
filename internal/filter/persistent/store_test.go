@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/user/gh-notif/internal/config"
+	"github.com/SharanRP/gh-notif/internal/config"
 )
 
 func TestFilterStore(t *testing.T) {

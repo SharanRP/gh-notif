@@ -9,8 +9,8 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/pkg/browser"
-	"github.com/user/gh-notif/internal/common"
-	"github.com/user/gh-notif/internal/operations"
+	"github.com/SharanRP/gh-notif/internal/common"
+	"github.com/SharanRP/gh-notif/internal/operations"
 )
 
 // updateSelectMode handles updates in select mode

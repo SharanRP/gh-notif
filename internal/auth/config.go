@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"github.com/user/gh-notif/internal/config"
+	"github.com/SharanRP/gh-notif/internal/config"
 )
 
 // AuthConfig holds the authentication configuration

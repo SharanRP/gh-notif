@@ -6,8 +6,8 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/ui"
-	"github.com/user/gh-notif/internal/ui/components"
+	"github.com/SharanRP/gh-notif/internal/ui"
+	"github.com/SharanRP/gh-notif/internal/ui/components"
 )
 
 // DemoModel demonstrates the enhanced UI components
@@ -255,7 +255,7 @@ notifications, err := client.GetNotifications()
 
 ---
 
-*For more information, visit our [GitHub repository](https://github.com/user/gh-notif).*`
+*For more information, visit our [GitHub repository](https://github.com/SharanRP/gh-notif).*`
 
 	m.markdown = components.NewMarkdownRenderer(content)
 	m.markdown.SetSize(m.width-4, m.height-8)

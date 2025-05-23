@@ -2,7 +2,6 @@ package distribution
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -58,19 +57,19 @@ func getPackageTests() []PackageTest {
 			Name:        "Docker",
 			Platform:    "all",
 			PackageType: "docker",
-			InstallCmd:  []string{"docker", "pull", "ghcr.io/user/gh-notif:latest"},
-			VerifyCmd:   []string{"docker", "run", "--rm", "ghcr.io/user/gh-notif:latest", "--version"},
-			UpdateCmd:   []string{"docker", "pull", "ghcr.io/user/gh-notif:latest"},
-			UninstallCmd: []string{"docker", "rmi", "ghcr.io/user/gh-notif:latest"},
+			InstallCmd:  []string{"docker", "pull", "ghcr.io/sharanrp/gh-notif:latest"},
+			VerifyCmd:   []string{"docker", "run", "--rm", "ghcr.io/sharanrp/gh-notif:latest", "--version"},
+			UpdateCmd:   []string{"docker", "pull", "ghcr.io/sharanrp/gh-notif:latest"},
+			UninstallCmd: []string{"docker", "rmi", "ghcr.io/sharanrp/gh-notif:latest"},
 			Prerequisites: []string{"docker"},
 		},
 		{
 			Name:        "Go Install",
 			Platform:    "all",
 			PackageType: "go",
-			InstallCmd:  []string{"go", "install", "github.com/user/gh-notif@latest"},
+			InstallCmd:  []string{"go", "install", "github.com/SharanRP/gh-notif@latest"},
 			VerifyCmd:   []string{"gh-notif", "--version"},
-			UpdateCmd:   []string{"go", "install", "github.com/user/gh-notif@latest"},
+			UpdateCmd:   []string{"go", "install", "github.com/SharanRP/gh-notif@latest"},
 			UninstallCmd: []string{"rm", "-f", "$(go env GOPATH)/bin/gh-notif"},
 			Prerequisites: []string{"go"},
 		},
@@ -83,7 +82,7 @@ func getPackageTests() []PackageTest {
 			Name:        "Homebrew",
 			Platform:    "darwin",
 			PackageType: "brew",
-			InstallCmd:  []string{"brew", "install", "user/tap/gh-notif"},
+			InstallCmd:  []string{"brew", "install", "SharanRP/tap/gh-notif"},
 			VerifyCmd:   []string{"gh-notif", "--version"},
 			UpdateCmd:   []string{"brew", "upgrade", "gh-notif"},
 			UninstallCmd: []string{"brew", "uninstall", "gh-notif"},
@@ -190,7 +189,7 @@ func downloadDebPackage(t *testing.T, tmpDir string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	downloadURL := "https://github.com/user/gh-notif/releases/latest/download/gh-notif_amd64.deb"
+	downloadURL := "https://github.com/SharanRP/gh-notif/releases/latest/download/gh-notif_amd64.deb"
 	outputPath := filepath.Join(tmpDir, "gh-notif_amd64.deb")
 
 	cmd := exec.CommandContext(ctx, "curl", "-L", "-o", outputPath, downloadURL)
@@ -205,7 +204,7 @@ func testPackageInstall(t *testing.T, test PackageTest) {
 	// Special handling for package managers that need setup
 	if test.PackageType == "brew" {
 		// Add tap first
-		cmd := exec.CommandContext(ctx, "brew", "tap", "user/tap")
+		cmd := exec.CommandContext(ctx, "brew", "tap", "SharanRP/tap")
 		output, err := cmd.CombinedOutput()
 		if err != nil {
 			t.Logf("Tap add output: %s", output)
@@ -213,7 +212,7 @@ func testPackageInstall(t *testing.T, test PackageTest) {
 		}
 	} else if test.PackageType == "scoop" {
 		// Add bucket first
-		cmd := exec.CommandContext(ctx, "scoop", "bucket", "add", "user", "https://github.com/user/scoop-bucket")
+		cmd := exec.CommandContext(ctx, "scoop", "bucket", "add", "SharanRP", "https://github.com/SharanRP/scoop-bucket")
 		output, err := cmd.CombinedOutput()
 		if err != nil {
 			t.Logf("Bucket add output: %s", output)

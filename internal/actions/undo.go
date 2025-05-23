@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/user/gh-notif/internal/common"
+	"github.com/SharanRP/gh-notif/internal/common"
 )
 
 // UndoResult represents the result of an undo operation

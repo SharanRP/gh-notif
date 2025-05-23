@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/user/gh-notif/internal/testutil"
+	"github.com/SharanRP/gh-notif/internal/testutil"
 	"golang.org/x/oauth2"
 )
 

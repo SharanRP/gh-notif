@@ -11,8 +11,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/google/go-github/v60/github"
-	githubclient "github.com/user/gh-notif/internal/github"
-	"github.com/user/gh-notif/internal/watch"
+	githubclient "github.com/SharanRP/gh-notif/internal/github"
+	"github.com/SharanRP/gh-notif/internal/watch"
 )
 
 // WatchModel represents the watch UI model

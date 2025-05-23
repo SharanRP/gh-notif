@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/user/gh-notif/internal/config"
+	"github.com/SharanRP/gh-notif/internal/config"
 )
 
 // DiscussionWatcher monitors discussions for changes and events

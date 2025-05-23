@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/user/gh-notif/internal/cache"
+	"github.com/SharanRP/gh-notif/internal/cache"
 )
 
 // SearchEngine provides full-text search capabilities for discussions

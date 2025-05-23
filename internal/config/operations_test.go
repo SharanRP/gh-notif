@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/user/gh-notif/internal/testutil"
+	"github.com/SharanRP/gh-notif/internal/testutil"
 	"gopkg.in/yaml.v3"
 )
 

@@ -1,17 +1,17 @@
 advanced:
     cache_dir: C:\Users\SHARAN\.gh-notif-cache
     cache_ttl: 3600
-    debug: false
+    debug: true
     editor: notepad
     max_concurrent: 5
 api:
     base_url: https://api.github.com
     retry_count: 3
     retry_delay: 1
-    timeout: 30
+    timeout: 60
     upload_url: https://uploads.github.com
 auth:
-    client_id: ""
+    client_id: Ov23lirRc5ncZbqzHOgH
     client_secret: ""
     scopes:
         - notifications
@@ -22,7 +22,7 @@ display:
     date_format: relative
     output_format: table
     show_emojis: true
-    theme: auto
+    theme: dark
 notifications:
     auto_refresh: false
     default_filter: unread

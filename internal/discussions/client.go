@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/user/gh-notif/internal/cache"
-	"github.com/user/gh-notif/internal/config"
+	"github.com/SharanRP/gh-notif/internal/cache"
+	"github.com/SharanRP/gh-notif/internal/config"
 )
 
 // Client handles GitHub Discussions operations

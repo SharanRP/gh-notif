@@ -2,7 +2,7 @@
 
 A high-performance CLI tool for managing GitHub notifications in the terminal with advanced filtering, grouping, and search capabilities.
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/user/gh-notif)](https://goreportcard.com/report/github.com/user/gh-notif)
+[![Go Report Card](https://goreportcard.com/badge/github.com/SharanRP/gh-notif)](https://goreportcard.com/report/github.com/SharanRP/gh-notif)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 `gh-notif` helps you efficiently manage GitHub notifications with powerful filtering, sorting, and grouping capabilities. It provides a modern terminal UI and supports concurrent operations for improved performance.
@@ -209,10 +209,10 @@ sudo rpm -i gh-notif.rpm
 
 ```bash
 # Run directly
-docker run --rm -it ghcr.io/SharanRP/gh-notif:latest --help
+docker run --rm -it ghcr.io/sharanrp/gh-notif:latest --help
 
 # Create alias for easier use
-echo 'alias gh-notif="docker run --rm -it -v ~/.gh-notif:/root/.gh-notif ghcr.io/SharanRP/gh-notif:latest"' >> ~/.bashrc
+echo 'alias gh-notif="docker run --rm -it -v ~/.gh-notif:/root/.gh-notif ghcr.io/sharanrp/gh-notif:latest"' >> ~/.bashrc
 ```
 
 ### Manual Download

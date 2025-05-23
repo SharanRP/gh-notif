@@ -107,10 +107,10 @@ sudo rpm -i gh-notif.rpm
 ### **Container**
 ```bash
 # Docker
-docker run --rm -it ghcr.io/SharanRP/gh-notif:latest --help
+docker run --rm -it ghcr.io/sharanrp/gh-notif:latest --help
 
 # With persistent config
-docker run --rm -it -v ~/.gh-notif:/home/gh-notif/.gh-notif ghcr.io/SharanRP/gh-notif:latest
+docker run --rm -it -v ~/.gh-notif:/home/gh-notif/.gh-notif ghcr.io/sharanrp/gh-notif:latest
 ```
 
 ### **Direct Download**

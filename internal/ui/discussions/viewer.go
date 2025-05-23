@@ -9,8 +9,8 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/user/gh-notif/internal/discussions"
-	"github.com/user/gh-notif/internal/ui"
+	"github.com/SharanRP/gh-notif/internal/discussions"
+	"github.com/SharanRP/gh-notif/internal/ui"
 )
 
 // DiscussionViewer provides a terminal UI for viewing discussions

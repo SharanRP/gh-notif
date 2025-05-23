@@ -12,8 +12,8 @@ import (
 
 	"github.com/google/go-github/v60/github"
 	"github.com/hashicorp/go-retryablehttp"
-	"github.com/user/gh-notif/internal/auth"
-	"github.com/user/gh-notif/internal/config"
+	"github.com/SharanRP/gh-notif/internal/auth"
+	"github.com/SharanRP/gh-notif/internal/config"
 	"golang.org/x/time/rate"
 )
 

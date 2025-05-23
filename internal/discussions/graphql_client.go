@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/user/gh-notif/internal/auth"
-	"github.com/user/gh-notif/internal/config"
+	"github.com/SharanRP/gh-notif/internal/auth"
+	"github.com/SharanRP/gh-notif/internal/config"
 )
 
 // GraphQLClient handles GitHub GraphQL API requests for discussions

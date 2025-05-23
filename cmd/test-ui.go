@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/ui/examples"
+	"github.com/SharanRP/gh-notif/internal/ui/examples"
 )
 
 func main() {

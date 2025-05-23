@@ -229,7 +229,7 @@ func installFromBinary(t *testing.T, workdir string) error {
 	}
 
 	filename := fmt.Sprintf("gh-notif_%s_%s%s", strings.Title(platform), arch, ext)
-	downloadURL := fmt.Sprintf("https://github.com/user/gh-notif/releases/latest/download/%s", filename)
+	downloadURL := fmt.Sprintf("https://github.com/SharanRP/gh-notif/releases/latest/download/%s", filename)
 
 	// Download
 	downloadPath := filepath.Join(workdir, filename)
@@ -260,7 +260,7 @@ func installFromGo(t *testing.T, workdir string) error {
 	// Set GOPATH to workdir
 	env := append(os.Environ(), fmt.Sprintf("GOPATH=%s", workdir))
 	
-	cmd := exec.CommandContext(ctx, "go", "install", "github.com/user/gh-notif@latest")
+	cmd := exec.CommandContext(ctx, "go", "install", "github.com/SharanRP/gh-notif@latest")
 	cmd.Env = env
 	
 	return cmd.Run()
@@ -316,7 +316,7 @@ func installFromDeb(t *testing.T, workdir string) error {
 	defer cancel()
 
 	// Download DEB package
-	downloadURL := "https://github.com/user/gh-notif/releases/latest/download/gh-notif_amd64.deb"
+	downloadURL := "https://github.com/SharanRP/gh-notif/releases/latest/download/gh-notif_amd64.deb"
 	debPath := filepath.Join(workdir, "gh-notif.deb")
 	
 	cmd := exec.CommandContext(ctx, "curl", "-L", "-o", debPath, downloadURL)

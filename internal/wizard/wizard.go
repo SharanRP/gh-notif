@@ -10,7 +10,7 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/user/gh-notif/internal/config"
+	"github.com/SharanRP/gh-notif/internal/config"
 )
 
 // WizardOptions contains options for the setup wizard

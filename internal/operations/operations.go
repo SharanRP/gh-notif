@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/common"
-	githubclient "github.com/user/gh-notif/internal/github"
+	"github.com/SharanRP/gh-notif/internal/common"
+	githubclient "github.com/SharanRP/gh-notif/internal/github"
 )
 
 // MarkMultipleAsRead marks multiple notifications as read

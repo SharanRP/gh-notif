@@ -51,7 +51,7 @@ linters-settings:
     line-length: 120
 
   goimports:
-    local-prefixes: github.com/user/gh-notif
+    local-prefixes: github.com/SharanRP/gh-notif
 
   gocritic:
     enabled-tags:

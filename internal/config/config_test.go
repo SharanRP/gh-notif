@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/user/gh-notif/internal/testutil"
+	"github.com/SharanRP/gh-notif/internal/testutil"
 )
 
 func TestDefaultConfig(t *testing.T) {

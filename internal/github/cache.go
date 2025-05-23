@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/cache"
-	"github.com/user/gh-notif/internal/config"
+	"github.com/SharanRP/gh-notif/internal/cache"
+	"github.com/SharanRP/gh-notif/internal/config"
 )
 
 // CacheManager manages the GitHub API cache

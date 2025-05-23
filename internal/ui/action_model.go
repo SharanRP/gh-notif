@@ -12,7 +12,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/common"
+	"github.com/SharanRP/gh-notif/internal/common"
 )
 
 // ActionMode represents different action modes

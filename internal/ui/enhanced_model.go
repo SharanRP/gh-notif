@@ -9,7 +9,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/ui/components"
+	"github.com/SharanRP/gh-notif/internal/ui/components"
 )
 
 // EnhancedModel represents the enhanced UI model with modern components

@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/cache"
+	"github.com/SharanRP/gh-notif/internal/cache"
 )
 
 // OptimizedGetAllNotifications is an optimized version of GetAllNotifications

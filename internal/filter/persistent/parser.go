@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/user/gh-notif/internal/filter"
+	"github.com/SharanRP/gh-notif/internal/filter"
 )
 
 // Parser parses filter expressions into Filter objects

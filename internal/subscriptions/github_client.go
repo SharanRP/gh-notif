@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/auth"
+	"github.com/SharanRP/gh-notif/internal/auth"
 )
 
 // GitHubClientImpl implements GitHubClient using go-github

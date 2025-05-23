@@ -101,28 +101,28 @@ makepkg -si
 ### Docker Hub
 ```bash
 # Run directly
-docker run --rm -it ghcr.io/SharanRP/gh-notif:latest --help
+docker run --rm -it ghcr.io/sharanrp/gh-notif:latest --help
 
 # With volume for config persistence
-docker run --rm -it -v ~/.gh-notif:/home/gh-notif/.gh-notif ghcr.io/SharanRP/gh-notif:latest
+docker run --rm -it -v ~/.gh-notif:/home/gh-notif/.gh-notif ghcr.io/sharanrp/gh-notif:latest
 
 # Create alias for easy use
-alias gh-notif='docker run --rm -it -v ~/.gh-notif:/home/gh-notif/.gh-notif ghcr.io/SharanRP/gh-notif:latest'
+alias gh-notif='docker run --rm -it -v ~/.gh-notif:/home/gh-notif/.gh-notif ghcr.io/sharanrp/gh-notif:latest'
 ```
 
 ### GitHub Container Registry
 ```bash
 # Pull latest image
-docker pull ghcr.io/SharanRP/gh-notif:latest
+docker pull ghcr.io/sharanrp/gh-notif:latest
 
 # Pull specific version
-docker pull ghcr.io/SharanRP/gh-notif:v1.0.0
+docker pull ghcr.io/sharanrp/gh-notif:v1.0.0
 
 # Run with authentication
 docker run --rm -it \
   -v ~/.gh-notif:/home/gh-notif/.gh-notif \
   -e GITHUB_TOKEN=$GITHUB_TOKEN \
-  ghcr.io/SharanRP/gh-notif:latest list
+  ghcr.io/sharanrp/gh-notif:latest list
 ```
 
 ## 📥 Direct Download

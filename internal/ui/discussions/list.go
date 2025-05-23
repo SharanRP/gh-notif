@@ -10,8 +10,8 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/user/gh-notif/internal/discussions"
-	"github.com/user/gh-notif/internal/ui"
+	"github.com/SharanRP/gh-notif/internal/discussions"
+	"github.com/SharanRP/gh-notif/internal/ui"
 )
 
 // DiscussionList provides an enhanced list view for discussions

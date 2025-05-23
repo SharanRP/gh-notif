@@ -37,7 +37,7 @@ This project adheres to a Code of Conduct that all contributors are expected to 
 2. **Setting up your development environment**:
    ```bash
    # Clone the repository
-   git clone https://github.com/user/gh-notif.git
+   git clone https://github.com/SharanRP/gh-notif.git
    cd gh-notif
 
    # Install dependencies
@@ -118,7 +118,7 @@ Before starting work on a new feature or bug fix, please check if there's an exi
    ```bash
    git commit -m "Brief description of your changes"
    ```
-   
+
    Use conventional commit messages:
    - `feat:` for new features
    - `fix:` for bug fixes

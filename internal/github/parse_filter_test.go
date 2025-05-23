@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/google/go-github/v60/github"
-	"github.com/user/gh-notif/internal/filter"
+	"github.com/SharanRP/gh-notif/internal/filter"
 )
 
 func TestParseFilterString(t *testing.T) {

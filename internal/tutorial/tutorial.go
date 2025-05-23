@@ -313,7 +313,7 @@ Congratulations! You've completed the gh-notif tutorial.
 You now know the basics of using gh-notif to manage your GitHub notifications.
 
 For more information, check out the documentation:
-https://github.com/user/gh-notif
+https://github.com/SharanRP/gh-notif
 
 Or run 'gh-notif help' to see all available commands.
 `,

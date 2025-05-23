@@ -11,7 +11,7 @@ import (
 	"github.com/charmbracelet/bubbles/progress"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/user/gh-notif/internal/common"
+	"github.com/SharanRP/gh-notif/internal/common"
 )
 
 // ProgressReporter provides progress reporting for batch operations

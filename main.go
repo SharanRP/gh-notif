@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/user/gh-notif/cmd/gh-notif"
-	"github.com/user/gh-notif/internal/version"
+	"github.com/SharanRP/gh-notif/cmd/gh-notif"
+	"github.com/SharanRP/gh-notif/internal/version"
 )
 
 // Version information set by ldflags during build

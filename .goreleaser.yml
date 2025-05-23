@@ -115,8 +115,8 @@ release:
     ## Docker Images
 
     ```bash
-    docker pull ghcr.io/SharanRP/gh-notif:{{ .Tag }}
-    docker pull ghcr.io/SharanRP/gh-notif:latest
+    docker pull ghcr.io/sharanrp/gh-notif:{{ .Tag }}
+    docker pull ghcr.io/sharanrp/gh-notif:latest
     ```
 
 brews:
@@ -206,8 +206,8 @@ snapcrafts:
 
 dockers:
   - image_templates:
-      - "ghcr.io/SharanRP/gh-notif:{{ .Tag }}-amd64"
-      - "ghcr.io/SharanRP/gh-notif:latest-amd64"
+      - "ghcr.io/sharanrp/gh-notif:{{ .Tag }}-amd64"
+      - "ghcr.io/sharanrp/gh-notif:latest-amd64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -222,8 +222,8 @@ dockers:
       - docs/
       - completions/
   - image_templates:
-      - "ghcr.io/SharanRP/gh-notif:{{ .Tag }}-arm64"
-      - "ghcr.io/SharanRP/gh-notif:latest-arm64"
+      - "ghcr.io/sharanrp/gh-notif:{{ .Tag }}-arm64"
+      - "ghcr.io/sharanrp/gh-notif:latest-arm64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -240,14 +240,14 @@ dockers:
       - completions/
 
 docker_manifests:
-  - name_template: "ghcr.io/SharanRP/gh-notif:{{ .Tag }}"
+  - name_template: "ghcr.io/sharanrp/gh-notif:{{ .Tag }}"
     image_templates:
-      - "ghcr.io/SharanRP/gh-notif:{{ .Tag }}-amd64"
-      - "ghcr.io/SharanRP/gh-notif:{{ .Tag }}-arm64"
-  - name_template: "ghcr.io/SharanRP/gh-notif:latest"
+      - "ghcr.io/sharanrp/gh-notif:{{ .Tag }}-amd64"
+      - "ghcr.io/sharanrp/gh-notif:{{ .Tag }}-arm64"
+  - name_template: "ghcr.io/sharanrp/gh-notif:latest"
     image_templates:
-      - "ghcr.io/SharanRP/gh-notif:latest-amd64"
-      - "ghcr.io/SharanRP/gh-notif:latest-arm64"
+      - "ghcr.io/sharanrp/gh-notif:latest-amd64"
+      - "ghcr.io/sharanrp/gh-notif:latest-arm64"
 
 announce:
   skip: true

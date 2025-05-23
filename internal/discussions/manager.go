@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/user/gh-notif/internal/cache"
-	"github.com/user/gh-notif/internal/config"
+	"github.com/SharanRP/gh-notif/internal/cache"
+	"github.com/SharanRP/gh-notif/internal/config"
 )
 
 // Manager provides a high-level interface for discussion operations

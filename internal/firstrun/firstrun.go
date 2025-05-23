@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/user/gh-notif/internal/wizard"
+	"github.com/SharanRP/gh-notif/internal/wizard"
 )
 
 // FirstRunOptions contains options for the first-run wizard
@@ -127,7 +127,7 @@ func (f *FirstRun) Run() error {
 	fmt.Println("  gh-notif ui                   - Start the interactive terminal UI")
 	fmt.Println("  gh-notif help                 - Show help for all commands")
 	fmt.Println()
-	fmt.Println("For more information, visit: https://github.com/user/gh-notif")
+	fmt.Println("For more information, visit: https://github.com/SharanRP/gh-notif")
 
 	return nil
 }

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	githubclient "github.com/user/gh-notif/internal/github"
+	githubclient "github.com/SharanRP/gh-notif/internal/github"
 )
 
 // RunApp runs the main application UI

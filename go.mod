@@ -1,4 +1,4 @@
-module github.com/user/gh-notif
+module github.com/SharanRP/gh-notif
 
 go 1.23.0
 
@@ -9,7 +9,6 @@ require (
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/charmbracelet/lipgloss v1.1.1-0.20250404203927-76690c660834
-	github.com/charmbracelet/x/ansi v0.9.2
 	github.com/dgraph-io/badger/v4 v4.7.0
 	github.com/gobwas/glob v0.2.3
 	github.com/google/go-github/v60 v60.0.0
@@ -35,6 +34,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/charmbracelet/colorprofile v0.3.1 // indirect
 	github.com/charmbracelet/harmonica v0.2.0 // indirect
+	github.com/charmbracelet/x/ansi v0.9.2 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13 // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
 	github.com/danieljoos/wincred v1.2.2 // indirect

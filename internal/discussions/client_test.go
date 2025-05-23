@@ -1,7 +1,6 @@
 package discussions
 
 import (
-	"context"
 	"testing"
 	"time"
 )
@@ -59,7 +58,7 @@ func TestDiscussionFilter(t *testing.T) {
 				// Basic validation passed
 				return
 			}
-			
+
 			// More complex validation would go here
 			// For now, just ensure the filter structure is valid
 		})
@@ -109,7 +108,7 @@ func TestDiscussionOptions(t *testing.T) {
 			if tt.options.Concurrency < 0 {
 				t.Errorf("Invalid concurrency: %d", tt.options.Concurrency)
 			}
-			
+
 			if tt.options.Timeout < 0 {
 				t.Errorf("Invalid timeout: %v", tt.options.Timeout)
 			}
