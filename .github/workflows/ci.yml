@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 env:
-  GO_VERSION: '1.22'
+  GO_VERSION: '1.24.3'
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        go-version: ['1.22']
+        go-version: ['1.24.3']
 
     steps:
     - name: Checkout code
@@ -78,7 +78,7 @@ jobs:
         go test -v -race -timeout=10m -coverprofile=coverage.out ./internal/... ./cmd/... -skip="TestConfigManagerGetSetValue/Get_display.theme|TestFilterEngine|TestWatcherEvents"
 
     - name: Upload coverage to Codecov
-      if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.22'
+      if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.24.3'
       uses: codecov/codecov-action@v4
       with:
         file: ./coverage.out
@@ -113,7 +113,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: ${{ env.GO_VERSION }}
 
@@ -132,7 +132,7 @@ jobs:
   #   - name: Checkout code
   #     uses: actions/checkout@v4
   #   - name: Set up Go
-  #     uses: actions/setup-go@v4
+  #     uses: actions/setup-go@v5
   #     with:
   #       go-version: ${{ env.GO_VERSION }}
   #   - name: Run Gosec Security Scanner
@@ -221,7 +221,7 @@ jobs:
   #   - name: Checkout code
   #     uses: actions/checkout@v4
   #   - name: Download build artifacts
-  #     uses: actions/download-artifact@v3
+  #     uses: actions/download-artifact@v4
   #     with:
   #       name: binaries
   #       path: dist/
