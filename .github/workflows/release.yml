@@ -10,7 +10,7 @@ permissions:
   packages: write
 
 env:
-  GO_VERSION: '1.21'
+  GO_VERSION: '1.22'
 
 jobs:
   release:
@@ -24,12 +24,12 @@ jobs:
         fetch-depth: 0
 
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: ${{ env.GO_VERSION }}
 
     - name: Cache Go modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ~/.cache/go-build
@@ -49,7 +49,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Run GoReleaser
-      uses: goreleaser/goreleaser-action@v5
+      uses: goreleaser/goreleaser-action@v6
       with:
         distribution: goreleaser
         version: latest
@@ -68,7 +68,7 @@ jobs:
 
     steps:
     - name: Update Homebrew formula
-      uses: mislav/bump-homebrew-formula-action@v3
+      uses: mislav/bump-homebrew-formula-action@v4
       with:
         formula-name: gh-notif
         formula-path: Formula/gh-notif.rb
@@ -90,7 +90,7 @@ jobs:
 
     steps:
     - name: Update Scoop manifest
-      uses: ScoopInstaller/GithubActions@v1
+      uses: ScoopInstaller/GithubActions@2.0.0
       with:
         app: gh-notif
         bucket: ${{ github.repository_owner }}/scoop-bucket
@@ -109,7 +109,7 @@ jobs:
         fetch-depth: 0
 
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: ${{ env.GO_VERSION }}
 
