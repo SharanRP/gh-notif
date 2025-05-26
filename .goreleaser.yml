@@ -3,7 +3,7 @@ project_name: gh-notif
 before:
   hooks:
     - go mod tidy
-    - go generate ./...
+    # Skip go generate and tests for faster builds
 
 builds:
   - id: gh-notif
@@ -23,12 +23,16 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
+    flags:
+      - -trimpath
     ldflags:
       - -s -w
       - -X main.versionString={{.Version}}
       - -X main.commitString={{.Commit}}
       - -X main.dateString={{.Date}}
       - -X main.builtByString=goreleaser
+    no_unique_dist_dir: false
+    skip: false
 
 archives:
   - id: default
