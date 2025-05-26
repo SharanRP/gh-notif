@@ -182,26 +182,54 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-go-${{ env.GO_VERSION }}-
 
+    - name: Download dependencies
+      run: go mod download
+
+    - name: Verify dependencies
+      run: go mod verify
+
+    - name: Tidy dependencies
+      run: go mod tidy
+
     - name: Create dist directory
       run: mkdir -p dist
 
     - name: Build for multiple platforms
       run: |
+        # Debug information
+        echo "Current directory: $(pwd)"
+        echo "Go version: $(go version)"
+        echo "Go env:"
+        go env
+        echo "Module info:"
+        go list -m
+        echo "Files in current directory:"
+        ls -la
+
+        # Test basic build first
+        echo "Testing basic build..."
+        go build -v .
+
         # Set version info
         VERSION=$(git describe --tags --always --dirty)
         COMMIT=$(git rev-parse --short HEAD)
         DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
         LDFLAGS="-s -w -X main.versionString=${VERSION} -X main.commitString=${COMMIT} -X main.dateString=${DATE}"
 
+        echo "Building for multiple platforms with LDFLAGS: ${LDFLAGS}"
+
         # Linux
+        echo "Building for Linux..."
         GOOS=linux GOARCH=amd64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-linux-amd64 .
         GOOS=linux GOARCH=arm64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-linux-arm64 .
 
         # macOS
+        echo "Building for macOS..."
         GOOS=darwin GOARCH=amd64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-darwin-amd64 .
         GOOS=darwin GOARCH=arm64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-darwin-arm64 .
 
         # Windows
+        echo "Building for Windows..."
         GOOS=windows GOARCH=amd64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-windows-amd64.exe .
         GOOS=windows GOARCH=arm64 go build -ldflags="${LDFLAGS}" -o dist/gh-notif-windows-arm64.exe .
 
