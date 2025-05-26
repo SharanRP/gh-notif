@@ -1,0 +1,59 @@
+# Ignore build artifacts
+dist/
+*.exe
+gh-notif
+gh-notif-*
+
+# Ignore Go module cache and toolchain
+go/
+.cache/
+pkg/
+
+# Ignore test files and coverage
+*.out
+*.prof
+coverage.html
+*.test
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore CI/CD files
+.github/
+.goreleaser.yml
+
+# Ignore documentation build artifacts
+docs/build/
+
+# Ignore temporary files
+tmp/
+temp/
+*.tmp
+
+# Ignore logs
+*.log
+
+# Ignore backup files
+*.bak
+*.backup
+
+# Ignore node modules if any
+node_modules/
+
+# Ignore package files
+*.deb
+*.rpm
+*.apk
+*.snap
