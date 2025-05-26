@@ -100,19 +100,13 @@ release:
 
     ### Installation
 
-    #### Homebrew (macOS/Linux)
-    ```bash
-    brew install SharanRP/tap/gh-notif
-    ```
-
-    #### Scoop (Windows)
-    ```powershell
-    scoop bucket add SharanRP https://github.com/SharanRP/scoop-bucket
-    scoop install gh-notif
-    ```
-
     #### Direct Download
     Download the appropriate binary for your platform from the assets below.
+
+    #### Package Managers
+    - **Debian/Ubuntu**: Download the `.deb` file and install with `sudo dpkg -i gh-notif_*.deb`
+    - **Red Hat/CentOS/Fedora**: Download the `.rpm` file and install with `sudo rpm -i gh-notif-*.rpm`
+    - **Alpine Linux**: Download the `.apk` file and install with `sudo apk add --allow-untrusted gh-notif_*.apk`
 
   footer: |
     **Full Changelog**: https://github.com/SharanRP/gh-notif/compare/{{ .PreviousTag }}...{{ .Tag }}
@@ -124,31 +118,31 @@ release:
     docker pull ghcr.io/sharanrp/gh-notif:latest
     ```
 
-brews:
-  - name: gh-notif
-    repository:
-      owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
-      name: homebrew-tap
-      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    folder: Formula
-    homepage: https://github.com/SharanRP/gh-notif
-    description: "A high-performance CLI tool for managing GitHub notifications"
-    license: MIT
-    test: |
-      system "#{bin}/gh-notif --version"
-    install: |
-      bin.install "gh-notif"
-      man1.install Dir["docs/man/*.1"]
+# brews:
+#   - name: gh-notif
+#     repository:
+#       owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
+#       name: homebrew-tap
+#       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+#     folder: Formula
+#     homepage: https://github.com/SharanRP/gh-notif
+#     description: "A high-performance CLI tool for managing GitHub notifications"
+#     license: MIT
+#     test: |
+#       system "#{bin}/gh-notif --version"
+#     install: |
+#       bin.install "gh-notif"
+#       man1.install Dir["docs/man/*.1"]
 
-scoops:
-  - name: gh-notif
-    repository:
-      owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
-      name: scoop-bucket
-      token: "{{ .Env.SCOOP_BUCKET_GITHUB_TOKEN }}"
-    homepage: https://github.com/SharanRP/gh-notif
-    description: "A high-performance CLI tool for managing GitHub notifications"
-    license: MIT
+# scoops:
+#   - name: gh-notif
+#     repository:
+#       owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
+#       name: scoop-bucket
+#       token: "{{ .Env.SCOOP_BUCKET_GITHUB_TOKEN }}"
+#     homepage: https://github.com/SharanRP/gh-notif
+#     description: "A high-performance CLI tool for managing GitHub notifications"
+#     license: MIT
 
 nfpms:
   - id: packages
