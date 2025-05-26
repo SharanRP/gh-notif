@@ -138,9 +138,6 @@ brews:
     install: |
       bin.install "gh-notif"
       man1.install Dir["docs/man/*.1"]
-      bash_completion.install "completions/gh-notif.bash" => "gh-notif"
-      zsh_completion.install "completions/gh-notif.zsh" => "_gh-notif"
-      fish_completion.install "completions/gh-notif.fish"
 
 scoops:
   - name: gh-notif
@@ -178,18 +175,6 @@ nfpms:
         dst: /usr/share/man/man1/
         file_info:
           mode: 0644
-      - src: ./completions/gh-notif.bash
-        dst: /usr/share/bash-completion/completions/gh-notif
-        file_info:
-          mode: 0644
-      - src: ./completions/gh-notif.zsh
-        dst: /usr/share/zsh/site-functions/_gh-notif
-        file_info:
-          mode: 0644
-      - src: ./completions/gh-notif.fish
-        dst: /usr/share/fish/completions/gh-notif.fish
-        file_info:
-          mode: 0644
 
 snapcrafts:
   - name: gh-notif
@@ -224,7 +209,6 @@ dockers:
       - "--platform=linux/amd64"
     extra_files:
       - docs/
-      - completions/
   - image_templates:
       - "ghcr.io/sharanrp/gh-notif:{{ .Tag }}-arm64"
       - "ghcr.io/sharanrp/gh-notif:latest-arm64"
@@ -241,7 +225,6 @@ dockers:
     goarch: arm64
     extra_files:
       - docs/
-      - completions/
 
 docker_manifests:
   - name_template: "ghcr.io/sharanrp/gh-notif:{{ .Tag }}"
