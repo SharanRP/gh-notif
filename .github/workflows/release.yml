@@ -10,7 +10,7 @@ permissions:
   packages: write
 
 env:
-  GO_VERSION: '1.21'
+  GO_VERSION: '1.22'
 
 jobs:
   release:
@@ -29,7 +29,7 @@ jobs:
         go-version: ${{ env.GO_VERSION }}
 
     - name: Cache Go modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ~/.cache/go-build
