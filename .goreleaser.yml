@@ -176,22 +176,22 @@ nfpms:
         file_info:
           mode: 0644
 
-snapcrafts:
-  - name: gh-notif
-    summary: A high-performance CLI tool for managing GitHub notifications
-    description: |
-      gh-notif helps you efficiently manage GitHub notifications with powerful
-      filtering, sorting, and grouping capabilities. It provides a modern
-      terminal UI and supports concurrent operations for improved performance.
-    grade: stable
-    confinement: strict
-    publish: true
-    license: MIT
-    base: core22
-    apps:
-      gh-notif:
-        command: gh-notif
-        plugs: ["home", "network"]
+# snapcrafts:
+#   - name: gh-notif
+#     summary: A high-performance CLI tool for managing GitHub notifications
+#     description: |
+#       gh-notif helps you efficiently manage GitHub notifications with powerful
+#       filtering, sorting, and grouping capabilities. It provides a modern
+#       terminal UI and supports concurrent operations for improved performance.
+#     grade: stable
+#     confinement: strict
+#     publish: true
+#     license: MIT
+#     base: core22
+#     apps:
+#       gh-notif:
+#         command: gh-notif
+#         plugs: ["home", "network"]
 
 dockers:
   - image_templates:
