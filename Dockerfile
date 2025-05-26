@@ -17,10 +17,6 @@ COPY --from=base /usr/share/zoneinfo /usr/share/zoneinfo
 # Copy the pre-built binary (provided by GoReleaser)
 COPY gh-notif /usr/local/bin/gh-notif
 
-# Copy documentation
-COPY README.md /README.md
-COPY LICENSE /LICENSE
-
 # Set the entrypoint
 ENTRYPOINT ["/usr/local/bin/gh-notif"]
 
