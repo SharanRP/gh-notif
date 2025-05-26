@@ -188,9 +188,6 @@ jobs:
     - name: Verify dependencies
       run: go mod verify
 
-    - name: Tidy dependencies
-      run: go mod tidy
-
     - name: Create dist directory
       run: mkdir -p dist
 
