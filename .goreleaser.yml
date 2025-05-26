@@ -1,5 +1,7 @@
 project_name: gh-notif
 
+version: 2
+
 before:
   hooks:
     - go mod tidy
@@ -36,8 +38,6 @@ builds:
 
 archives:
   - id: default
-    builds:
-      - gh-notif
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
@@ -45,9 +45,6 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
-    format_overrides:
-      - goos: windows
-        format: zip
     files:
       - README.md
       - LICENSE
@@ -59,7 +56,7 @@ checksum:
   name_template: 'checksums.txt'
 
 snapshot:
-  name_template: "{{ incpatch .Version }}-next"
+  version_template: "{{ incpatch .Version }}-next"
 
 changelog:
   sort: asc
@@ -88,7 +85,7 @@ changelog:
 
 release:
   github:
-    owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
+    owner: "SharanRP"
     name: gh-notif
   draft: false
   prerelease: auto
@@ -137,7 +134,7 @@ release:
 scoops:
   - name: gh-notif
     repository:
-      owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
+      owner: "SharanRP"
       name: scoop-bucket
       token: "{{ .Env.SCOOP_BUCKET_GITHUB_TOKEN }}"
     homepage: https://github.com/SharanRP/gh-notif
