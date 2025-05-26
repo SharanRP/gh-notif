@@ -1,42 +1,25 @@
-# Build stage
-FROM golang:1.22-alpine AS builder
+# Use a minimal base image for the final stage
+FROM alpine:latest AS base
 
-# Install build dependencies
-RUN apk add --no-cache git ca-certificates tzdata
+# Install ca-certificates for HTTPS requests
+RUN apk --no-cache add ca-certificates tzdata
 
-# Set working directory
-WORKDIR /app
-
-# Copy go module files first
-COPY go.mod go.sum ./
-
-# Download dependencies
-RUN go mod download
-
-# Copy source code
-COPY . .
-
-# Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build \
-    -ldflags='-w -s -extldflags "-static"' \
-    -a -installsuffix cgo \
-    -o gh-notif \
-    ./main.go
+# Create a non-root user
+RUN adduser -D -s /bin/sh appuser
 
 # Final stage
 FROM scratch
 
-# Import from builder
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+# Import from base
+COPY --from=base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=base /usr/share/zoneinfo /usr/share/zoneinfo
 
-# Copy the binary
-COPY --from=builder /app/gh-notif /usr/local/bin/gh-notif
+# Copy the pre-built binary (provided by GoReleaser)
+COPY gh-notif /usr/local/bin/gh-notif
 
 # Copy documentation
-COPY --from=builder /app/docs /docs
-COPY --from=builder /app/README.md /README.md
-COPY --from=builder /app/LICENSE /LICENSE
+COPY README.md /README.md
+COPY LICENSE /LICENSE
 
 # Set the entrypoint
 ENTRYPOINT ["/usr/local/bin/gh-notif"]
