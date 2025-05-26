@@ -131,15 +131,21 @@ release:
 #       bin.install "gh-notif"
 #       man1.install Dir["docs/man/*.1"]
 
-scoops:
-  - name: gh-notif
-    repository:
-      owner: "SharanRP"
-      name: scoop-bucket
-      token: "{{ .Env.SCOOP_BUCKET_GITHUB_TOKEN }}"
-    homepage: https://github.com/SharanRP/gh-notif
-    description: "A high-performance CLI tool for managing GitHub notifications"
-    license: MIT
+# Scoop publishing disabled until Personal Access Token is configured
+# To enable:
+# 1. Create GitHub Personal Access Token with 'repo' permissions
+# 2. Add as repository secret: SCOOP_BUCKET_GITHUB_TOKEN
+# 3. Uncomment the section below and change token back to SCOOP_BUCKET_GITHUB_TOKEN
+#
+# scoops:
+#   - name: gh-notif
+#     repository:
+#       owner: "SharanRP"
+#       name: scoop-bucket
+#       token: "{{ .Env.SCOOP_BUCKET_GITHUB_TOKEN }}"
+#     homepage: https://github.com/SharanRP/gh-notif
+#     description: "A high-performance CLI tool for managing GitHub notifications"
+#     license: MIT
 
 nfpms:
   - id: packages
